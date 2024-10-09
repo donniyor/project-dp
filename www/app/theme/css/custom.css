@@ -1,0 +1,48 @@
+span.sign-in {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #40475c;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.help-block {
+    color: #dc3545; /* Red color for danger/error */
+    font-size: 14px; /* Adjust font size as needed */
+    font-weight: normal; /* Optionally adjust font weight */
+}
+
+.actions i {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
+
+.card .card-body {
+    padding-right: 0!important;
+    margin-right: 30px!important;
+}
+
+.chat-time {
+    font-size: 12px;
+    margin-top: 4px;
+    text-align: right;
+    color: rgba(0,0,0,.5)
+}
+
+.own .chat-time {
+    color: rgba(255,255,255,.5)
+}
+
+.widget-chat .widget-chat-messages-container {
+    max-height: calc(100vh - 360px)!important;
+}
+
+.widget-chat .widget-chat-messages-container {
+    background: url('../chat-background.png') center repeat;
+    background-size: cover;
+}
+
+.select2-container--krajee-bs5 .select2-selection--multiple .select2-search--inline {
+    display: none!important;
+}
