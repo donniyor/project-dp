@@ -2,16 +2,24 @@
 
 use yii\db\Migration;
 
-class m130524_201442_init extends Migration
+/**
+ * Class m130524_201442_users
+ */
+class m130524_201442_users extends Migration
 {
-    public function up(): void
+    private const TABLE_NAME = 'users';
+
+    /**
+     * @inheritDoc
+     */
+    public function up()
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('{{%users}}', [
+        $this->createTable(self::TABLE_NAME, [
             'id' => $this->primaryKey(),
 
             'username' => $this->string()->notNull()->unique(),
@@ -25,12 +33,13 @@ class m130524_201442_init extends Migration
             'created_at' => $this->timestamp()->defaultExpression('NOW()'),
             'updated_at' => $this->timestamp()->defaultExpression('NOW()'),
         ], $tableOptions);
-
-
     }
 
-    public function down(): void
+    /**
+     * @inheritDoc
+     */
+    public function down()
     {
-        $this->dropTable('{{%admins}}');
+        $this->dropTable(self::TABLE_NAME);
     }
 }
