@@ -7,6 +7,7 @@ use vova07\imperavi\actions\GetImagesAction;
 use vova07\imperavi\actions\UploadFileAction;
 use Yii;
 use yii\bootstrap5\Html;
+use yii\db\ActiveRecord;
 use yii\helpers\HtmlPurifier;
 use yii\helpers\StringHelper;
 use yii\helpers\Url;
@@ -18,7 +19,7 @@ class Data
         if (is_array($items)) {
             $result = [];
             foreach ($items as $lang => $item) {
-                if(is_array($item)) {
+                if (is_array($item)) {
                     $data = [];
                     foreach ($item as $key => $value) {
                         $data[$key] = trim(HtmlPurifier::process($value));
@@ -33,8 +34,12 @@ class Data
         return trim(HtmlPurifier::process($items));
     }
 
-    public static function generateSeveralTabs($model, array $inputs = [], array $textareaInputs = [], array $textsToolOff = []): array
-    {
+    public static function generateSeveralTabs(
+        $model,
+        array $inputs = [],
+        array $textareaInputs = [],
+        array $textsToolOff = []
+    ): array {
         $className = StringHelper::basename(get_class($model));
         $tabItems = [];
         $controller = Yii::$app->controller->getUniqueId();
@@ -42,19 +47,28 @@ class Data
         foreach (self::languages() as $key => $language) {
             $content = '';
             if (count($inputs) > 0) {
-                foreach($inputs as $input){
+                foreach ($inputs as $input) {
                     $content .= "<div class='mb-3'>";
                     $content .= Html::label("{$model->getAttributeLabel($input)}", '', ['class' => 'control-label']);
-                    $content .= Html::input('text', "{$className}[$input][$key]", $model[$input][$key] ?? '', ['class' => 'form-control', 'required' => false]);
-                    $content .=Html::error($model, "{$input}", ['class' => 'help-block']);
+                    $content .= Html::input(
+                        'text',
+                        "{$className}[$input][$key]",
+                        $model[$input][$key] ?? '',
+                        ['class' => 'form-control', 'required' => false]
+                    );
+                    $content .= Html::error($model, "{$input}", ['class' => 'help-block']);
                     $content .= "</div>";
                 }
             }
 
             if (count($textareaInputs) > 0) {
-                foreach ($textareaInputs as $textareaInput){
+                foreach ($textareaInputs as $textareaInput) {
                     $content .= "<div class='mb-3'>";
-                    $content .= Html::label("{$model->getAttributeLabel($textareaInput)}", '', ['class' => 'control-label']);
+                    $content .= Html::label(
+                        "{$model->getAttributeLabel($textareaInput)}",
+                        '',
+                        ['class' => 'control-label']
+                    );
                     $content .= Widget::widget([
                         'name' => "{$className}[$textareaInput][$key]",
                         'value' => $model[$textareaInput][$key] ?? '',
@@ -66,7 +80,7 @@ class Data
                             'plugins' => ['imagemanager', 'fullscreen', 'table'],
                         ],
                     ]);
-                    $content .=Html::error($model, "{$textareaInput}", ['class' => 'help-block']);
+                    $content .= Html::error($model, "{$textareaInput}", ['class' => 'help-block']);
                     $content .= "</div>";
                 }
             }
@@ -74,8 +88,16 @@ class Data
             if (count($textsToolOff) > 0) {
                 foreach ($textsToolOff as $textToolOff) {
                     $content .= "<div class='mb-3'>";
-                    $content .= Html::label("{$model->getAttributeLabel($textToolOff)}", '', ['class' => 'control-label']);
-                    $content .= Html::textarea("{$className}[$textToolOff][$key]", $model[$textToolOff][$key] ?? '', ['class' => 'form-control', 'required' => false]);
+                    $content .= Html::label(
+                        "{$model->getAttributeLabel($textToolOff)}",
+                        '',
+                        ['class' => 'control-label']
+                    );
+                    $content .= Html::textarea(
+                        "{$className}[$textToolOff][$key]",
+                        $model[$textToolOff][$key] ?? '',
+                        ['class' => 'form-control', 'required' => false]
+                    );
                     $content .= Html::error($model, "{$textToolOff}", ['class' => 'help-block']);
                     $content .= "</div>";
                 }
@@ -112,15 +134,38 @@ class Data
         return [
             'get-images' => [
                 'class' => GetImagesAction::class,
-                'url' => env('API_HOST')."/uploads/{$controller}",
+                'url' => env('API_HOST') . "/uploads/{$controller}",
                 'path' => "@webroot/uploads/{$controller}",
             ],
             'upload-image' => [
                 'class' => UploadFileAction::class,
-                'url' => env('API_HOST')."/uploads/{$controller}",
+                'url' => env('API_HOST') . "/uploads/{$controller}",
                 'path' => "@webroot/uploads/{$controller}",
             ],
         ];
     }
 
+    public static function getTextArea(ActiveRecord $model, string $textareaInput): string
+    {
+        $controller = Yii::$app->controller->getUniqueId();
+        $className = StringHelper::basename(get_class($model));
+
+        $content = "<div class='mb-3'>";
+        $content .= Html::label("{$model->getAttributeLabel($textareaInput)}", '', ['class' => 'control-label']);
+        $content .= Widget::widget([
+            'name' => "{$className}[$textareaInput]",
+            'value' => $model[$textareaInput] ?? '',
+            'settings' => [
+                'lang' => 'ru',
+                'minHeight' => 300,
+                'maxHeight' => 500,
+                'imageUpload' => Url::to(["/{$controller}/upload-image"]),
+                'plugins' => ['imagemanager', 'fullscreen', 'table'],
+            ],
+        ]);
+        $content .= Html::error($model, "{$textareaInput}", ['class' => 'help-block']);
+        $content .= "</div>";
+
+        return $content;
+    }
 }

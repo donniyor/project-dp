@@ -10,6 +10,7 @@ use app\models\UsersSearch;
 use Yii;
 use app\components\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * AdminController implements the CRUD actions for Users model.
@@ -37,20 +38,15 @@ class AdminsController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new Users model.
-     * If creation is successful, the browser will be redirected to the 'create' page.
-     * @return string|\yii\web\Response
-     */
     public function actionCreate()
     {
         $model = new CreateAdminForm();
-
 
         if ($model->load(Yii::$app->request->post())) {
             $model->createUser();
             return $this->redirect(['index']);
         }
+
         return $this->render('create', [
             'model' => $model,
         ]);
@@ -60,7 +56,7 @@ class AdminsController extends Controller
      * Deletes an existing Users model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id
-     * @return \yii\web\Response
+     * @return Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)

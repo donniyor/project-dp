@@ -18,7 +18,7 @@ use app\widgets\Sidebar;
 
             <?= Sidebar::make()
                 ->add('Пользователи', 'people_alt', 'admins')
-                ->add('Проекты', 'done_all', 'test')
+                ->add('Проекты', 'done_all', 'projects')
                 ->all()
             ?>
 

@@ -12,7 +12,7 @@ class m130524_201442_users extends Migration
     /**
      * @inheritDoc
      */
-    public function up()
+    public function up(): void
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
@@ -28,6 +28,7 @@ class m130524_201442_users extends Migration
             'password_reset_token' => $this->string()->unique(),
             'email' => $this->string()->notNull()->unique(),
             'verification_token' => $this->string()->defaultValue(null),
+            'img' => $this->string(),
 
             'status' => $this->smallInteger()->notNull()->defaultValue(10),
             'created_at' => $this->timestamp()->defaultExpression('NOW()'),
@@ -38,7 +39,7 @@ class m130524_201442_users extends Migration
     /**
      * @inheritDoc
      */
-    public function down()
+    public function down(): void
     {
         $this->dropTable(self::TABLE_NAME);
     }

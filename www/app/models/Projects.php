@@ -50,12 +50,12 @@ class Projects extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
-            'description' => 'Description',
-            'author_id' => 'Author ID',
-            'status' => 'Status',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'title' => 'Название проекта',
+            'description' => 'Описание',
+            'author_id' => 'Автор',
+            'status' => 'Статус',
+            'created_at' => 'Дата создания',
+            'updated_at' => 'Дата редактирования',
         ];
     }
 
