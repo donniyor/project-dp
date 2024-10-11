@@ -2,19 +2,16 @@
 
 namespace app\widgets;
 
-use app\models\Users;
 use Yii;
 
-class sidebar
+class Sidebar
 {
     private array $row = [];
     private string $controller;
-    private string $role;
 
     public function __construct()
     {
         $this->controller = Yii::$app->controller->id;
-        $this->role = Users::getRole();
     }
 
     /**
@@ -34,14 +31,6 @@ class sidebar
     }
 
     /**
-     * @return string
-     */
-    public function getRole(): string
-    {
-        return $this->role;
-    }
-
-    /**
      * @param string $controller
      */
     public function setController(string $controller): void
@@ -57,22 +46,14 @@ class sidebar
         $this->row = $row;
     }
 
-    /**
-     * @param string $role
-     */
-    public function setRole(string $role): void
-    {
-        $this->role = $role;
-    }
-
     public static function make(): static
     {
         return new static();
     }
 
-    public function add(string $name, string $icon, string $url, array $roles = [], string $link = ''): self
+    public function add(string $name, string $icon, string $url, string $link = ''): self
     {
-        if (!empty($roles) && !in_array($this->role, $roles)) {
+        if (!empty($roles)) {
             return $this;
         }
 

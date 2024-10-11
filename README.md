@@ -8,7 +8,7 @@
 
 `docker compose up -d --build`
 
-`docker exec -it php_ind bash`
+`docker exec -it php bash`
 
 'composer install'
 

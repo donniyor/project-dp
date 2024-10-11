@@ -8,7 +8,6 @@ use yii\base\Exception;
 use yii\base\NotSupportedException;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
-use yii\helpers\Html;
 use yii\web\IdentityInterface;
 
 /**
@@ -23,17 +22,16 @@ use yii\web\IdentityInterface;
  * @property string $auth_key
  * @property integer $status
  * @property string $password write-only password
+ * @property string $created_at
+ * @property string $updated_at
+ * @property array $roles
  */
 class Users extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
-    const ROLE_SUPER_ADMIN = RolesInterface::SUPER_ADMIN_ROLE;
 
-    /**
-     * @inheritdoc
-     */
     public static function tableName(): string
     {
         return 'users';
@@ -64,9 +62,12 @@ class Users extends ActiveRecord implements IdentityInterface
         return false;
     }
 
+    /**
+     * @throws \yii\db\Exception
+     */
     public function beforeDelete(): bool
     {
-        if (parent::beforeDelete() && !$this->selfDelete($this->id) && Users::isSuperAdminStatic()) {
+        if (parent::beforeDelete() && $this->selfDelete($this->id)) {
             $this->status = self::STATUS_DELETED;
             $this->save(false);
             Yii::$app->session->setFlash('success', 'Вы удалили аккаунт.');
@@ -78,72 +79,7 @@ class Users extends ActiveRecord implements IdentityInterface
 
     private function selfDelete(int $id): bool
     {
-        return Yii::$app->user->id == $id;
-    }
-
-    public static function isSuperAdminStatic(): bool
-    {
-        return Yii::$app->user->identity->roles[0]->item_name === self::ROLE_SUPER_ADMIN;
-    }
-
-    public static function getRole(): string
-    {
-        return Yii::$app->user->identity->roles[0]->item_name ?? '';
-    }
-
-    public static function showCreate(int $count): bool
-    {
-        return Yii::$app->user->identity->roles[0]->item_name === self::ROLE_SUPER_ADMIN || $count <= 0;
-    }
-
-    public static function getStatus(int $status): ?array
-    {
-        return match ($status) {
-            0 => ['class' => 'table-danger'],
-            9 => ['class' => 'table-primary'],
-            default => null
-        };
-    }
-
-    public static function getStatusToDelete(int $status): ?bool
-    {
-        return match ($status) {
-            0 => false,
-            default => true,
-        };
-    }
-
-    public function afterSave($insert, $changedAttributes): void
-    {
-        parent::afterSave($insert, $changedAttributes);
-
-        if (Yii::$app->controller->id != 'my-rbac') {
-            if ($insert) {
-                LogActions::addLog(
-                    'add',
-                    "Пользователь добавил другого пользователя",
-                    Html::a('Открыть', ['/admins/?UsersSearch[username]=' . $this->username])
-                );
-            } else {
-                if ($this->status == self::STATUS_DELETED) {
-                    LogActions::addLog(
-                        'delete',
-                        "Пользователь удалил другого пользователя",
-                        Html::a('Открыть', ['/admins/?UsersSearch[username]=' . $this->username])
-                    );
-                } else {
-                    LogActions::addLog(
-                        'update',
-                        "Пользователь обновил другого пользователя",
-                        Html::a('Открыть', ['/admins/?UsersSearch[username]=' . $this->username])
-                    );
-                }
-            }
-        } else {
-            if ($insert) {
-                LogActions::addInit();
-            }
-        }
+        return (int)Yii::$app->user->id !== $id;
     }
 
     public function getRoles(): ActiveQuery
@@ -151,28 +87,26 @@ class Users extends ActiveRecord implements IdentityInterface
         return $this->hasMany(AuthAssignment::class, ['user_id' => 'id']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function getStatus(): bool
+    {
+        return self::STATUS_ACTIVE === (int)$this->getStatus();
+    }
+
     public function rules(): array
     {
         return [
             [['username'], 'required'],
-            ['status', 'default', 'value' => self::STATUS_ACTIVE], // todo status inactive
+            ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function findIdentity($id): ?ActiveRecord
     {
         return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**
-     * {@inheritdoc}
      * @throws NotSupportedException
      */
     public static function findIdentityByAccessToken($token, $type = null): void
@@ -180,23 +114,11 @@ class Users extends ActiveRecord implements IdentityInterface
         throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
     }
 
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
     public static function findByUsername(string $username): ?static
     {
         return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
     }
 
-    /**
-     * Finds user by password reset token
-     *
-     * @param string $token password reset token
-     * @return static|null
-     */
     public static function findByPasswordResetToken(string $token): ?static
     {
         if (!static::isPasswordResetTokenValid($token)) {
@@ -209,12 +131,6 @@ class Users extends ActiveRecord implements IdentityInterface
         ]);
     }
 
-    /**
-     * Finds user by verification email token
-     *
-     * @param string $token verify email token
-     * @return static|null
-     */
     public static function findByVerificationToken(string $token): ?static
     {
         return static::findOne([
@@ -222,12 +138,6 @@ class Users extends ActiveRecord implements IdentityInterface
         ]);
     }
 
-    /**
-     * Finds out if password reset token is valid
-     *
-     * @param string $token password reset token
-     * @return bool
-     */
     public static function isPasswordResetTokenValid(string $token): bool
     {
         if (empty($token)) {
@@ -239,45 +149,27 @@ class Users extends ActiveRecord implements IdentityInterface
         return $timestamp + $expire >= time();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getId(): string
     {
         return $this->getPrimaryKey();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getAuthKey(): string
     {
         return $this->auth_key;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function validateAuthKey($authKey): string
     {
         return $this->getAuthKey() === $authKey;
     }
 
-    /**
-     * Validates password
-     *
-     * @param string $password password to validate
-     * @return bool if password provided is valid for current user
-     */
     public function validatePassword(string $password): bool
     {
         return Yii::$app->security->validatePassword($password, $this->password_hash);
     }
 
     /**
-     * Generates password hash from password and sets it to the model
-     *
-     * @param string $password
      * @throws Exception
      */
     public function setPassword(string $password): void
@@ -286,7 +178,6 @@ class Users extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Generates "remember me" authentication key
      * @throws Exception
      */
     public function generateAuthKey(): void
@@ -295,7 +186,6 @@ class Users extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Generates new password reset token
      * @throws Exception
      */
     public function generatePasswordResetToken(): void
@@ -304,7 +194,6 @@ class Users extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Generates new token for email verification
      * @throws Exception
      */
     public function generateEmailVerificationToken(): void
@@ -312,9 +201,6 @@ class Users extends ActiveRecord implements IdentityInterface
         $this->verification_token = Yii::$app->security->generateRandomString() . '_' . time();
     }
 
-    /**
-     * Removes password reset token
-     */
     public function removePasswordResetToken(): void
     {
         $this->password_reset_token = null;

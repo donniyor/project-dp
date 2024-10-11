@@ -1,6 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace app\models;
+
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "auth_assignment".
@@ -11,20 +16,14 @@ namespace app\models;
  *
  * @property AuthItem $itemName
  */
-class AuthAssignment extends \yii\db\ActiveRecord
+class AuthAssignment extends ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'auth_assignment';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['item_name', 'user_id'], 'required'],
@@ -32,14 +31,17 @@ class AuthAssignment extends \yii\db\ActiveRecord
             [['created_at'], 'integer'],
             [['item_name', 'user_id'], 'string', 'max' => 64],
             [['item_name', 'user_id'], 'unique', 'targetAttribute' => ['item_name', 'user_id']],
-            [['item_name'], 'exist', 'skipOnError' => true, 'targetClass' => AuthItem::class, 'targetAttribute' => ['item_name' => 'name']],
+            [
+                ['item_name'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => AuthItem::class,
+                'targetAttribute' => ['item_name' => 'name']
+            ],
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'item_name' => 'Item Name',
@@ -48,12 +50,7 @@ class AuthAssignment extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * Gets query for [[ItemName]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getItemName()
+    public function getItemName(): ActiveQuery
     {
         return $this->hasOne(AuthItem::class, ['name' => 'item_name']);
     }

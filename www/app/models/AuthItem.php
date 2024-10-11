@@ -2,9 +2,6 @@
 
 namespace app\models;
 
-use app\modules\admin\models\AuthItemChild;
-use app\modules\admin\models\AuthRule;
-
 /**
  * This is the model class for table "auth_item".
  *

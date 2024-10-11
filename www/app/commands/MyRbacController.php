@@ -4,14 +4,30 @@ namespace app\commands;
 
 use app\models\Users;
 use app\components\RolesInterface;
+use Exception;
 use Yii;
 use yii\console\Controller;
 
 class MyRbacController extends Controller
 {
-    public function actionIndex()
+    public function actionIndex(): void
     {
+        try {
+            $this->saveUser();
+        } catch (Exception $e) {
+            print(sprintf("\n s% \n", $e->getMessage()));
+        }
 
+        print("\nAll correct!\n");
+    }
+
+    /**
+     * @throws \yii\db\Exception
+     * @throws \yii\base\Exception
+     * @throws Exception
+     */
+    private function saveUser(): void
+    {
         $auth = Yii::$app->authManager;
         $auth->removeAll();
         Users::deleteAll();
@@ -41,7 +57,5 @@ class MyRbacController extends Controller
         $auth->addChild($adminRole, $canAdmin);
 
         $auth->assign($superAdminRole, $superAdmin->id);
-
-        print("\nAll correct!\n");
     }
 }

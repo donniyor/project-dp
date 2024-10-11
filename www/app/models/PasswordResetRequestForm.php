@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\base\Exception;
 use yii\base\Model;
 
 /**
@@ -10,19 +11,17 @@ use yii\base\Model;
  */
 class PasswordResetRequestForm extends Model
 {
-    public $email;
+    public string $email = '';
 
-
-    /**
-     * {@inheritdoc}
-     */
-    public function rules()
+    public function rules(): array
     {
         return [
             ['email', 'trim'],
             ['email', 'required'],
             ['email', 'email'],
-            ['email', 'exist',
+            [
+                'email',
+                'exist',
                 'targetClass' => '\app\models\Users',
                 'filter' => ['status' => Users::STATUS_ACTIVE],
                 'message' => 'There is no user with this email address.'
@@ -31,11 +30,10 @@ class PasswordResetRequestForm extends Model
     }
 
     /**
-     * Sends an email with a link, for resetting the password.
-     *
-     * @return bool whether the email was send
+     * @throws Exception
+     * @throws \yii\db\Exception
      */
-    public function sendEmail()
+    public function sendEmail(): bool
     {
         /* @var $user Users */
         $user = Users::findOne([
@@ -46,7 +44,7 @@ class PasswordResetRequestForm extends Model
         if (!$user) {
             return false;
         }
-        
+
         if (!Users::isPasswordResetTokenValid($user->password_reset_token)) {
             $user->generatePasswordResetToken();
             if (!$user->save()) {
