@@ -32,11 +32,11 @@ class Users extends ActiveRecord implements IdentityInterface
     const ROLE_SUPER_ADMIN = RolesInterface::SUPER_ADMIN_ROLE;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static function tableName(): string
     {
-        return '{{%users}}';
+        return 'users';
     }
 
     public function attributeLabels(): array
@@ -96,7 +96,7 @@ class Users extends ActiveRecord implements IdentityInterface
         return Yii::$app->user->identity->roles[0]->item_name === self::ROLE_SUPER_ADMIN || $count <= 0;
     }
 
-    public static function getStatus(int $status): array|null
+    public static function getStatus(int $status): ?array
     {
         return match ($status) {
             0 => ['class' => 'table-danger'],
@@ -105,9 +105,9 @@ class Users extends ActiveRecord implements IdentityInterface
         };
     }
 
-    public static function getStatusToDelete(int $status): bool|null
+    public static function getStatusToDelete(int $status): ?bool
     {
-        return match($status) {
+        return match ($status) {
             0 => false,
             default => true,
         };
@@ -122,22 +122,27 @@ class Users extends ActiveRecord implements IdentityInterface
                 LogActions::addLog(
                     'add',
                     "Пользователь добавил другого пользователя",
-                    Html::a('Открыть', ['/admins/?UsersSearch[username]=' . $this->username]));
+                    Html::a('Открыть', ['/admins/?UsersSearch[username]=' . $this->username])
+                );
             } else {
                 if ($this->status == self::STATUS_DELETED) {
                     LogActions::addLog(
                         'delete',
                         "Пользователь удалил другого пользователя",
-                        Html::a('Открыть', ['/admins/?UsersSearch[username]=' . $this->username]));
+                        Html::a('Открыть', ['/admins/?UsersSearch[username]=' . $this->username])
+                    );
                 } else {
                     LogActions::addLog(
                         'update',
                         "Пользователь обновил другого пользователя",
-                        Html::a('Открыть', ['/admins/?UsersSearch[username]=' . $this->username]));
+                        Html::a('Открыть', ['/admins/?UsersSearch[username]=' . $this->username])
+                    );
                 }
             }
         } else {
-            if ($insert) LogActions::addInit();
+            if ($insert) {
+                LogActions::addInit();
+            }
         }
     }
 
@@ -161,7 +166,7 @@ class Users extends ActiveRecord implements IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public static function findIdentity($id): null|ActiveRecord
+    public static function findIdentity($id): ?ActiveRecord
     {
         return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
@@ -181,7 +186,7 @@ class Users extends ActiveRecord implements IdentityInterface
      * @param string $username
      * @return static|null
      */
-    public static function findByUsername(string $username): null|static
+    public static function findByUsername(string $username): ?static
     {
         return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
     }
@@ -192,7 +197,7 @@ class Users extends ActiveRecord implements IdentityInterface
      * @param string $token password reset token
      * @return static|null
      */
-    public static function findByPasswordResetToken(string $token): static|null
+    public static function findByPasswordResetToken(string $token): ?static
     {
         if (!static::isPasswordResetTokenValid($token)) {
             return null;
@@ -210,7 +215,7 @@ class Users extends ActiveRecord implements IdentityInterface
      * @param string $token verify email token
      * @return static|null
      */
-    public static function findByVerificationToken(string $token): static|null
+    public static function findByVerificationToken(string $token): ?static
     {
         return static::findOne([
             'verification_token' => $token,
@@ -235,7 +240,7 @@ class Users extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getId(): string
     {
@@ -243,7 +248,7 @@ class Users extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getAuthKey(): string
     {
@@ -251,7 +256,7 @@ class Users extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function validateAuthKey($authKey): string
     {

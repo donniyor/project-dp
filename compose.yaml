@@ -2,7 +2,7 @@ version: '3'
 
 services:
   nginx:
-    container_name: nginx_ind
+    container_name: nginx
     image: nginx:latest
     ports:
       - '8080:80'
@@ -15,7 +15,7 @@ services:
       - php
 
   php:
-    container_name: php_ind
+    container_name: php
     build: ./images/php81fpm
     volumes:
       - ./www:/var/www:z
@@ -27,7 +27,7 @@ services:
       - postgres
 
   postgres:
-    container_name: post_ind
+    container_name: postgres
     image: postgres:latest
     volumes:
       - ./postgres/data:/var/lib/postgresql/data:z
