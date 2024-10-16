@@ -17,7 +17,8 @@ use app\widgets\Sidebar;
             </li>
 
             <?= Sidebar::make()
-                ->add('Пользователи', 'people_alt', 'admins')
+                ->add('Личный кабинет', 'account_circle', sprintf('user/index/%s', Yii::$app->getUser()->getId()))
+                ->add('Пользователи', 'people_alt', 'users')
                 ->add('Проекты', 'done_all', 'projects')
                 ->all()
             ?>

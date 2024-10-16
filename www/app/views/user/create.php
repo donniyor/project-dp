@@ -5,7 +5,7 @@
 
 /** @var \app\models\CreateAdminForm $model */
 
-/** @var \app\controllers\AdminsController $type */
+/** @var \app\controllers\Users2Controller $type */
 
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;

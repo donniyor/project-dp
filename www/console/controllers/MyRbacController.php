@@ -89,7 +89,7 @@ class MyRbacController extends Controller
 /*
         //1
         $deleteAdmin = $auth->createPermission('canDeleteAdmin');
-        $deleteAdmin->description = 'can delete admins';
+        $deleteAdmin->description = 'can delete users';
         $auth->add($deleteAdmin);
 
         // создаем правило разрешить удалять админов
@@ -136,7 +136,7 @@ class MyRbacController extends Controller
 /*
         //1
         $deleteAdmin = $auth->createPermission('canDeleteAdmin');
-        $deleteAdmin->description = 'can delete admins';
+        $deleteAdmin->description = 'can delete users';
         $auth->add($deleteAdmin);
 
         // создаем правило разрешить удалять админов

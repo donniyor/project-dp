@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace app\components;
 
 use app\helpers\Upload;
@@ -7,24 +9,31 @@ use Yii;
 use yii\base\Exception;
 use yii\web\BadRequestHttpException;
 use yii\base\InvalidRouteException;
+use yii\web\Controller;
 use yii\web\HttpException;
 use yii\web\Response;
 use yii\web\UploadedFile;
 
-class Controller extends \yii\web\Controller
+class BaseController extends Controller
 {
+    /**
+     * @throws InvalidRouteException
+     * @throws BadRequestHttpException
+     */
     public function beforeAction($action): bool
     {
-        if (!parent::beforeAction($action))
+        if (!parent::beforeAction($action)) {
             return false;
+        }
 
         if (Yii::$app->user->isGuest && Yii::$app->controller->id !== 'auth') {
             Yii::$app->user->setReturnUrl(Yii::$app->request->url);
             Yii::$app->getResponse()->redirect(['/auth/in'])->send();
+
             return false;
-        } else {
-            return true;
         }
+
+        return true;
     }
 
     public $enableCsrfValidation = true;
@@ -34,7 +43,6 @@ class Controller extends \yii\web\Controller
      * @throws InvalidRouteException
      * @throws BadRequestHttpException
      */
-
     public function saveData($model, $type = 'create', $imageUpload = false, $images = [])
     {
         $controller = Yii::$app->controller->getUniqueId();
@@ -47,9 +55,8 @@ class Controller extends \yii\web\Controller
 
                     if ($imageInstance && $model->validate($image)) {
                         try {
-                            $model->$image = $env . Upload::fileAlias($imageInstance);
-                        } catch (HttpException $e) {
-                        } catch (Exception $e) {
+                            $model->$image = $env . Upload::file($imageInstance);
+                        } catch (HttpException | Exception $e) {
                         }
                     } else {
                         $model->$image = $type === 'update' ? $model->oldAttributes[$image] : '';
@@ -75,6 +82,7 @@ class Controller extends \yii\web\Controller
                 }
             }
         }
+
         return false;
     }
 

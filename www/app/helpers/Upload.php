@@ -13,32 +13,43 @@ use yii\imagine\Image;
 
 class Upload
 {
-    public static $UPLOADS_DIR = 'uploads';
+    public static string $UPLOADS_DIR = 'uploads';
 
     /**
      * @throws Exception
      * @throws HttpException
      */
-    public static function file(UploadedFile $fileInstance, $dir = '', $namePostfix = true)
+    public static function file(UploadedFile $fileInstance, $dir = '', $namePostfix = true): array | string
     {
-        $fileName = Upload::getUploadPath($dir) . DIRECTORY_SEPARATOR . Upload::getFileName($fileInstance, $namePostfix);
+        $fileName = sprintf(
+            '%s%s%s',
+            Upload::getUploadPath($dir),
+            DIRECTORY_SEPARATOR,
+            Upload::getFileName($fileInstance, $namePostfix)
+        );
 
         if (!$fileInstance->saveAs($fileName)) {
-            throw new HttpException(500, 'Cannot upload file "' . $fileName . '". Please check write permissions.');
+            throw new HttpException(
+                500,
+                sprintf(
+                    '%s \'%s\' %s',
+                    'Cannot upload file',
+                    $fileName,
+                    'Please check write permissions.'
+                )
+            );
         }
-        try{
+
+        try {
             $uploadedImage = Image::getImagine()->open(Yii::getAlias('@webroot' . Upload::getLink($fileName)));
             $originalSize = $uploadedImage->getSize();
-            $uploadedImage->resize($originalSize->scale(min(1, 1000 / $originalSize->getWidth())))->save(Yii::getAlias('@webroot' . Upload::getLink($fileName)), ['quality' => 80]);
+            $uploadedImage
+                ->resize($originalSize->scale(min(1, 1000 / $originalSize->getWidth())))
+                ->save(Yii::getAlias('@webroot' . Upload::getLink($fileName)), ['quality' => 80]);
         } catch (\Exception $e) {
         }
-        return Upload::getLink($fileName);
-    }
 
-    public  static function fileAlias(UploadedFile $fileInstance, $namePostfix = true): string
-    {
-        $content = Yii::$app->minio->writeStream(Upload::getFileName($fileInstance, $namePostfix), fopen($fileInstance->tempName, 'r'));
-        return $content['path'];
+        return Upload::getLink($fileName);
     }
 
     /**
@@ -47,14 +58,16 @@ class Upload
      */
     static function getUploadPath($dir): string
     {
-        $uploadPath = Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . self::$UPLOADS_DIR . ($dir ? DIRECTORY_SEPARATOR . $dir : '');
+        $uploadPath = Yii::getAlias(
+                '@webroot'
+            ) . DIRECTORY_SEPARATOR . self::$UPLOADS_DIR . ($dir ? DIRECTORY_SEPARATOR . $dir : '');
         if (!FileHelper::createDirectory($uploadPath)) {
             throw new HttpException(500, 'Cannot create "' . $uploadPath . '". Please check write permissions.');
         }
         return $uploadPath;
     }
 
-    static function getLink($fileName)
+    static function getLink($fileName): array | string
     {
         return str_replace('\\', '/', str_replace(Yii::getAlias('@webroot'), '', $fileName));
     }

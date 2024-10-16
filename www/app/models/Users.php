@@ -73,9 +73,11 @@ class Users extends ActiveRecord implements IdentityInterface
             $this->status = self::STATUS_DELETED;
             $this->save(false);
             Yii::$app->session->setFlash('success', 'Вы удалили аккаунт.');
+
             return false;
         }
         Yii::$app->session->setFlash('error', 'Вы не можете удалить этот аккаунт.');
+
         return false;
     }
 
@@ -151,9 +153,9 @@ class Users extends ActiveRecord implements IdentityInterface
         return $timestamp + $expire >= time();
     }
 
-    public function getId(): string
+    public function getId(): int
     {
-        return $this->getPrimaryKey();
+        return (int)$this->getPrimaryKey();
     }
 
     public function getAuthKey(): string
@@ -206,5 +208,30 @@ class Users extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken(): void
     {
         $this->password_reset_token = null;
+    }
+
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function getImageUrl(): string
+    {
+        return '';
+    }
+
+    public function setUsername(string $username): void
+    {
+        $this->username = $username;
+    }
+
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
     }
 }

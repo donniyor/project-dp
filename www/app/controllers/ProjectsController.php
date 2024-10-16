@@ -2,16 +2,16 @@
 
 namespace app\controllers;
 
+use app\components\BaseController;
 use app\models\Projects;
 use app\models\ProjectsSearch;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * ProjectsController implements the CRUD actions for Projects model.
  */
-class ProjectsController extends Controller
+class ProjectsController extends BaseController
 {
     /**
      * @inheritDoc

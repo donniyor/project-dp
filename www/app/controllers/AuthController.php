@@ -6,14 +6,14 @@ use app\models\Users;
 use app\models\PasswordResetRequestForm;
 use app\models\ResetPasswordForm;
 use Yii;
-use app\components\Controller;
+use app\components\BaseController;
 use app\models\LoginForm;
 use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
 use yii\web\Response;
 
 
-class AuthController extends Controller
+class AuthController extends BaseController
 {
     public $layout = 'sign';
 
