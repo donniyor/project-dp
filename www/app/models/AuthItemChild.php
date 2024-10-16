@@ -1,6 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace app\models;
+
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "auth_item_child".
@@ -11,34 +16,37 @@ namespace app\models;
  * @property AuthItem $child0
  * @property AuthItem $parent0
  */
-class AuthItemChild extends \yii\db\ActiveRecord
+class AuthItemChild extends ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'auth_item_child';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['parent', 'child'], 'required'],
             [['parent', 'child'], 'string', 'max' => 64],
             [['parent', 'child'], 'unique', 'targetAttribute' => ['parent', 'child']],
-            [['parent'], 'exist', 'skipOnError' => true, 'targetClass' => AuthItem::class, 'targetAttribute' => ['parent' => 'name']],
-            [['child'], 'exist', 'skipOnError' => true, 'targetClass' => AuthItem::class, 'targetAttribute' => ['child' => 'name']],
+            [
+                ['parent'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => AuthItem::class,
+                'targetAttribute' => ['parent' => 'name']
+            ],
+            [
+                ['child'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => AuthItem::class,
+                'targetAttribute' => ['child' => 'name']
+            ],
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'parent' => 'Parent',
@@ -46,22 +54,12 @@ class AuthItemChild extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * Gets query for [[Child0]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getChild0()
+    public function getChild0(): ActiveQuery
     {
         return $this->hasOne(AuthItem::class, ['name' => 'child']);
     }
 
-    /**
-     * Gets query for [[Parent0]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getParent0()
+    public function getParent0(): ActiveQuery
     {
         return $this->hasOne(AuthItem::class, ['name' => 'parent']);
     }

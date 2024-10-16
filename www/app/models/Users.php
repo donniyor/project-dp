@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace app\models;
 
 use app\components\RolesInterface;
@@ -159,7 +161,7 @@ class Users extends ActiveRecord implements IdentityInterface
         return $this->auth_key;
     }
 
-    public function validateAuthKey($authKey): string
+    public function validateAuthKey($authKey): bool
     {
         return $this->getAuthKey() === $authKey;
     }

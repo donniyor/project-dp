@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace app\models;
 
 use yii\base\Model;
@@ -14,7 +16,19 @@ class UsersSearch extends Users
     {
         return [
             [['id', 'status'], 'integer'],
-            [['username', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'created_at', 'updated_at', 'verification_token'], 'safe'],
+            [
+                [
+                    'username',
+                    'auth_key',
+                    'password_hash',
+                    'password_reset_token',
+                    'email',
+                    'created_at',
+                    'updated_at',
+                    'verification_token'
+                ],
+                'safe'
+            ],
         ];
     }
 

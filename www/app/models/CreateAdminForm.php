@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace app\models;
 
 use Exception;
@@ -47,9 +49,6 @@ class CreateAdminForm extends Model
     }
 
     /**
-     * Signs user up.
-     *
-     * @return bool|null whether the creating new account was successful and email was sent
      * @throws Exception
      */
     public function createUser(): ?bool
@@ -58,19 +57,18 @@ class CreateAdminForm extends Model
             $user = new Users();
             $user->username = $this->username;
             $user->email = $this->email;
-
             $user->setPassword($this->password);
             $user->generateAuthKey();
             $user->generateEmailVerificationToken();
-
-            /* Create role for user */
             $authManager = Yii::$app->authManager;
             $role = $authManager->getRole('admin');
-
             Yii::$app->session->setFlash('success', 'Аккаунт был создан. Проверте почту.');
+
             return $user->save() /*&& $this->sendEmail($user) */ && Yii::$app->authManager->assign($role, $user->id);
         }
+
         Yii::$app->session->setFlash('danger', 'Такой аккаунт не может быть создан.');
+
         return false;
     }
 
