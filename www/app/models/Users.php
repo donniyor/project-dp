@@ -110,6 +110,10 @@ class Users extends ActiveRecord implements IdentityInterface
     {
         return [
             [['username'], 'required'],
+            [['first_name', 'last_name', 'position', 'department', 'image_url'], 'safe'],
+            [['first_name', 'last_name'], 'string', 'max' => 255],
+            [['position', 'department'], 'string', 'max' => 100],
+            [['image_url'], 'file', 'extensions' => 'jpg, jpeg, png, gif', 'maxFiles' => 1],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
         ];

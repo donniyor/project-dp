@@ -1,12 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 /** @var yii\web\View $this */
 /** @var yii\bootstrap5\ActiveForm $form */
 
-/** @var \app\models\CreateAdminForm $model */
+/** @var CreateAdminForm $model */
 
-/** @var \app\controllers\Users2Controller $type */
+/** @var UsersController $type */
 
+use app\controllers\UsersController;
+use app\models\CreateAdminForm;
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
 

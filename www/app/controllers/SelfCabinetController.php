@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace app\controllers;
 
 use app\models\Users;
-use Exception;
 use Throwable;
 use app\components\BaseController;
 use Yii;
+use yii\base\InvalidRouteException;
+use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Request;
 use yii\web\Response;
@@ -26,27 +27,21 @@ class SelfCabinetController extends BaseController
     }
 
     /**
+     * @throws InvalidRouteException
      * @throws NotFoundHttpException
+     * @throws BadRequestHttpException
      */
-    public function updateAction(int $id, Request $request): Response | string
+    public function actionUpdate(Request $request): Response | string
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel(Yii::$app->getUser()->getId());
 
         if ($model->load($request->post())) {
-            try {
-                $model->setUsername($request->post('username'));
-                $model->setEmail('password');
-                $model->save();
-            } catch (Exception) {
-                $this->flash('error', 'Ошибка: ' . $this->formatErrors($model));
-
-                return $this->back();
-            }
+            $this->saveData($model, 'update', true, ['image_url']);
 
             return $this->redirect(['index']);
         }
 
-        return $this->render('create', [
+        return $this->render('update', [
             'model' => $model,
         ]);
     }
