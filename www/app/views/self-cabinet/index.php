@@ -6,10 +6,10 @@ declare(strict_types=1);
 
 /** @var app\models\Users $model */
 
+use app\components\Avatars;
 use app\components\DatesInterface;
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
-use yii\helpers\Url;
 
 $this->title = 'Личный кабинет';
 $this->params['breadcrumbs'][] = $this->title;
@@ -23,25 +23,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <div class="row align-items-start">
             <div class="col-auto">
-                <?php
-                if ($model->getImageUrl()): ?>
-                    <img src="<?= $model->getImageUrl() ?>"
-                         alt="avatar"
-                         class="img-thumbnail"
-                         style="width: 200px; height: 200px; object-fit: cover;">
-                <?php
-                else: ?>
-                    <div class="avatar-placeholder d-flex align-items-center justify-content-center text-white fw-bold"
-                         style="width: 200px; height: 200px; background-color: #6c757d; font-size: 36px;">
-                        <?= strtoupper(mb_substr($model->getUsername(), 0, 1)) ?>
-                    </div>
-                <?php
-                endif; ?>
+                <?= Avatars::getAvatarSquare($model) ?>
 
                 <div class="mt-3">
                     <div class="mt-3">
                         <?= $form->field($model, 'image_url')->fileInput([
-                            'disabled' => true,
                             'style' => 'width: 200px; padding: 0.375rem 0.75rem; background-color: #e9ecef; border: 1px solid #ced4da; border-radius: 0.25rem;',
                             'class' => 'form-control form-control-sm',
                         ])->label(false) ?>
@@ -56,37 +42,29 @@ $this->params['breadcrumbs'][] = $this->title;
                         <div class="mb-3">
                             <?= $form->field($model, 'first_name')->textInput([
                                 'value' => $model->getFirstName(),
-                                'disabled' => true,
                                 'placeholder' => 'Поле не заполнено'
                             ]) ?>
                         </div>
                         <div class="mb-3">
                             <?= $form->field($model, 'last_name')->textInput([
                                 'value' => $model->getLastName(),
-                                'disabled' => true,
                                 'placeholder' => 'Поле не заполнено'
                             ]) ?>
                         </div>
                         <div class="mb-3">
                             <?= $form->field($model, 'department')->textInput([
                                 'value' => $model->getDepartment(),
-                                'disabled' => true,
                                 'placeholder' => 'Поле не заполнено'
                             ]) ?>
                         </div>
                         <div class="mb-3">
                             <?= $form->field($model, 'position')->textInput([
                                 'value' => $model->getPosition(),
-                                'disabled' => true,
                                 'placeholder' => 'Поле не заполнено'
                             ]) ?>
                         </div>
                         <div class="d-flex justify-content-end mt-3">
-                            <?= Html::a(
-                                'Редактировать Аккаунт',
-                                Url::to('/self-cabinet/update'),
-                                ['class' => 'btn btn-success btn-sm']
-                            ) ?>
+                            <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success btn-sm']) ?>
                         </div>
                     </div>
                 </div>

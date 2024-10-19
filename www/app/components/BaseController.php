@@ -40,12 +40,11 @@ class BaseController extends Controller
     public $error = null;
 
     /**
-     * @throws InvalidRouteException
-     * @throws BadRequestHttpException
+     * @throws Exception
+     * @throws HttpException
      */
-    public function saveData($model, $type = 'create', $imageUpload = false, $images = [])
+    public function saveData($model, $type = 'create', $imageUpload = false, $images = []): void
     {
-        $controller = Yii::$app->controller->getUniqueId();
         $env = env('API_HOST');
         if ($model->load($this->request->post())) {
             if (isset($_FILES) && $imageUpload && !empty($images)) {
@@ -54,10 +53,7 @@ class BaseController extends Controller
                     $model->$image = $imageInstance;
 
                     if ($imageInstance && $model->validate($image)) {
-                        try {
-                            $model->$image = $env . Upload::file($imageInstance);
-                        } catch (HttpException | Exception $e) {
-                        }
+                        $model->$image = $env . Upload::file($imageInstance);
                     } else {
                         $model->$image = $type === 'update' ? $model->oldAttributes[$image] : '';
                     }
@@ -66,24 +62,10 @@ class BaseController extends Controller
 
             if ($model->save()) {
                 $this->flash('success', 'Данные успешно сохранены');
-
-                if ($model->isNewRecord) {
-                    return $this->redirect(['index']);
-                } else {
-                    return $this->redirect(['update', 'id' => $model->id]);
-                }
             } else {
                 $this->flash('error', 'Ошибка: ' . $this->formatErrors($model));
-
-                if ($model->isNewRecord) {
-                    return $this->render('create', ['model' => $model]);
-                } else {
-                    return $this->render('update', ['model' => $model]);
-                }
             }
         }
-
-        return false;
     }
 
     public function formatErrors($model): string

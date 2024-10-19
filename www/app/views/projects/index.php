@@ -1,5 +1,8 @@
 <?php
 
+declare(strict_types=1);
+
+use app\components\Avatars;
 use app\models\Projects;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -21,29 +24,20 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Создать проект', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
             'title',
-            'description:ntext',
-            'author_id',
-            'status',
-            //'created_at',
-            //'updated_at',
             [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Projects $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                'attribute' => 'author_id',
+                'label' => 'Author Image',
+                'format' => 'html',
+                'value' => static fn(Projects $model): string => Avatars::getAvatarRound($model->author),
             ],
+            'status',
         ],
     ]); ?>
-
 
 </div>

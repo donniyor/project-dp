@@ -1,20 +1,17 @@
 <?php
+
+declare(strict_types=1);
+
 namespace app\controllers;
 
 use Yii;
 use yii\filters\AccessControl;
-use yii\web\BadRequestHttpException;
 use app\components\BaseController;
-use yii\web\Response;
 use yii\filters\VerbFilter;
-
 
 class SiteController extends BaseController
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             'access' => [
@@ -45,10 +42,7 @@ class SiteController extends BaseController
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function actions()
+    public function actions(): array
     {
         return [
             'error' => [
@@ -61,12 +55,7 @@ class SiteController extends BaseController
         ];
     }
 
-    /**
-     * Displays homepage.
-     *
-     * @return string
-     */
-    public function actionIndex()
+    public function actionIndex(): string
     {
         return $this->render('index');
     }

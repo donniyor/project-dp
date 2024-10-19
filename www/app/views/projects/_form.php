@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use app\components\BaseModel;
+use app\components\Statuses\Statuses;
 use app\helpers\Data;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -29,7 +29,7 @@ use yii\widgets\ActiveForm;
     <div class="mt-3">
         <?=
         $form->field($model, 'status')->dropDownList(
-            BaseModel::getStatusList(),
+            Statuses::getStatusList(),
             ['class' => 'mb-3 form-control']
         )
         ?>

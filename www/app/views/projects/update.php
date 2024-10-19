@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use yii\helpers\Html;
 
 /** @var yii\web\View $this */
@@ -7,14 +9,13 @@ use yii\helpers\Html;
 
 $this->title = 'Редактировать проект: ' . $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Проекты', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Редактировать';
 ?>
 <div class="projects-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?= $this->render('_form', [
+    <?= $this->render('_form_update', [
         'model' => $model,
     ]) ?>
 

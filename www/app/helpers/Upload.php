@@ -9,7 +9,6 @@ use \yii\web\HttpException;
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
 use yii\helpers\FileHelper;
-use yii\imagine\Image;
 
 class Upload
 {
@@ -40,15 +39,6 @@ class Upload
             );
         }
 
-        try {
-            $uploadedImage = Image::getImagine()->open(Yii::getAlias('@webroot' . Upload::getLink($fileName)));
-            $originalSize = $uploadedImage->getSize();
-            $uploadedImage
-                ->resize($originalSize->scale(min(1, 1000 / $originalSize->getWidth())))
-                ->save(Yii::getAlias('@webroot' . Upload::getLink($fileName)), ['quality' => 80]);
-        } catch (\Exception $e) {
-        }
-
         return Upload::getLink($fileName);
     }
 
@@ -64,6 +54,7 @@ class Upload
         if (!FileHelper::createDirectory($uploadPath)) {
             throw new HttpException(500, 'Cannot create "' . $uploadPath . '". Please check write permissions.');
         }
+
         return $uploadPath;
     }
 

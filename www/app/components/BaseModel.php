@@ -9,8 +9,7 @@ use yii\db\Expression;
 
 abstract class BaseModel extends ActiveRecord
 {
-    const STATUS_ACTIVE = 1;
-    const STATUS_DELETED = -1;
+
 
     public function behaviors(): array
     {
@@ -24,14 +23,6 @@ abstract class BaseModel extends ActiveRecord
                 ],
                 'value' => new Expression('NOW()'),
             ],
-        ];
-    }
-
-    public static function getStatusList(): array
-    {
-        return [
-            self::STATUS_ACTIVE => 'Активен',
-            self::STATUS_DELETED => 'Удален'
         ];
     }
 }

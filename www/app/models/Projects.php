@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace app\models;
 
+use app\components\Statuses\StatusesInterface;
+use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -31,8 +33,8 @@ class Projects extends ActiveRecord
     {
         return [
             [['description'], 'string'],
-            [['author_id'], 'required'],
-            [['author_id', 'status'], 'default', 'value' => null],
+            ['author_id', 'default', 'value' => Yii::$app->getUser()->getId()],
+            [['status'], 'default', 'value' => StatusesInterface::STATUS_ACTIVE],
             [['author_id', 'status'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['title'], 'string', 'max' => 255],
@@ -41,7 +43,7 @@ class Projects extends ActiveRecord
                 'exist',
                 'skipOnError' => true,
                 'targetClass' => Users::class,
-                'targetAttribute' => ['author_id' => 'id']
+                'targetAttribute' => ['author_id' => 'id'],
             ],
         ];
     }
