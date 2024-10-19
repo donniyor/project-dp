@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap5\ActiveForm */
 
@@ -7,7 +9,6 @@
 
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
-use yii\helpers\Url;
 
 $this->title = 'Авторизация';
 ?>
@@ -47,9 +48,6 @@ $this->title = 'Авторизация';
                 <?= Html::submitButton('Вход', ['class' => 'btn btn-primary my-3', 'name' => 'login-button']) ?>
             </div>
         </div>
-
-        <p>Еще нет аккаунта <?=Html::a('создать', Url::to(['sing-up']))?></p>
-
 
         <?php ActiveForm::end(); ?>
     </div>

@@ -17,6 +17,11 @@ use yii\web\IdentityInterface;
  *
  * @property integer $id
  * @property string $username
+ * @property ?string $first_name
+ * @property ?string $last_name
+ * @property ?string $position
+ * @property ?string $department
+ * @property ?string $image_url
  * @property string $password_hash
  * @property string $password_reset_token
  * @property string $verification_token
@@ -42,10 +47,15 @@ class Users extends ActiveRecord implements IdentityInterface
     public function attributeLabels(): array
     {
         return [
-            'username' => 'Имя Пользователя',
+            'username' => 'Логин',
             'email' => 'Почта',
             'password' => 'Пароль',
             'role' => 'Роль',
+            'first_name' => 'Имя',
+            'last_name' => 'Фамилия',
+            'position' => 'Должность',
+            'department' => 'Отдел',
+            'image_url' => 'Аватарка',
         ];
     }
 
@@ -168,7 +178,7 @@ class Users extends ActiveRecord implements IdentityInterface
         return $this->getAuthKey() === $authKey;
     }
 
-    public function validatePassword(string $password): bool
+    public function validatePassword(?string $password): bool
     {
         return Yii::$app->security->validatePassword($password, $this->password_hash);
     }
@@ -210,9 +220,19 @@ class Users extends ActiveRecord implements IdentityInterface
         $this->password_reset_token = null;
     }
 
+    public function setUsername(string $username): void
+    {
+        $this->username = $username;
+    }
+
     public function getUsername(): string
     {
         return $this->username;
+    }
+
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
     }
 
     public function getEmail(): string
@@ -220,18 +240,63 @@ class Users extends ActiveRecord implements IdentityInterface
         return $this->email;
     }
 
-    public function getImageUrl(): string
+    public function setImageUrl(string $imageUrl): void
     {
-        return '';
+        $this->image_url = $imageUrl;
     }
 
-    public function setUsername(string $username): void
+    public function getImageUrl(): ?string
     {
-        $this->username = $username;
+        return $this->image_url;
     }
 
-    public function setEmail(string $email): void
+    public function setFirstName(string $firstName): void
     {
-        $this->email = $email;
+        $this->first_name = $firstName;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->first_name;
+    }
+
+    public function setLastName(string $lastName): void
+    {
+        $this->last_name = $lastName;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->last_name;
+    }
+
+    public function setPosition(string $position): void
+    {
+        $this->position = $position;
+    }
+
+    public function getPosition(): ?string
+    {
+        return $this->position;
+    }
+
+    public function setDepartment(string $department): void
+    {
+        $this->department = $department;
+    }
+
+    public function getDepartment(): ?string
+    {
+        return $this->department;
+    }
+
+    public function getCreatedAt(): int
+    {
+        return strtotime($this->created_at);
+    }
+
+    public function getUpdatedAt(): int
+    {
+        return strtotime($this->updated_at);
     }
 }

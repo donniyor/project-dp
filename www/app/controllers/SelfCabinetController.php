@@ -8,18 +8,19 @@ use app\models\Users;
 use Exception;
 use Throwable;
 use app\components\BaseController;
+use Yii;
 use yii\web\NotFoundHttpException;
 use yii\web\Request;
 use yii\web\Response;
 
-class UserController extends BaseController
+class SelfCabinetController extends BaseController
 {
     /**
      * @throws NotFoundHttpException
      */
-    public function actionIndex(int $id): string
+    public function actionIndex(): string
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel(Yii::$app->getUser()->getId());
 
         return $this->render('index', ['model' => $model]);
     }

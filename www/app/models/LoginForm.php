@@ -19,7 +19,7 @@ class LoginForm extends Model
     public string $password = '';
     public bool $rememberMe = true;
 
-    private ?self $_user = null;
+    private ?Users $_user = null;
 
     public function attributeLabels(): array
     {
@@ -40,7 +40,7 @@ class LoginForm extends Model
         ];
     }
 
-    public function validatePassword(?string $attribute, array $params = []): void
+    public function validatePassword(?string $attribute, ?array $params = null): void
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();

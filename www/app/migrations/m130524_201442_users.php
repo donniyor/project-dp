@@ -23,6 +23,11 @@ class m130524_201442_users extends Migration
             'id' => $this->primaryKey(),
 
             'username' => $this->string()->notNull()->unique(),
+            'first_name' => $this->string(),
+            'last_name' => $this->string(),
+            'position' => $this->string(),
+            'department' => $this->string(),
+            'image_url' => $this->string(),
             'auth_key' => $this->string(32)->notNull(),
             'password_hash' => $this->string()->notNull(),
             'password_reset_token' => $this->string()->unique(),

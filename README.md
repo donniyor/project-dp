@@ -10,7 +10,7 @@
 
 `docker exec -it php bash`
 
-'composer install'
+`composer install`
 
 `php yii migrate`
 

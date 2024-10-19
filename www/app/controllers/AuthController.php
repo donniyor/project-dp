@@ -1,4 +1,5 @@
 <?php
+
 namespace app\controllers;
 
 use app\models\CreateAdminForm;
@@ -8,6 +9,7 @@ use app\models\ResetPasswordForm;
 use Yii;
 use app\components\BaseController;
 use app\models\LoginForm;
+use yii\base\Exception;
 use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
 use yii\web\Response;
@@ -17,7 +19,7 @@ class AuthController extends BaseController
 {
     public $layout = 'sign';
 
-    public function actionIn(): string|Response
+    public function actionIn(): string | Response
     {
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
@@ -32,25 +34,13 @@ class AuthController extends BaseController
         ]);
     }
 
-    public function actionSingUp(): string|Response
-    {
-        $model = new CreateAdminForm();
-
-        if ($model->load(Yii::$app->request->post())) {
-            $model->createUser();
-            return $this->redirect(['in']);
-        }
-
-        return $this->render('sing-up', ['model' => $model]);
-    }
-
     public function actionOut(): Response
     {
         Yii::$app->user->logout();
         return $this->redirect(Yii::$app->user->getReturnUrl(['/auth/in']));
     }
 
-    public function actionRequestPasswordReset(): Response|string
+    public function actionRequestPasswordReset(): Response | string
     {
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -60,7 +50,10 @@ class AuthController extends BaseController
                 return $this->goHome();
             }
 
-            Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for the provided email address.');
+            Yii::$app->session->setFlash(
+                'error',
+                'Sorry, we are unable to reset password for the provided email address.'
+            );
         }
 
         return $this->render('requestPasswordResetToken', [
@@ -69,9 +62,9 @@ class AuthController extends BaseController
     }
 
     /**
-     * @throws BadRequestHttpException
+     * @throws BadRequestHttpException|Exception
      */
-    public function actionResetPassword(string $token): string|Response
+    public function actionResetPassword(string $token): string | Response
     {
         try {
             $model = new ResetPasswordForm($token);
@@ -94,8 +87,14 @@ class AuthController extends BaseController
     {
         $user = Users::findByVerificationToken($token);
         $user->status = Users::STATUS_ACTIVE;
-        $user->save();
+        try {
+            $user->save();
+        } catch (\Exception $exception) {
+            $this->flash('danger', 'Упс, что-то пошло не так');
+        }
+
         $this->flash('success', 'Вы успешно подтвердили свою почту.');
+
         return $this->render('VerifyEmail');
     }
 }

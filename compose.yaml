@@ -32,7 +32,7 @@ services:
     volumes:
       - ./postgres/data:/var/lib/postgresql/data:z
     environment:
-      POSTGRES_DB: 'quiz'
+      POSTGRES_DB: 'task-manager'
       POSTGRES_USER: 'postgres'
       POSTGRES_PASSWORD: 'postgres'
     ports:
