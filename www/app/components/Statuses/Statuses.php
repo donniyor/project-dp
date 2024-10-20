@@ -13,4 +13,14 @@ class Statuses implements StatusesInterface
             self::STATUS_DELETED => 'Удален'
         ];
     }
+
+    public static function getStatusName(int $status): string
+    {
+        $status = self::getStatusList()[$status];
+        if ($status) {
+            return $status;
+        }
+
+        return 'Не определен';
+    }
 }

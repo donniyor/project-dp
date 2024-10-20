@@ -16,11 +16,6 @@ use yii\web\Response;
 
 class UsersController extends BaseController
 {
-    //    public function behaviors(): array
-//    {
-//        return BaseBehaviors::getBehaviors([RolesInterface::SUPER_ADMIN_ROLE]);
-//    }
-
     public function actionIndex(): string
     {
         $searchModel = new UsersSearch();

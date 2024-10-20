@@ -65,4 +65,9 @@ class Projects extends ActiveRecord
     {
         return $this->hasOne(Users::class, ['id' => 'author_id']);
     }
+
+    public function getStatus(): int
+    {
+        return $this->status;
+    }
 }

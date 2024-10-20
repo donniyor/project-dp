@@ -1,20 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
-/**
- * ProjectsSearch represents the model behind the search form of `app\models\Projects`.
- */
 class ProjectsSearch extends Projects
 {
+    public string $author_search = '';
+
     public function rules(): array
     {
         return [
-            [['id', 'author_id', 'status'], 'integer'],
-            [['title', 'description', 'created_at', 'updated_at'], 'safe'],
+            [['status'], 'integer'],
+            [['title', 'author_search'], 'safe'],
         ];
     }
 
@@ -25,7 +26,7 @@ class ProjectsSearch extends Projects
 
     public function search(array $params): ActiveDataProvider
     {
-        $query = Projects::find();
+        $query = Projects::find()->joinWith('author');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -38,15 +39,17 @@ class ProjectsSearch extends Projects
         }
 
         $query->andFilterWhere([
-            'id' => $this->id,
-            'author_id' => $this->author_id,
-            'status' => $this->status,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'projects.status' => $this->status,
         ]);
 
-        $query->andFilterWhere(['ilike', 'title', $this->title])
-            ->andFilterWhere(['ilike', 'description', $this->description]);
+        $query->andFilterWhere(['ilike', 'projects.title', $this->title])
+            ->andFilterWhere([
+                'or',
+                ['ilike', 'users.first_name', $this->author_search],
+                ['ilike', 'users.last_name', $this->author_search],
+                ['ilike', 'users.username', $this->author_search],
+                ['ilike', 'users.email', $this->author_search],
+            ]);
 
         return $dataProvider;
     }
