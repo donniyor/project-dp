@@ -8,8 +8,10 @@ use app\components\BaseController;
 use app\models\Projects;
 use app\models\ProjectsSearch;
 use Throwable;
+use Yii;
 use yii\db\Exception;
 use yii\db\StaleObjectException;
+use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
@@ -49,25 +51,15 @@ class ProjectsController extends BaseController
     }
 
     /**
-     * @throws NotFoundHttpException
+     * @throws \yii\base\Exception
+     * @throws HttpException
      */
-    public function actionView(int $id): string
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
     public function actionCreate(): Response | string
     {
         $model = new Projects();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-        } else {
-            $model->loadDefaultValues();
+            $this->saveData($model, 'update');
         }
 
         return $this->render('create', [
@@ -76,33 +68,24 @@ class ProjectsController extends BaseController
     }
 
     /**
-     * @param int $id ID
-     * @return string|Response
-     * @throws NotFoundHttpException|Exception if the model cannot be found
+     * @throws \yii\base\Exception
+     * @throws HttpException
      */
     public function actionUpdate(int $id): Response | string
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->getId() !== Yii::$app->getUser()->getId()) {
+            return $this->render('view', ['model' => $model]);
+        }
+
+        if ($this->request->isPost) {
+            $this->saveData($model, 'update');
         }
 
         return $this->render('update', [
             'model' => $model,
         ]);
-    }
-
-    /**
-     * @throws Throwable
-     * @throws StaleObjectException
-     * @throws NotFoundHttpException
-     */
-    public function actionDelete(int $id): Response
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
     }
 
     /**

@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 use app\components\Avatars;
 use app\components\Statuses\Statuses;
-use app\components\Statuses\StatusesInterface;
 use app\helpers\Buttons;
 use app\models\Projects;
-use yii\helpers\Html;
 use yii\grid\GridView;
-use yii\helpers\Url;
+use yii\helpers\Html;
 
 /** @var yii\web\View $this */
 /** @var app\models\ProjectsSearch $searchModel */
@@ -22,6 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="projects-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
+    <hr>
 
     <p>
         <?= Html::a('Создать проект', ['create'], ['class' => 'btn btn-success']) ?>
@@ -51,29 +50,20 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'attribute' => 'status',
                         'headerOptions' => ['class' => 'text-nowrap', 'style' => 'width: 20%;'],
-                        'value' => fn(Projects $model): string => Html::tag(
-                            'span',
-                            Statuses::getStatusName($model->getStatus()),
-                            [
-                                'class' => 'badge '
-                                    . ($model->getStatus() === StatusesInterface::STATUS_IN_WORK
-                                        ? 'bg-success'
-                                        : 'bg-danger')
-                                    . ' p-2',
-                            ]
-                        ),
+                        'value' => fn(Projects $model): string => Statuses::getStatusTag($model->getStatus()),
                         'format' => 'raw',
-                        'filter' => Html::activeDropDownList($searchModel, 'status', [
-                            '' => 'Все',
-                            StatusesInterface::STATUS_IN_WORK => 'Активный',
-                            StatusesInterface::STATUS_DELETED => 'Неактивный',
-                        ], ['class' => 'form-control']),
+                        'filter' => Html::activeDropDownList(
+                            $searchModel,
+                            'status',
+                            array_merge(['' => 'Все'], Statuses::getStatusList()),
+                            ['class' => 'form-control']
+                        ),
                     ],
                     [
                         'header' => 'Действия',
                         'format' => 'html',
                         'headerOptions' => ['width' => '150'],
-                        'content' => static fn(Projects $model): string => Buttons::getButton($model->getPrimaryKey())
+                        'content' => static fn(Projects $model): string => Buttons::getButtons($model->getPrimaryKey())
                     ],
                 ],
             ]); ?>

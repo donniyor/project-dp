@@ -76,8 +76,28 @@ class Projects extends ActiveRecord
         return $this->id;
     }
 
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
     public function getAuthorModel(): Users
     {
         return $this->author;
+    }
+
+    public function getCreatedAt(): ?string
+    {
+        return $this->created_at;
+    }
+
+    public function getUpdatedAt(): ?string
+    {
+        return $this->updated_at;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
     }
 }

@@ -85,7 +85,7 @@ class Buttons
         return $input;
     }
 
-    public static function getButton(int $id): string
+    public static function getButtons(int $id): string
     {
         $tagI = Html::tag('i', 'visibility', ['class' => 'material-icons', 'title' => 'Открыть']);
         $controller = Yii::$app->controller->getUniqueId();
