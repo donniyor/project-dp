@@ -6,6 +6,7 @@ namespace app\components;
 
 use app\models\Users;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 class Avatars
 {
@@ -37,7 +38,7 @@ class Avatars
                 'style' => "width: {$size}px; height: {$size}px; object-fit: cover; border-radius: 50%; border: 2px solid #0d6efd;"
             ]);
 
-            return Html::a($img, ['users/detail', 'id' => $model->getId()]);
+            return Html::a($img, Url::to(['users/detail', 'id' => $model->getId()]));
         }
 
         $letter = strtoupper(mb_substr($model->getUsername(), 0, 1));

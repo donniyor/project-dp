@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use app\components\Avatars;
 use app\components\Statuses\Statuses;
 use app\helpers\Data;
 use yii\helpers\Html;
@@ -18,7 +19,7 @@ use yii\widgets\ActiveForm;
     ?>
 
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-10">
             <div class="projects-form">
                 <div class="mb-3">
                     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
@@ -34,12 +35,21 @@ use yii\widgets\ActiveForm;
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-2">
+            <lable>Автор: </lable>
+
+            <div class="mb-3 p-3 rounded text-center">
+                <?= Avatars::getAvatarRound($model->getAuthorModel()) ?>
+                <h1 class="h4 font-weight-bold mt-3">
+                    <?= $model->getAuthorModel()->getLastName() ?? '' ?>
+                    <?= $model->getAuthorModel()->getFirstName() ?? $model->getAuthorModel()->getEmail() ?>
+                </h1>
+            </div>
             <div class="mb-3">
                 <?=
                 $form->field($model, 'status')->dropDownList(
                     Statuses::getStatusList(),
-                    ['class' => 'mb-3 form-control']
+                    ['class' => 'form-control']
                 )
                 ?>
             </div>

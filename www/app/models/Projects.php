@@ -34,7 +34,7 @@ class Projects extends ActiveRecord
         return [
             [['description'], 'string'],
             ['author_id', 'default', 'value' => Yii::$app->getUser()->getId()],
-            [['status'], 'default', 'value' => StatusesInterface::STATUS_ACTIVE],
+            [['status'], 'default', 'value' => StatusesInterface::STATUS_IN_WORK],
             [['author_id', 'status'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['title'], 'string', 'max' => 255],
@@ -69,5 +69,15 @@ class Projects extends ActiveRecord
     public function getStatus(): int
     {
         return $this->status;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getAuthorModel(): Users
+    {
+        return $this->author;
     }
 }

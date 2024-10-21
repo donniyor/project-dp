@@ -49,6 +49,16 @@ class UsersController extends BaseController
     }
 
     /**
+     * @throws NotFoundHttpException
+     */
+    public function actionDetail(int $id): string
+    {
+        $model = $this->findModel($id);
+
+        return $this->render('detail', ['model' => $model]);
+    }
+
+    /**
      * @param int $id
      * @return Response
      * @throws NotFoundHttpException

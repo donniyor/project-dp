@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace app\helpers;
 
-use app\models\Users;
 use Yii;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -26,7 +27,7 @@ class Buttons
         return '<div class="btn-group btn-group-sm" role="group">' . $update . $view . $delete . '</div>';
     }
 
-    public static function getSeveral($model, $primaryKeys, $delete = true)
+    public static function getSeveral($model, $primaryKeys, $delete = true): string
     {
         $url = Yii::$app->controller->id;
         $update = '<a href="' . Url::to(
@@ -80,6 +81,15 @@ class Buttons
         );
         $input .= '</div>';
         $input .= '</div>';
+
         return $input;
+    }
+
+    public static function getButton(int $id): string
+    {
+        $tagI = Html::tag('i', 'visibility', ['class' => 'material-icons', 'title' => 'Открыть']);
+        $controller = Yii::$app->controller->getUniqueId();
+
+        return Html::a($tagI, [sprintf('%s/update/%s', $controller, $id)], ['class' => 'btn actions']);
     }
 }

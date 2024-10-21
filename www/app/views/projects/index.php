@@ -5,9 +5,11 @@ declare(strict_types=1);
 use app\components\Avatars;
 use app\components\Statuses\Statuses;
 use app\components\Statuses\StatusesInterface;
+use app\helpers\Buttons;
 use app\models\Projects;
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Url;
 
 /** @var yii\web\View $this */
 /** @var app\models\ProjectsSearch $searchModel */
@@ -15,6 +17,7 @@ use yii\grid\GridView;
 
 $this->title = 'Проекты';
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="projects-index">
 
@@ -52,20 +55,28 @@ $this->params['breadcrumbs'][] = $this->title;
                             'span',
                             Statuses::getStatusName($model->getStatus()),
                             [
-                                'class' => 'badge ' . ($model->getStatus(
-                                    ) === StatusesInterface::STATUS_ACTIVE ? 'bg-success' : 'bg-danger') . ' p-2',
+                                'class' => 'badge '
+                                    . ($model->getStatus() === StatusesInterface::STATUS_IN_WORK
+                                        ? 'bg-success'
+                                        : 'bg-danger')
+                                    . ' p-2',
                             ]
                         ),
                         'format' => 'raw',
                         'filter' => Html::activeDropDownList($searchModel, 'status', [
                             '' => 'Все',
-                            StatusesInterface::STATUS_ACTIVE => 'Активный',
+                            StatusesInterface::STATUS_IN_WORK => 'Активный',
                             StatusesInterface::STATUS_DELETED => 'Неактивный',
                         ], ['class' => 'form-control']),
+                    ],
+                    [
+                        'header' => 'Действия',
+                        'format' => 'html',
+                        'headerOptions' => ['width' => '150'],
+                        'content' => static fn(Projects $model): string => Buttons::getButton($model->getPrimaryKey())
                     ],
                 ],
             ]); ?>
         </div>
     </div>
-
 </div>

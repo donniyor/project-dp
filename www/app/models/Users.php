@@ -101,11 +101,6 @@ class Users extends ActiveRecord implements IdentityInterface
         return $this->hasMany(AuthAssignment::class, ['user_id' => 'id']);
     }
 
-    public function getStatus(): bool
-    {
-        return self::STATUS_ACTIVE === (int)$this->getStatus();
-    }
-
     public function rules(): array
     {
         return [
