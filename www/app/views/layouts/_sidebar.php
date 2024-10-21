@@ -19,7 +19,8 @@ use app\widgets\Sidebar;
             <?= Sidebar::make()
                 ->add('Личный кабинет', 'account_circle', 'self-cabinet')
                 ->add('Пользователи', 'people_alt', 'users')
-                ->add('Проекты', 'done_all', 'projects')
+                ->add('Проекты', 'assignment', 'projects')
+                ->add('Задачи', 'task', 'tasks')
                 ->all()
             ?>
 

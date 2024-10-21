@@ -9,8 +9,6 @@ use yii\db\Expression;
 
 abstract class BaseModel extends ActiveRecord
 {
-
-
     public function behaviors(): array
     {
         return [

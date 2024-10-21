@@ -2,7 +2,9 @@
 
 namespace app\models;
 
+use app\components\BaseModel;
 use Yii;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "tasks".
@@ -18,24 +20,15 @@ use Yii;
  *
  * @property Users $assignedTo
  * @property Users $author
- * @property Comments[] $comments
- * @property RelatedTasks[] $relatedTasks
- * @property RelatedTasks[] $relatedTasks0
  */
-class Tasks extends \yii\db\ActiveRecord
+class Tasks extends BaseModel
 {
-    /**
-     * {@inheritdoc}
-     */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'tasks';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['description'], 'string'],
@@ -49,10 +42,7 @@ class Tasks extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
@@ -66,53 +56,13 @@ class Tasks extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * Gets query for [[AssignedTo]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getAssignedTo()
+    public function getAssignedTo(): ActiveQuery
     {
         return $this->hasOne(Users::class, ['id' => 'assigned_to']);
     }
 
-    /**
-     * Gets query for [[Author]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getAuthor()
+    public function getAuthor(): ActiveQuery
     {
         return $this->hasOne(Users::class, ['id' => 'author_id']);
-    }
-
-    /**
-     * Gets query for [[Comments]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getComments()
-    {
-        return $this->hasMany(Comments::class, ['task_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[RelatedTasks]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRelatedTasks()
-    {
-        return $this->hasMany(RelatedTasks::class, ['first_task_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[RelatedTasks0]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRelatedTasks0()
-    {
-        return $this->hasMany(RelatedTasks::class, ['second_task_id' => 'id']);
     }
 }
