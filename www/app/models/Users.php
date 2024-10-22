@@ -93,7 +93,7 @@ class Users extends ActiveRecord implements IdentityInterface
 
     private function selfDelete(int $id): bool
     {
-        return (int)Yii::$app->user->id !== $id;
+        return (int)Yii::$app->getUser()->getId() !== $id;
     }
 
     public function getRoles(): ActiveQuery
@@ -104,8 +104,8 @@ class Users extends ActiveRecord implements IdentityInterface
     public function rules(): array
     {
         return [
-            [['username'], 'required'],
-            [['first_name', 'last_name', 'position', 'department', 'image_url'], 'safe'],
+            [['username', 'first_name', 'last_name'], 'required'],
+            [['position', 'department', 'image_url'], 'safe'],
             [['first_name', 'last_name'], 'string', 'max' => 255],
             [['position', 'department'], 'string', 'max' => 100],
             [['image_url'], 'file', 'extensions' => 'jpg, jpeg, png, gif', 'maxFiles' => 1],
