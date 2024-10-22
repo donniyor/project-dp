@@ -50,8 +50,13 @@ class AuthAssignment extends ActiveRecord
         ];
     }
 
-    public function getItemName(): ActiveQuery
+    public function getAuthItem(): ActiveQuery
     {
         return $this->hasOne(AuthItem::class, ['name' => 'item_name']);
+    }
+
+    public function getItemName(): string
+    {
+        return $this->item_name;
     }
 }

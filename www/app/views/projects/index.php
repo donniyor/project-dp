@@ -44,7 +44,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'author_search',
                         'label' => 'Автор',
                         'format' => 'raw',
-                        'value' => static fn(Projects $model): string => Avatars::getAvatarRound($model->author, 50),
+                        'value' => static fn(Projects $model): string => Avatars::getAvatarRound(
+                            $model->getAuthorModel(),
+                            50
+                        ),
                         'headerOptions' => ['class' => 'text-nowrap', 'style' => 'width: 20%;'],
                     ],
                     [

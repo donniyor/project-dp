@@ -3,12 +3,14 @@
 declare(strict_types=1);
 
 use app\widgets\Sidebar;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 ?>
 
 <div class="app-sidebar">
     <div class="logo logo-sm">
-        <a href="/">Опросник</a>
+        <?= Html::a('Tasks Manager', Url::to('/')) ?>
     </div>
     <div class="app-menu">
         <ul class="accordion-menu">

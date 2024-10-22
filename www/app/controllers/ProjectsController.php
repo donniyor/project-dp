@@ -7,10 +7,8 @@ namespace app\controllers;
 use app\components\BaseController;
 use app\models\Projects;
 use app\models\ProjectsSearch;
-use Throwable;
 use Yii;
-use yii\db\Exception;
-use yii\db\StaleObjectException;
+use yii\base\Exception;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -51,7 +49,7 @@ class ProjectsController extends BaseController
     }
 
     /**
-     * @throws \yii\base\Exception
+     * @throws Exception
      * @throws HttpException
      */
     public function actionCreate(): Response | string
@@ -60,6 +58,8 @@ class ProjectsController extends BaseController
 
         if ($this->request->isPost) {
             $this->saveData($model, 'update');
+
+            $this->redirect(['update', 'id' => $model->getId()]);
         }
 
         return $this->render('create', [
@@ -68,14 +68,14 @@ class ProjectsController extends BaseController
     }
 
     /**
-     * @throws \yii\base\Exception
+     * @throws Exception
      * @throws HttpException
      */
-    public function actionUpdate(int $id): Response | string
+    public function actionUpdate(int $id): string
     {
         $model = $this->findModel($id);
 
-        if ($model->getId() !== Yii::$app->getUser()->getId()) {
+        if ($model->getAuthorModel()->getId() !== Yii::$app->getUser()->getId()) {
             return $this->render('view', ['model' => $model]);
         }
 

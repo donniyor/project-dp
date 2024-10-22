@@ -1,13 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
-/**
- * TasksSearch represents the model behind the search form of `app\models\Tasks`.
- */
 class TasksSearch extends Tasks
 {
     public function rules(): array

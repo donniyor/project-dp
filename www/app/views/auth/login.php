@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
+use yii\helpers\Url;
 
 $this->title = 'Авторизация';
 ?>
@@ -21,7 +22,8 @@ $this->title = 'Авторизация';
         <span class="sign-in">Авторизация</span>
         <div class="divider"></div>
 
-        <?php $form = ActiveForm::begin([
+        <?php
+        $form = ActiveForm::begin([
             'id' => 'login-form',
             'fieldConfig' => [
                 'template' => "{label}\n{input}\n{error}",
@@ -40,7 +42,7 @@ $this->title = 'Авторизация';
         ]) ?>
 
         <div class="my-1 mx-0" style="color:#999;">
-            Если вы забыли пароль вы можете <?= Html::a('сбросить его', ['auth/request-password-reset']) ?>.
+            Если вы забыли пароль вы можете <?= Html::a('сбросить его', Url::to(['auth/request-password-reset'])) ?>.
         </div>
 
         <div class="form-group">
@@ -49,6 +51,7 @@ $this->title = 'Авторизация';
             </div>
         </div>
 
-        <?php ActiveForm::end(); ?>
+        <?php
+        ActiveForm::end(); ?>
     </div>
 </div>

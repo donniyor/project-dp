@@ -12,7 +12,7 @@ class m130524_201444_tasks extends Migration
     /**
      * @inheritDoc
      */
-    public function up()
+    public function up(): void
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
@@ -26,11 +26,22 @@ class m130524_201444_tasks extends Migration
             'description' => $this->text(),
             'author_id' => $this->integer()->notNull(),
             'assigned_to' => $this->integer(),
+            'project_id' => $this->integer()->notNull(),
 
             'status' => $this->smallInteger()->notNull()->defaultValue(1),
             'created_at' => $this->timestamp()->defaultExpression('NOW()'),
             'updated_at' => $this->timestamp()->defaultExpression('NOW()'),
         ], $tableOptions);
+
+        $this->addForeignKey(
+            self::TABLE_NAME . 'project_id',
+            self::TABLE_NAME,
+            'project_id',
+            'projects',
+            'id',
+            'NO ACTION',
+            'NO ACTION'
+        );
 
         $this->addForeignKey(
             self::TABLE_NAME . 'author_id',
@@ -56,8 +67,13 @@ class m130524_201444_tasks extends Migration
     /**
      * @inheritDoc
      */
-    public function down()
+    public function down(): void
     {
+        $this->dropForeignKey(
+            self::TABLE_NAME . 'project_id',
+            self::TABLE_NAME
+        );
+
         $this->dropForeignKey(
             self::TABLE_NAME . 'author_id',
             self::TABLE_NAME

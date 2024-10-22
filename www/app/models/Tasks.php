@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace app\models;
 
 use app\components\BaseModel;
-use Yii;
 use yii\db\ActiveQuery;
 
 /**
@@ -37,8 +38,20 @@ class Tasks extends BaseModel
             [['author_id', 'assigned_to', 'status'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['title'], 'string', 'max' => 255],
-            [['author_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::class, 'targetAttribute' => ['author_id' => 'id']],
-            [['assigned_to'], 'exist', 'skipOnError' => true, 'targetClass' => Users::class, 'targetAttribute' => ['assigned_to' => 'id']],
+            [
+                ['author_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Users::class,
+                'targetAttribute' => ['author_id' => 'id']
+            ],
+            [
+                ['assigned_to'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Users::class,
+                'targetAttribute' => ['assigned_to' => 'id']
+            ],
         ];
     }
 
@@ -64,5 +77,10 @@ class Tasks extends BaseModel
     public function getAuthor(): ActiveQuery
     {
         return $this->hasOne(Users::class, ['id' => 'author_id']);
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
     }
 }

@@ -2,7 +2,10 @@
 
 declare(strict_types=1);
 
+use app\components\Avatars;
 use app\helpers\Buttons;
+use app\models\AuthAssignment;
+use app\models\Projects;
 use app\models\Users;
 use yii\helpers\Html;
 use yii\grid\GridView;
@@ -31,16 +34,24 @@ $user = Yii::$app->user;
         'rowOptions' => [],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'username',
+            [
+                'label' => 'Пользователь',
+                'format' => 'raw',
+                'value' => static fn(Users $model): string => Avatars::getAvatarRound(
+                    $model,
+                    50
+                ),
+                'headerOptions' => ['class' => 'text-nowrap', 'style' => 'width: 20%;'],
+            ],
+            'first_name',
+            'last_name',
             'email:email',
             [
                 'label' => 'Роли',
-                'value' => function (Users $model) {
-                    $roles = array_map(function ($role) {
-                        return $role->item_name;
-                    }, $model->roles);
-                    return implode(', ', $roles);
-                },
+                'value' => fn(Users $model): string => implode(
+                    ', ',
+                    array_map(fn(AuthAssignment $role): string => $role->getItemName(), $model->getRoleModel())
+                ),
             ],
             [
                 'header' => 'Действия',

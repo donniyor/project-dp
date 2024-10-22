@@ -11,12 +11,12 @@ class Statuses implements StatusesInterface
     public static function getStatusList(): array
     {
         return [
-            self::STATUS_DELETED => 'Удален',
             self::STATUS_IN_WORK => 'В работе',
             self::STATUS_PAUSED => 'Приостановлен',
             self::STATUS_DONE => 'Завершен',
-            self::STATUS_CANCELED => 'Отменен',
             self::STATUS_ARCHIVED => 'Архивирован',
+            self::STATUS_CANCELED => 'Отменен',
+            self::STATUS_DELETED => 'Удален',
         ];
     }
 

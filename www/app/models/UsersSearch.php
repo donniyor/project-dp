@@ -18,14 +18,9 @@ class UsersSearch extends Users
             [['id', 'status'], 'integer'],
             [
                 [
-                    'username',
-                    'auth_key',
-                    'password_hash',
-                    'password_reset_token',
+                    'first_name',
+                    'last_name',
                     'email',
-                    'created_at',
-                    'updated_at',
-                    'verification_token'
                 ],
                 'safe'
             ],
@@ -51,17 +46,8 @@ class UsersSearch extends Users
             return $dataProvider;
         }
 
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'status' => $this->status,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-        ]);
-
-        $query->andFilterWhere(['ilike', 'username', $this->username])
-            ->andFilterWhere(['ilike', 'auth_key', $this->auth_key])
-            ->andFilterWhere(['ilike', 'password_hash', $this->password_hash])
-            ->andFilterWhere(['ilike', 'password_reset_token', $this->password_reset_token])
+        $query->andFilterWhere(['ilike', 'first_name', $this->first_name])
+            ->andFilterWhere(['ilike', 'last_name', $this->last_name])
             ->andFilterWhere(['ilike', 'email', $this->email]);
 
         return $dataProvider;

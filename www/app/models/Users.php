@@ -298,4 +298,9 @@ class Users extends ActiveRecord implements IdentityInterface
     {
         return strtotime($this->updated_at);
     }
+
+    public function getRoleModel(): array
+    {
+        return $this->roles;
+    }
 }
