@@ -12,8 +12,8 @@ class TasksSearch extends Tasks
     public function rules(): array
     {
         return [
-            [['id', 'author_id', 'assigned_to', 'status'], 'integer'],
-            [['title', 'description', 'created_at', 'updated_at'], 'safe'],
+            [['status'], 'integer'],
+            [['author_id', 'assigned_to', 'title', 'description', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -37,16 +37,13 @@ class TasksSearch extends Tasks
             return $dataProvider;
         }
 
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'author_id' => $this->author_id,
-            'assigned_to' => $this->assigned_to,
-            'status' => $this->status,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-        ]);
+        if (!empty($this->assigned_to)) {
+            $query->where(['in', 'assigned_to', $this->assigned_to]);
+        }
 
-        $query->andFilterWhere(['ilike', 'title', $this->title])
+        $query
+            ->andFilterWhere(['status' => $this->status,])
+            ->andFilterWhere(['ilike', 'title', $this->title])
             ->andFilterWhere(['ilike', 'description', $this->description]);
 
         return $dataProvider;

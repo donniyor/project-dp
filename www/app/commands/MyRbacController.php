@@ -37,6 +37,8 @@ class MyRbacController extends Controller
         $superAdmin->username = 'superAdmin';
         $superAdmin->email = 'superAdmin@mail.ru';
         $superAdmin->setPassword('superAdmin');
+        $superAdmin->setFirstName('Doniyor');
+        $superAdmin->setLastName('Alimov');
         $superAdmin->generateAuthKey();
         $superAdmin->save();
 

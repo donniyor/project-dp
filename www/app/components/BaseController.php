@@ -43,7 +43,7 @@ class BaseController extends Controller
      * @throws Exception
      * @throws HttpException
      */
-    public function saveData($model, $type = 'create', $imageUpload = false, $images = []): void
+    public function saveData($model, $type = 'create', $imageUpload = false, $images = []): bool
     {
         $env = env('API_HOST');
         if ($model->load($this->request->post())) {
@@ -62,10 +62,13 @@ class BaseController extends Controller
 
             if ($model->save()) {
                 $this->flash('success', 'Данные успешно сохранены');
-            } else {
-                $this->flash('error', 'Ошибка: ' . $this->formatErrors($model));
+
+                return true;
             }
         }
+        $this->flash('error', 'Ошибка: ' . $this->formatErrors($model));
+
+        return false;
     }
 
     public function formatErrors($model): string

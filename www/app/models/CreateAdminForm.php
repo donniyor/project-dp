@@ -14,6 +14,8 @@ use yii\base\Model;
 class CreateAdminForm extends Model
 {
     public string $username = '';
+    public string $first_name = '';
+    public string $last_name = '';
     public string $email = '';
     public string $password = '';
 
@@ -25,7 +27,7 @@ class CreateAdminForm extends Model
     {
         return [
             ['username', 'trim'],
-            [['username'], 'required'],
+            [['username', 'first_name', 'last_name'], 'required'],
             ['username', 'unique', 'targetClass' => '\app\models\Users', 'message' => 'Это имя уже занято'],
             ['username', 'string', 'min' => 2, 'max' => 255],
             ['email', 'trim'],
@@ -42,7 +44,9 @@ class CreateAdminForm extends Model
     public function attributeLabels(): array
     {
         return [
-            'username' => 'Имя Пользователя',
+            'username' => 'Логин',
+            'first_name' => 'Имя',
+            'last_name' => 'Фамилия',
             'email' => 'Почта',
             'password' => 'Пароль',
         ];
@@ -51,23 +55,22 @@ class CreateAdminForm extends Model
     /**
      * @throws Exception
      */
-    public function createUser(): ?bool
+    public function createUser(): bool
     {
         if ($this->validate()) {
             $user = new Users();
-            $user->username = $this->username;
-            $user->email = $this->email;
-            $user->setPassword($this->password);
+            $user->setUsername($this->getUsername());
+            $user->setFirstName($this->getFirstName());
+            $user->setLastName($this->getLastName());
+            $user->setEmail($this->getEmail());
+            $user->setPassword($this->getPassword());
             $user->generateAuthKey();
             $user->generateEmailVerificationToken();
             $authManager = Yii::$app->authManager;
             $role = $authManager->getRole('admin');
-            Yii::$app->session->setFlash('success', 'Аккаунт был создан. Проверте почту.');
 
-            return $user->save() /*&& $this->sendEmail($user) */ && Yii::$app->authManager->assign($role, $user->id);
+            return $user->save() && Yii::$app->authManager->assign($role, $user->id);
         }
-
-        Yii::$app->session->setFlash('danger', 'Такой аккаунт не может быть создан.');
 
         return false;
     }
@@ -84,5 +87,30 @@ class CreateAdminForm extends Model
             ->setTo($this->email)
             ->setSubject('Account registration at ' . Yii::$app->name)
             ->send();
+    }
+
+    public function getFirstName(): string
+    {
+        return $this->first_name;
+    }
+
+    public function getLastName(): string
+    {
+        return $this->last_name;
+    }
+
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
     }
 }

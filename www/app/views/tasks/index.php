@@ -14,12 +14,11 @@ $this->title = 'Задачи';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="tasks-index">
-
     <h1><?= Html::encode($this->title) ?></h1>
     <hr>
 
     <p>
-        <?= Html::a('Create Tasks', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Создать задачу', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php
@@ -34,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'assigned_to',
             'status',
             [
-                'class' => ActionColumn::className(),
+                'class' => ActionColumn::class,
                 'urlCreator' => function ($action, Tasks $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                 }

@@ -27,20 +27,23 @@ class UsersController extends BaseController
         ]);
     }
 
+    /**
+     * @throws Exception
+     */
     public function actionCreate(Request $request): Response | string
     {
         $model = new CreateAdminForm();
 
         if ($model->load($request->post())) {
-            try {
-                $model->createUser();
-            } catch (Exception $e) {
-                $this->flash('error', 'Ошибка: ' . $this->formatErrors($model));
+            if (!$model->createUser()) {
+                $this->flash('danger', 'Ошибка: ' . $this->formatErrors($model));
 
                 return $this->back();
-            }
+            } else {
+                $this->flash('success', 'Пользователь был создан');
 
-            return $this->redirect(['index']);
+                return $this->redirect(['index']);
+            }
         }
 
         return $this->render('create', [

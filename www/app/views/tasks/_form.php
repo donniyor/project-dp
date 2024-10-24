@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use app\components\Statuses\Statuses;
+use app\helpers\Data;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -21,15 +22,18 @@ use yii\widgets\ActiveForm;
     </div>
 
     <div class="mb-3">
-        <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+        <?= Data::getTextArea($model, 'description') ?>
     </div>
 
     <div class="mb-3">
-        <?= $form->field($model, 'assigned_to')->dropDownList($model->getAllUsers(), ['prompt' => 'Не назначено']) ?>
+        <?= $form->field($model, 'assigned_to')->dropDownList($model->getAllUsers(), ['prompt' => 'Без исполнителя']) ?>
     </div>
 
     <div class="mb-3">
-        <?= $form->field($model, 'project_id')->dropDownList($model->getAllProjects()) ?>
+        <?= $form->field($model, 'project_id')->dropDownList(
+            $model->getAllProjects(),
+            ['prompt' => '', 'class' => 'form-select']
+        ) ?>
     </div>
 
     <div class="mb-3">

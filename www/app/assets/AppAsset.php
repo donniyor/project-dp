@@ -1,20 +1,11 @@
 <?php
-/**
- * @link https://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license https://www.yiiframework.com/license/
- */
+
+declare(strict_types=1);
 
 namespace app\assets;
 
 use yii\web\AssetBundle;
 
-/**
- * Main application asset bundle.
- *
- * @author Qiang Xue <qiang.xue@gmail.com>
- * @since 2.0
- */
 class AppAsset extends AssetBundle
 {
     public $basePath = '@webroot';
@@ -26,18 +17,20 @@ class AppAsset extends AssetBundle
         'plugins/flatpickr/flatpickr.min.css',
         'css/main.css',
         'css/custom.css',
+        'css/select2.min.css',
     ];
     public $js = [
         'plugins/perfectscroll/perfect-scrollbar.min.js',
         'plugins/pace/pace.min.js',
         'plugins/flatpickr/flatpickr.js',
         'js/main.min.js',
-        'js/custom.js'
+        'js/custom.js',
+        'js/select2.min.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap5\BootstrapAsset',
         'yii\bootstrap5\BootstrapPluginAsset',
-        'yii\bootstrap5\BootstrapIconAsset'
+        'yii\bootstrap5\BootstrapIconAsset',
     ];
 }

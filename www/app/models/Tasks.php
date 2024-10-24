@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace app\models;
 
-use app\components\Avatars;
 use app\components\BaseModel;
 use Yii;
 use yii\db\ActiveQuery;
@@ -36,8 +35,9 @@ class Tasks extends BaseModel
     public function rules(): array
     {
         return [
-            [['description'], 'string'],
-            [['author_id', 'project_id'], 'required'],
+            [['title'], 'required'],
+            [['description'], 'safe'],
+            [['project_id'], 'required'],
             ['author_id', 'default', 'value' => Yii::$app->getUser()->getId()],
             [['assigned_to', 'project_id', 'status'], 'default', 'value' => null],
             [['author_id', 'assigned_to', 'project_id', 'status'], 'integer'],
@@ -114,9 +114,17 @@ class Tasks extends BaseModel
 
     public function getAllProjects(): array
     {
-        return ArrayHelper::map(Projects::find()->select(['id', 'title'])->all(), 'id', 'title');
+        $projects = Projects::find()->select(['id', 'title'])->all();
+        if (empty($projects)) {
+            return ['Нет проектов'];
+        }
+
+        return ArrayHelper::map($projects, 'id', 'title');
     }
 
+    /**
+     * @return array<int, string>
+     * */
     public function getAllUsers(): array
     {
         $users = Users::find()->select(['id', 'username', 'email', 'first_name', 'last_name'])->all();
@@ -125,11 +133,7 @@ class Tasks extends BaseModel
         foreach ($users as $user) {
             $total[] = [
                 'id' => $user->getId(),
-                'user' => sprintf(
-                    '%s%s',
-                    Avatars::getAvatarRound($user, 50, false),
-                    $user->getFirstName() ?? 'Нет значения'
-                )
+                'user' => sprintf('%s %s', $user->getLastName(), $user->getFirstName())
             ];
         }
 

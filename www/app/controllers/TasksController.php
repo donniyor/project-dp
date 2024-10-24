@@ -44,9 +44,11 @@ class TasksController extends BaseController
         $model = new Tasks();
 
         if ($this->request->isPost) {
-            $this->saveData($model);
+            if (!$this->saveData($model)) {
+                return $this->back();
+            }
 
-            $this->redirect(['update', 'id' => $model->getId()]);
+            return $this->redirect(['update', 'id' => $model->getId()]);
         }
 
         return $this->render('create', [

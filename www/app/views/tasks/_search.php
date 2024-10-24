@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
@@ -10,49 +12,36 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="tasks-search">
-
     <?php
     $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <div class="mb-3">
+        <?= $form->field($model, 'title') ?>
+    </div>
 
-    <?= $form->field($model, 'title') ?>
-
-    <?= $form->field($model, 'description') ?>
-
-    <?= $form->field($model, 'author_id')->dropDownList(
+    <?= $form->field($model, 'assigned_to')->dropDownList(
         $model->getAllUsers(),
         [
-            'id' => 'user-dropdown',
-            'prompt' => 'Не назначено',
-            'options' => array_map(function ($value) {
-                return [
-                    'data-content' => $value,
-                    'class' => 'custom-option'
-                ];
-            }, $model->getAllUsers())
+            'multiple' => 'multiple',
+            'id' => 'assigned-to',
+            'class' => 'js-states form-control',
+            'tabindex' => '-1',
+            'style' => 'display: none; width: 100%'
         ]
     ) ?>
 
-    <?= $form->field($model, 'assigned_to') ?>
+    <div class="mb-3">
+        <?= $form->field($model, 'author_id')->dropDownList($model->getAllUsers(), ['prompt' => '']) ?>
+    </div>
 
-    <?php
-    // echo $form->field($model, 'status') ?>
-
-    <?php
-    // echo $form->field($model, 'created_at') ?>
-
-    <?php
-    // echo $form->field($model, 'updated_at') ?>
-
-    <div class="form-group">
+    <div class="form-group mb-5">
         <?= Html::submitButton('Поиск', ['class' => 'btn btn-primary']) ?>
         <?= Html::a(
             'Сбросить',
-            Url::to(''),
+            Url::to(sprintf('/%s', Yii::$app->controller->getUniqueId())),
             ['class' => 'btn btn-outline-secondary']
         ) ?>
     </div>
