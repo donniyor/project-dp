@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
+use app\components\Avatars;
+use app\components\Statuses\Statuses;
+use app\helpers\Buttons;
 use app\models\Tasks;
 use yii\helpers\Html;
-use yii\helpers\Url;
-use yii\grid\ActionColumn;
 use yii\grid\GridView;
 
 /** @var yii\web\View $this */
@@ -29,14 +32,39 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'title',
-            'author_id',
-            'assigned_to',
-            'status',
             [
-                'class' => ActionColumn::class,
-                'urlCreator' => function ($action, Tasks $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                }
+                'attribute' => 'author_id',
+                'format' => 'raw',
+                'value' => static fn(Tasks $model): string => Avatars::getAvatarRound(
+                    $model->getAuthorModel(),
+                    40
+                ),
+            ],
+            [
+                'attribute' => 'assigned_to',
+                'format' => 'raw',
+                'value' => static fn(Tasks $model): string => Avatars::getAvatarRound(
+                    $model->getAuthorModel(),
+                    40
+                ),
+            ],
+            [
+                'attribute' => 'status',
+                'headerOptions' => ['class' => 'text-nowrap', 'style' => 'width: 20%;'],
+                'value' => fn(Tasks $model): string => Statuses::getStatusTag($model->getStatus()),
+                'format' => 'raw',
+                'filter' => Html::activeDropDownList(
+                    $searchModel,
+                    'status',
+                    array_merge(['' => 'Все'], Statuses::getStatusList()),
+                    ['class' => 'form-control']
+                ),
+            ],
+            [
+                'header' => 'Действия',
+                'format' => 'html',
+                'headerOptions' => ['width' => '150'],
+                'content' => static fn(Tasks $model): string => Buttons::getButtons($model->getPrimaryKey())
             ],
         ],
     ]); ?>

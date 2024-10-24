@@ -12,12 +12,12 @@ class AppAsset extends AssetBundle
     //public $baseUrl = '@web';
     public $sourcePath = '@app/theme';
     public $css = [
+        'css/select2.min.css',
         'plugins/perfectscroll/perfect-scrollbar.css',
         'plugins/pace/pace.css',
         'plugins/flatpickr/flatpickr.min.css',
         'css/main.css',
         'css/custom.css',
-        'css/select2.min.css',
     ];
     public $js = [
         'plugins/perfectscroll/perfect-scrollbar.min.js',

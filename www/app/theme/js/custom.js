@@ -49,5 +49,6 @@ $(document).ready(function () {
     });
 
     $('#assigned-to').select2();
+    $('#author-id').select2();
 });
 

@@ -41,6 +41,10 @@ class TasksSearch extends Tasks
             $query->where(['in', 'assigned_to', $this->assigned_to]);
         }
 
+        if (!empty($this->author_id)) {
+            $query->where(['in', 'author_id', $this->author_id]);
+        }
+
         $query
             ->andFilterWhere(['status' => $this->status,])
             ->andFilterWhere(['ilike', 'title', $this->title])

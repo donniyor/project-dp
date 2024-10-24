@@ -122,6 +122,16 @@ class Tasks extends BaseModel
         return ArrayHelper::map($projects, 'id', 'title');
     }
 
+    public function getStatus(): int
+    {
+        return $this->status;
+    }
+
+    public function getAuthorModel(): Users
+    {
+        return $this->author;
+    }
+
     /**
      * @return array<int, string>
      * */

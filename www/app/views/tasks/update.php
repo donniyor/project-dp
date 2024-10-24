@@ -8,9 +8,8 @@ use yii\helpers\Html;
 /** @var app\models\Tasks $model */
 
 $this->title = 'Редактировать задачу';
-$this->params['breadcrumbs'][] = ['label' => 'Tasks', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->getId(), 'url' => ['view', 'id' => $model->getId()]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = ['label' => 'Задачи', 'url' => ['index']];
+$this->params['breadcrumbs'][] = 'Редактировать';
 ?>
 <div class="tasks-update">
 

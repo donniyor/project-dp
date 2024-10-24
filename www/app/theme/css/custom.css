@@ -13,6 +13,10 @@ span.sign-in {
     font-weight: normal; /* Optionally adjust font weight */
 }
 
+.select2-results__option {
+    margin-bottom: 5px !important;
+}
+
 .avatar-hover {
     transition: all 0.3s ease-in-out;
 }
