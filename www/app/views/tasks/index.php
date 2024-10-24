@@ -29,9 +29,19 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'options' => [
+            'class' => 'table-responsive'
+        ],
+        'tableOptions' => [
+            'class' => 'table border-bottom'
+        ],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'title',
+            [
+                'attribute' => 'title',
+                'contentOptions' => ['class' => 'text-center'],
+                'headerOptions' => ['class' => 'text-center'],
+            ],
             [
                 'attribute' => 'author_id',
                 'format' => 'raw',
@@ -39,31 +49,31 @@ $this->params['breadcrumbs'][] = $this->title;
                     $model->getAuthorModel(),
                     40
                 ),
+                'headerOptions' => ['class' => 'text-nowrap text-center'],
+                'contentOptions' => ['class' => 'text-center'],
             ],
             [
                 'attribute' => 'assigned_to',
                 'format' => 'raw',
+                'headerOptions' => ['class' => 'text-nowrap text-center'],
+                'contentOptions' => ['class' => 'text-center text-decoration-none d-flex flex-column align-items-center justify-content-center'],
                 'value' => static fn(Tasks $model): string => Avatars::getAvatarRound(
-                    $model->getAuthorModel(),
+                    $model->getAssignedToModel(),
                     40
                 ),
             ],
             [
                 'attribute' => 'status',
-                'headerOptions' => ['class' => 'text-nowrap', 'style' => 'width: 20%;'],
+                'headerOptions' => ['class' => 'text-nowrap text-center', 'style' => 'width: 20%;'],
+                'contentOptions' => ['class' => 'text-center'],
                 'value' => fn(Tasks $model): string => Statuses::getStatusTag($model->getStatus()),
                 'format' => 'raw',
-                'filter' => Html::activeDropDownList(
-                    $searchModel,
-                    'status',
-                    array_merge(['' => 'Все'], Statuses::getStatusList()),
-                    ['class' => 'form-control']
-                ),
             ],
             [
                 'header' => 'Действия',
                 'format' => 'html',
-                'headerOptions' => ['width' => '150'],
+                'contentOptions' => ['class' => 'text-center'],
+                'headerOptions' => ['class' => 'text-center', 'width' => '150'],
                 'content' => static fn(Tasks $model): string => Buttons::getButtons($model->getPrimaryKey())
             ],
         ],

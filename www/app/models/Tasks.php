@@ -22,7 +22,7 @@ use yii\helpers\ArrayHelper;
  * @property string|null $created_at
  * @property string|null $updated_at
  *
- * @property Users $assignedTo
+ * @property ?Users $assignedTo
  * @property Users $author
  */
 class Tasks extends BaseModel
@@ -130,6 +130,11 @@ class Tasks extends BaseModel
     public function getAuthorModel(): Users
     {
         return $this->author;
+    }
+
+    public function getAssignedToModel(): ?Users
+    {
+        return $this->assignedTo;
     }
 
     /**
