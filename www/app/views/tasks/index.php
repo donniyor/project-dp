@@ -19,13 +19,11 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="tasks-index">
     <h1><?= Html::encode($this->title) ?></h1>
     <hr>
-
     <p>
         <?= Html::a('Создать задачу', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php
-    echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?= $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -56,11 +54,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'assigned_to',
                 'format' => 'raw',
                 'headerOptions' => ['class' => 'text-nowrap text-center'],
-                'contentOptions' => ['class' => 'text-center text-decoration-none d-flex flex-column align-items-center justify-content-center'],
-                'value' => static fn(Tasks $model): string => Avatars::getAvatarRound(
-                    $model->getAssignedToModel(),
-                    40
-                ),
+                'contentOptions' => static fn(Tasks $model): array => [
+                    'id' => sprintf('response-container-%s', $model->getId()),
+                    'class' => 'text-center text-decoration-none d-flex flex-column align-items-center justify-content-center',
+                ],
+                'value' => static fn(Tasks $model): string => $model->getAssignedToUser() === null
+                    ? Avatars::getAssignedToButton($model->getId(), 40)
+                    : Avatars::getAvatarRound($model->getAssignedToModel(), 40),
             ],
             [
                 'attribute' => 'status',
@@ -78,6 +78,4 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
-
-
 </div>

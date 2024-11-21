@@ -7,6 +7,7 @@ namespace app\controllers;
 use app\components\BaseController;
 use app\models\Tasks;
 use app\models\TasksSearch;
+use Yii;
 use yii\base\Exception;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
@@ -73,6 +74,23 @@ class TasksController extends BaseController
             'model' => $model,
         ]);
     }
+
+    /**
+     * @throws NotFoundHttpException
+     * @throws \yii\db\Exception
+     */
+    public function actionAssign(int $id): Response | string
+    {
+        $model = $this->findModel($id);
+        $model->setAssignedTo((int)Yii::$app->getUser()->getId());
+
+        if ($model->validate() && $model->save() && Yii::$app->request->isAjax) {
+            return $this->renderPartial('_assigned_cell', ['model' => $model]);
+        }
+
+        return $this->back();
+    }
+
 
     /**
      * @throws NotFoundHttpException

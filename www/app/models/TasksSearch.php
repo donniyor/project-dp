@@ -24,8 +24,7 @@ class TasksSearch extends Tasks
 
     public function search(array $params): ActiveDataProvider
     {
-        $query = Tasks::find();
-
+        $query = Tasks::find()->joinWith(['assignedTo', 'author']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -38,11 +37,11 @@ class TasksSearch extends Tasks
         }
 
         if (!empty($this->assigned_to)) {
-            $query->where(['in', 'assigned_to', $this->assigned_to]);
+            $query->andWhere(['in', 'assigned_to', $this->assigned_to]);
         }
 
         if (!empty($this->author_id)) {
-            $query->where(['in', 'author_id', $this->author_id]);
+            $query->andWhere(['in', 'author_id', $this->author_id]);
         }
 
         $query

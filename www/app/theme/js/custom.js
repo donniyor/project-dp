@@ -50,5 +50,25 @@ $(document).ready(function () {
 
     $('#assigned-to').select2();
     $('#author-id').select2();
+
+    body.on('click', '#assign-me', function (e) {
+        e.preventDefault();
+
+        let url = $(this).attr('href');
+        let id = $(this).data('task_id');
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'html',
+            success: function (response) {
+                $('#response-container-' + id).html(response);
+            },
+            error: function () {
+                alert('Ошибка назначения задачи. Попробуйте еще раз.');
+            }
+        });
+    });
+
 });
 

@@ -82,6 +82,11 @@ class Tasks extends BaseModel
         ];
     }
 
+    public function getAssignedToUser(): ?int
+    {
+        return $this->assigned_to;
+    }
+
     public function getAssignedTo(): ActiveQuery
     {
         return $this->hasOne(Users::class, ['id' => 'assigned_to']);
@@ -135,6 +140,11 @@ class Tasks extends BaseModel
     public function getAssignedToModel(): ?Users
     {
         return $this->assignedTo;
+    }
+
+    public function setAssignedTo(int $assignedTo): void
+    {
+        $this->assigned_to = $assignedTo;
     }
 
     /**

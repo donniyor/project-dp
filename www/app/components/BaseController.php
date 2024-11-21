@@ -71,7 +71,7 @@ class BaseController extends Controller
         return false;
     }
 
-    public function formatErrors($model): string
+    protected function formatErrors($model): string
     {
         $result = '';
         foreach ($model->getErrors() as $attribute => $errors) {
