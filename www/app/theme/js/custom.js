@@ -79,7 +79,7 @@ $(document).ready(function () {
                     dragItems: true,
                     itemAddOptions: {
                         enabled: true,
-                        content: '+ Add New Item',
+                        content: 'add',
                     },
                     dropEl: function (item, target, source) {
                         const taskId = item.dataset.eid;

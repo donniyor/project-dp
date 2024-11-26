@@ -33,23 +33,23 @@ span.sign-in {
 }
 
 .card .card-body {
-    padding-right: 0!important;
-    margin-right: 30px!important;
+    padding-right: 0 !important;
+    margin-right: 30px !important;
 }
 
 .chat-time {
     font-size: 12px;
     margin-top: 4px;
     text-align: right;
-    color: rgba(0,0,0,.5)
+    color: rgba(0, 0, 0, .5)
 }
 
 .own .chat-time {
-    color: rgba(255,255,255,.5)
+    color: rgba(255, 255, 255, .5)
 }
 
 .widget-chat .widget-chat-messages-container {
-    max-height: calc(100vh - 360px)!important;
+    max-height: calc(100vh - 360px) !important;
 }
 
 .widget-chat .widget-chat-messages-container {
@@ -58,5 +58,26 @@ span.sign-in {
 }
 
 .select2-container--krajee-bs5 .select2-selection--multiple .select2-search--inline {
-    display: none!important;
+    display: none !important;
+}
+
+.kanban-container {
+    display: flex;
+    width: 100%;
+    overflow-x: auto;
+    padding: 10px;
+}
+
+.kanban-board {
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.kanban-board-header {
+}
+
+.kanban-title-board {
+}
+
+.kanban-item {
 }
