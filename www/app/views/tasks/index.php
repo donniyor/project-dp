@@ -22,7 +22,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Создать задачу', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-
+    <h2>My kanban</h2>
+    <div style="overflow-x: auto; white-space: nowrap;">
+        <div id="myKanban"></div>
+    </div>
     <?= $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([

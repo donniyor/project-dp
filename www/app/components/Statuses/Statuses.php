@@ -11,6 +11,7 @@ class Statuses implements StatusesInterface
     public static function getStatusList(): array
     {
         return [
+            self::STATUS_TO_DO => 'К выполнению',
             self::STATUS_IN_WORK => 'В работе',
             self::STATUS_PAUSED => 'Приостановлен',
             self::STATUS_DONE => 'Завершен',
@@ -23,12 +24,21 @@ class Statuses implements StatusesInterface
     public static function getStatuses(): array
     {
         return [
-            self::STATUS_DELETED,
             self::STATUS_IN_WORK,
             self::STATUS_PAUSED,
             self::STATUS_DONE,
             self::STATUS_CANCELED,
             self::STATUS_ARCHIVED,
+            self::STATUS_DELETED,
+        ];
+    }
+
+    public static function getMainStatuses(): array
+    {
+        return [
+            self::STATUS_TO_DO,
+            self::STATUS_IN_WORK,
+            self::STATUS_DONE,
         ];
     }
 

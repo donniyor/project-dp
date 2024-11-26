@@ -17,6 +17,7 @@ class AppAsset extends AssetBundle
         'plugins/pace/pace.css',
         'plugins/flatpickr/flatpickr.min.css',
         'css/main.css',
+        'css/jkanban.min.css',
         'css/custom.css',
     ];
     public $js = [
@@ -24,8 +25,9 @@ class AppAsset extends AssetBundle
         'plugins/pace/pace.min.js',
         'plugins/flatpickr/flatpickr.js',
         'js/main.min.js',
-        'js/custom.js',
         'js/select2.min.js',
+        'js/jkanban.min.js',
+        'js/custom.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

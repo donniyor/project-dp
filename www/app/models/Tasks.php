@@ -109,7 +109,7 @@ class Tasks extends BaseModel
 
     public function getTitle(): string
     {
-        return $this->getTitle() ?? '';
+        return $this->getAttribute('title') ?? '';
     }
 
     public function getProjectsModel(): int
@@ -140,6 +140,11 @@ class Tasks extends BaseModel
     public function getAssignedToModel(): ?Users
     {
         return $this->assignedTo;
+    }
+
+    public function getCreatedAt(): string
+    {
+        return (string)$this->getAttribute('created_at');
     }
 
     public function setAssignedTo(int $assignedTo): void

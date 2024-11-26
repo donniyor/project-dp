@@ -22,22 +22,6 @@ $(document).ready(function () {
         return false;
     });
 
-    body.on('change', '.news-banner-status', function (e) {
-        e.preventDefault()
-        const id = $(this).data("id")
-        let status = this.checked ? 1 : 0
-        $.getJSON(`/news/banner-status?id=${id}&status=${status}`);
-        return false;
-    });
-
-    $(document).bind('keydown', function (e) {
-        if (e.ctrlKey && e.which === 83) {
-            $('.model-form').submit();
-            e.preventDefault();
-            return false;
-        }
-    });
-
     body.on('click', '.modalButton', function () {
         $.get($(this).attr('href'), function (data) {
             $("#modal").modal('show').find('#modalContent').html(data)
@@ -70,5 +54,72 @@ $(document).ready(function () {
         });
     });
 
+    function loadKanbanData() {
+        $.ajax({
+            url: '/api-tasks/data',
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+
+                if (!data || data.length === 0) {
+                    data = [
+                        {id: '_todo', title: 'To Do', class: 'info', item: []},
+                        {id: '_doing', title: 'Doing', class: 'warning', item: []},
+                        {id: '_done', title: 'Done', class: 'success', item: []}
+                    ];
+                }
+
+                const kanban = new jKanban({
+                    element: '#myKanban',
+                    gutter: '15px',
+                    widthBoard: '300px',
+                    boards: data,
+                    dragBoards: true,
+                    dragItems: true,
+                    itemAddOptions: {
+                        enabled: true,
+                        content: '+ Add New Item',
+                    },
+                    dropEl: function (item, target, source) {
+                        const taskId = item.dataset.eid;
+                        let newStatus = $(target).closest("div.kanban-board").attr("data-id");
+
+                        $.ajax({
+                            url: '/api-tasks/update-status',
+                            method: 'POST',
+                            data: {
+                                taskId: taskId,
+                                status: newStatus
+                            },
+                            success: function (response) {
+                                console.log('Статус задачи обновлен');
+                            },
+                            error: function (xhr, status, error) {
+                                console.error('Ошибка обновления статуса:', error);
+                            }
+                        });
+                    }
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('Ошибка загрузки данных:', error);
+
+                const emptyData = [
+                    {id: '_todo', title: 'To Do', class: 'info', item: []},
+                    {id: '_doing', title: 'Doing', class: 'warning', item: []},
+                    {id: '_done', title: 'Done', class: 'success', item: []}
+                ];
+
+                new jKanban({
+                    element: '#myKanban',
+                    gutter: '15px',
+                    widthBoard: '300px',
+                    boards: emptyData,
+                });
+            }
+        });
+    }
+
+    loadKanbanData();
 });
 
