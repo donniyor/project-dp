@@ -19,10 +19,13 @@ class ApiTasksController extends BaseController
         $tasks = Tasks::find()->all();
         $boards = [];
 
-        foreach (Statuses::getStatuses() as $key => $status) {
-            $boards[$key]['id'] = (string)$status;
-            $boards[$key]['title'] = Statuses::getStatusName($status);
-            $boards[$key]['class'] = 'success';
+        foreach (Statuses::getMainStatuses() as $status) {
+            $boards[(string)$status] = [
+                'id' => (string)$status,
+                'title' => Statuses::getStatusName($status),
+                'class' => 'success',
+                'item' => []
+            ];
         }
 
         /** @var Tasks $task */
@@ -38,13 +41,14 @@ class ApiTasksController extends BaseController
         return $this->asJson($boards);
     }
 
+
     /**
      * @throws Exception
      */
     public function actionUpdateStatus(Request $request): Response
     {
-        $taskId = $request->post('taskId');
-        $status = $request->post('status');
+        $taskId = (int)$request->post('taskId');
+        $status = (int)$request->post('status');
         $task = Tasks::findOne($taskId);
 
         if ($task !== null) {

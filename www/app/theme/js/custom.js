@@ -68,12 +68,13 @@ $(document).ready(function () {
                         {id: '_done', title: 'Done', class: 'success', item: []}
                     ];
                 }
+                const boardsArray = Object.values(data);
 
                 const kanban = new jKanban({
                     element: '#myKanban',
                     gutter: '15px',
                     widthBoard: '300px',
-                    boards: data,
+                    boards: boardsArray,
                     dragBoards: true,
                     dragItems: true,
                     itemAddOptions: {
