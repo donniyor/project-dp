@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use app\assets\KanbanAsset;
 use app\components\Avatars;
 use app\components\Statuses\Statuses;
 use app\helpers\Buttons;
@@ -15,6 +16,9 @@ use yii\grid\GridView;
 
 $this->title = 'Задачи';
 $this->params['breadcrumbs'][] = $this->title;
+
+KanbanAsset::register($this);
+
 ?>
 <div class="tasks-index">
     <h1><?= Html::encode($this->title) ?></h1>

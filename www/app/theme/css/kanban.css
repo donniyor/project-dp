@@ -1,0 +1,21 @@
+
+.kanban-container {
+    display: flex;
+    width: 100%;
+    overflow-x: auto;
+    padding: 10px;
+}
+
+.kanban-board {
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.kanban-board-header {
+}
+
+.kanban-title-board {
+}
+
+.kanban-item {
+}

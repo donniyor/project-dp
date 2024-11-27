@@ -41,7 +41,6 @@ class ApiTasksController extends BaseController
         return $this->asJson($boards);
     }
 
-
     /**
      * @throws Exception
      */

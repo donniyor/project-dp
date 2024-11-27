@@ -60,24 +60,3 @@ span.sign-in {
 .select2-container--krajee-bs5 .select2-selection--multiple .select2-search--inline {
     display: none !important;
 }
-
-.kanban-container {
-    display: flex;
-    width: 100%;
-    overflow-x: auto;
-    padding: 10px;
-}
-
-.kanban-board {
-    height: 100vh;
-    overflow-y: auto;
-}
-
-.kanban-board-header {
-}
-
-.kanban-title-board {
-}
-
-.kanban-item {
-}
