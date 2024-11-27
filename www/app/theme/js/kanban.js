@@ -1,4 +1,5 @@
-$(document).ready(function() {
+/* jshint ignore: start */
+$(document).ready(function () {
     if ($('#myKanban').length === 0) return; // Проверка, есть ли элемент #myKanban на странице
     const body = $('body');
 
