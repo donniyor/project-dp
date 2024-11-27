@@ -1,18 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 use yii\db\Migration;
 
 /**
  * Class m130524_201445_comments
  */
-class m130524_201445_comments extends Migration
+final class m130524_201445_comments extends Migration
 {
     private const TABLE_NAME = 'comments';
 
     /**
      * @inheritDoc
      */
-    public function up()
+    public function up(): void
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
@@ -55,7 +57,7 @@ class m130524_201445_comments extends Migration
     /**
      * @inheritDoc
      */
-    public function down()
+    public function down(): void
     {
         $this->dropForeignKey(
             self::TABLE_NAME . 'author_id',

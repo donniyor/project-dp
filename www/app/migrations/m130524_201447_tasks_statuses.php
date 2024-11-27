@@ -2,14 +2,16 @@
 
 declare(strict_types=1);
 
+namespace app\migrations;
+
 use yii\db\Migration;
 
 /**
- * Class m130524_201443_projects
+ * Class m130524_201447_tasks_statuses
  */
-class m130524_201443_projects extends Migration
+final class m130524_201447_tasks_statuses extends Migration
 {
-    private const TABLE_NAME = 'projects';
+    private const TABLE_NAME = 'tasks_statuses';
 
     /**
      * @inheritDoc
@@ -23,21 +25,15 @@ class m130524_201443_projects extends Migration
 
         $this->createTable(self::TABLE_NAME, [
             'id' => $this->primaryKey(),
-
-            'title' => $this->string(),
-            'description' => $this->text(),
-            'author_id' => $this->integer()->notNull(),
-
-            'status' => $this->smallInteger()->notNull()->defaultValue(1),
-            'created_at' => $this->timestamp()->defaultExpression('NOW()'),
-            'updated_at' => $this->timestamp()->defaultExpression('NOW()'),
+            'status' => $this->integer()->notNull(),
+            'project_id' => $this->integer()->notNull(),
         ], $tableOptions);
 
         $this->addForeignKey(
-            self::TABLE_NAME . 'author_id',
+            self::TABLE_NAME . 'project_id',
             self::TABLE_NAME,
-            'author_id',
-            'users',
+            'project_id',
+            'projects',
             'id',
             'NO ACTION',
             'NO ACTION'
@@ -50,8 +46,8 @@ class m130524_201443_projects extends Migration
     public function down(): void
     {
         $this->dropForeignKey(
-            self::TABLE_NAME . 'author_id',
-            self::TABLE_NAME
+            self::TABLE_NAME . 'project_id',
+            self::TABLE_NAME,
         );
 
         $this->dropTable(self::TABLE_NAME);

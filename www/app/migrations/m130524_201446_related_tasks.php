@@ -1,18 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 use yii\db\Migration;
 
 /**
  * Class m130524_201446_related_tasks
  */
-class m130524_201446_related_tasks extends Migration
+final class m130524_201446_related_tasks extends Migration
 {
     private const TABLE_NAME = 'related_tasks';
 
     /**
      * @inheritDoc
      */
-    public function up()
+    public function up(): void
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
@@ -49,7 +51,7 @@ class m130524_201446_related_tasks extends Migration
     /**
      * @inheritDoc
      */
-    public function down()
+    public function down(): void
     {
         $this->dropForeignKey(
             self::TABLE_NAME . 'first_task_id',

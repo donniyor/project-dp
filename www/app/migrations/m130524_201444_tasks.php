@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 use yii\db\Migration;
 
 /**
- * Class m130524_201443_projects
+ * Class m130524_201444_tasks
  */
 class m130524_201444_tasks extends Migration
 {
