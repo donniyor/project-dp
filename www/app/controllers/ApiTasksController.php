@@ -19,7 +19,7 @@ class ApiTasksController extends BaseController
         $tasks = Tasks::find()->all();
         $boards = [];
 
-        foreach (Statuses::getMainStatuses() as $status) {
+        foreach (Statuses::getStatuses() as $status) {
             $boards[(string)$status] = [
                 'id' => (string)$status,
                 'title' => Statuses::getStatusName($status),

@@ -9,6 +9,8 @@ use app\models\Tasks;
 use app\models\TasksSearch;
 use Yii;
 use yii\base\Exception;
+use yii\web\BadRequestHttpException;
+use yii\web\Cookie;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -17,13 +19,33 @@ class TasksController extends BaseController
 {
     public function actionIndex(): string
     {
+        $viewType = Yii::$app->request->cookies->getValue('viewType', 'kanban');
         $searchModel = new TasksSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'viewType' => $viewType,
         ]);
+    }
+
+    /**
+     * @throws BadRequestHttpException
+     */
+    public function actionSetViewType(string $type): Response
+    {
+        if (!in_array($type, ['kanban', 'table'], true)) {
+            throw new BadRequestHttpException('Invalid view type.');
+        }
+
+        Yii::$app->response->cookies->add(new Cookie([
+            'name' => 'viewType',
+            'value' => $type,
+            'expire' => time() + 3600 * 24 * 30,
+        ]));
+
+        return $this->redirect(['index']);
     }
 
     /**

@@ -12,11 +12,6 @@ class Statuses implements StatusesInterface
     {
         return [
             self::STATUS_TO_DO => 'К выполнению',
-            self::STATUS_IN_WORK => 'В работе',
-            self::STATUS_PAUSED => 'Приостановлен',
-            self::STATUS_DONE => 'Завершен',
-            self::STATUS_ARCHIVED => 'Архивирован',
-            self::STATUS_CANCELED => 'Отменен',
             self::STATUS_DELETED => 'Удален',
         ];
     }
@@ -24,21 +19,8 @@ class Statuses implements StatusesInterface
     public static function getStatuses(): array
     {
         return [
-            self::STATUS_IN_WORK,
-            self::STATUS_PAUSED,
-            self::STATUS_DONE,
-            self::STATUS_CANCELED,
-            self::STATUS_ARCHIVED,
-            self::STATUS_DELETED,
-        ];
-    }
-
-    public static function getMainStatuses(): array
-    {
-        return [
             self::STATUS_TO_DO,
-            self::STATUS_IN_WORK,
-            self::STATUS_DONE,
+            self::STATUS_DELETED,
         ];
     }
 
@@ -59,11 +41,11 @@ class Statuses implements StatusesInterface
         }
 
         switch ($status) {
+            case self::STATUS_TO_DO:
+                $tag = 'bg-primary';
+                break;
             case self::STATUS_DELETED:
                 $tag = 'bg-danger';
-                break;
-            case self::STATUS_IN_WORK:
-                $tag = 'bg-primary';
                 break;
             default:
                 $tag = 'bg-warning';
@@ -79,11 +61,11 @@ class Statuses implements StatusesInterface
         }
 
         switch ($status) {
+            case self::STATUS_TO_DO:
+                $tag = 'btn-primary';
+                break;
             case self::STATUS_DELETED:
                 $tag = 'btn-danger';
-                break;
-            case self::STATUS_IN_WORK:
-                $tag = 'btn-primary';
                 break;
             default:
                 $tag = 'btn-warning';

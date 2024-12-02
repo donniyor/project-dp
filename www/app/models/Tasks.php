@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace app\models;
 
 use app\components\BaseModel;
+use app\components\Statuses\StatusesInterface;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
@@ -39,6 +40,7 @@ class Tasks extends BaseModel
             [['description'], 'safe'],
             [['project_id'], 'required'],
             ['author_id', 'default', 'value' => Yii::$app->getUser()->getId()],
+            ['status', 'default', 'value' => StatusesInterface::STATUS_TO_DO],
             [['assigned_to', 'project_id', 'status'], 'default', 'value' => null],
             [['author_id', 'assigned_to', 'project_id', 'status'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],

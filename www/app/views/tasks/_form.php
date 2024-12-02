@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use app\components\Statuses\Statuses;
 use app\helpers\Data;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -34,10 +33,6 @@ use yii\widgets\ActiveForm;
             $model->getAllProjects(),
             ['prompt' => '', 'class' => 'form-select']
         ) ?>
-    </div>
-
-    <div class="mb-3">
-        <?= $form->field($model, 'status')->dropDownList(Statuses::getStatusList()) ?>
     </div>
 
     <div class="form-group">

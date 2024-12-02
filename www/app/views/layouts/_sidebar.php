@@ -22,7 +22,8 @@ use yii\helpers\Url;
                 ->add('Личный кабинет', 'account_circle', 'self-cabinet')
                 ->add('Пользователи', 'people_alt', 'users')
                 ->add('Проекты', 'assignment', 'projects')
-                ->add('Задачи', 'task', 'tasks')
+                ->add('Беклог', 'task', 'tasks')
+                ->add('Моя работа', 'task', 'self-tasks')
                 ->all()
             ?>
 

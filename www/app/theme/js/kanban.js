@@ -1,6 +1,6 @@
 /* jshint ignore: start */
 $(document).ready(function () {
-    if ($('#myKanban').length === 0) return; // Проверка, есть ли элемент #myKanban на странице
+    if ($('#myKanban').length === 0) return;
     const body = $('body');
 
     function loadKanbanData() {
@@ -47,18 +47,11 @@ $(document).ready(function () {
                     }
                 });
 
-                $('.kanban-board').each(function () {
-                    const boardId = $(this).data('id');
-                    const buttonHTML = `
-                    <button class="btn btn-primary btn-sm create-task-btn float-end" data-board-id="${boardId}">
-                        + Add Task
-                    </button>`;
-                    $(this).find('.kanban-board-header').append(buttonHTML);
-                });
-
-                body.on('click', '.create-task-btn', function () {
-                    const boardId = $(this).data('board-id');
-                    window.location.href = `/create-task?boardId=${boardId}`;
+                $('.kanban-board').each(function (index) {
+                    if (index === 0) {
+                        const buttonHTML = `<a class="btn btn-primary btn-sm float-end create-task-link" href="/tasks/create">Create</a>`;
+                        $(this).find('.kanban-board-header').append(buttonHTML);
+                    }
                 });
             },
             error: function (xhr, status, error) {

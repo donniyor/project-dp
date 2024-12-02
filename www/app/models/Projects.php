@@ -19,7 +19,7 @@ use yii\db\ActiveRecord;
  * @property int $status
  * @property string|null $created_at
  * @property string|null $updated_at
- *
+ *author
  * @property Users $author
  */
 class Projects extends ActiveRecord
@@ -68,17 +68,17 @@ class Projects extends ActiveRecord
 
     public function getStatus(): int
     {
-        return $this->status;
+        return $this->getAttribute('status');
     }
 
     public function getId(): int
     {
-        return $this->id;
+        return $this->getAttribute('id');
     }
 
     public function getTitle(): string
     {
-        return $this->title;
+        return $this->getAttribute('title');
     }
 
     public function getAuthorModel(): Users
@@ -88,16 +88,16 @@ class Projects extends ActiveRecord
 
     public function getCreatedAt(): ?string
     {
-        return $this->created_at;
+        return $this->getAttribute('created_at');
     }
 
     public function getUpdatedAt(): ?string
     {
-        return $this->updated_at;
+        return $this->getAttribute('updated_at');
     }
 
     public function getDescription(): string
     {
-        return $this->description;
+        return $this->getAttribute('description') ?? '';
     }
 }
