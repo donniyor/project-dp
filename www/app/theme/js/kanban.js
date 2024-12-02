@@ -78,7 +78,7 @@ $(document).ready(function () {
 
                 new jKanban({
                     element: kanbanTasks,
-                    gutter: '15px',
+                    gutter: '5px',
                     widthBoard: '300px',
                     boards: emptyData,
                 });

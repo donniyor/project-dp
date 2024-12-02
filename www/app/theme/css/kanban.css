@@ -4,45 +4,55 @@
     overflow-x: auto;
     padding: 10px;
     gap: 15px;
+    scrollbar-width: thin;
+    scrollbar-color: #cce4f6 transparent;
+}
+
+.kanban-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.kanban-container::-webkit-scrollbar-thumb {
+    background: #cce4f6;
+    border-radius: 4px;
+}
+
+.kanban-container::-webkit-scrollbar-track {
+    background: transparent;
 }
 
 .kanban-board {
     height: calc(100vh - 20px);
     overflow-y: auto;
     border-radius: 8px;
+    border: 1px solid #B0C4DE;
+    min-width: 280px;
     background: #ffffff;
-    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 15px;
+    transition: border-color 0.3s, background-color 0.3s;
 }
 
 .kanban-board-header {
-    background: #007bff;
+    background: #607D8B;
     color: #ffffff;
     font-size: 18px;
     font-weight: bold;
-    text-align: center;
-    padding: 10px;
+    padding: 5px;
     border-radius: 5px 5px 0 0;
-}
-
-.kanban-title-board {
-    margin: 0;
-    font-size: 16px;
-    color: #ffffff;
 }
 
 .kanban-item {
     border-radius: 8px;
-    background: #f9fafb;
+    background: #f9fcfe;
     padding: 10px;
     margin: 5px 0;
-    box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid #B0C4DE;  /* Изменен цвет обводки для элемента */
+    transition: background 0.2s, border-color 0.2s;
+    cursor: grab;
 }
 
 .kanban-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
+    background: #e3f2fd;
+    border-color: #90caf9;
 }
 
 .kanban-title {
@@ -50,15 +60,33 @@
     color: #333;
     font-weight: bold;
     font-size: 14px;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.kanban-title:hover {
-    text-decoration: underline;
-    color: #007bff;
+.kanban-add-item {
+    margin: 10px 0;
+    border: 1px dashed #B0C4DE;  /* Изменен цвет обводки для элемента добавления */
+    border-radius: 6px;
+    padding: 10px;
+    text-align: center;
+    font-size: 14px;
+    color: #90caf9;
+    background: #f9fcfe;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.kanban-add-item:hover {
+    background: #e3f2fd;
+    color: #007bb5;
+    border-color: #90caf9;
 }
 
 .kanban-drag {
-    opacity: 0.9;
+    padding: 5px !important;
 }
 
 .kanban-item.kanban-dragging,
@@ -66,5 +94,25 @@
 .kanban-item.gu-transit {
     transform: none !important;
     transition: none !important;
-    opacity: 0.7;
+    opacity: 0.8;
+    border-color: #90caf9;
+    background: #e3f2fd;
+}
+
+@media (max-width: 768px) {
+    .kanban-board {
+        min-width: 200px;
+    }
+
+    .kanban-board-header {
+        font-size: 16px;
+    }
+
+    .kanban-title {
+        font-size: 12px;
+    }
+
+    .kanban-item {
+        padding: 8px;
+    }
 }
