@@ -49,16 +49,6 @@ class TasksController extends BaseController
     }
 
     /**
-     * @throws NotFoundHttpException
-     */
-    public function actionView(int $id): string
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
      * @throws Exception
      * @throws HttpException
      */

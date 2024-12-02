@@ -19,3 +19,11 @@
 
 .kanban-item {
 }
+
+.kanban-item.kanban-dragging,
+.kanban-item.is-moving,
+.kanban-item.gu-transit {
+    transform: none !important;
+    transition: none !important;
+}
+

@@ -23,7 +23,7 @@ use yii\helpers\Url;
                 ->add('Пользователи', 'people_alt', 'users')
                 ->add('Проекты', 'assignment', 'projects')
                 ->add('Беклог', 'task', 'tasks')
-                ->add('Моя работа', 'task', 'self-tasks')
+                ->add('Моя работа', 'assignment_ind', 'self-tasks')
                 ->all()
             ?>
 

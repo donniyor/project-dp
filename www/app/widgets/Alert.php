@@ -3,6 +3,7 @@
 namespace app\widgets;
 
 use Yii;
+use yii\bootstrap5\Widget;
 
 /**
  * Alert widget renders a message from session flash. All flash messages are displayed
@@ -19,11 +20,8 @@ use Yii;
  * ```php
  * Yii::$app->session->setFlash('error', ['Error 1', 'Error 2']);
  * ```
- *
- * @author Kartik Visweswaran <kartikv2@gmail.com>
- * @author Alexander Makarov <sam@rmcreative.ru>
  */
-class Alert extends \yii\bootstrap5\Widget
+class Alert extends Widget
 {
     /**
      * @var array the alert types configuration for the flash messages.

@@ -11,6 +11,6 @@ KanbanAsset::register($this);
 <div class="tasks-index">
     <h1>Задачи</h1>
     <div style="overflow-x: auto; white-space: nowrap;">
-        <div id="myKanban"></div>
+        <div id="kanban-tasks"></div>
     </div>
 </div>

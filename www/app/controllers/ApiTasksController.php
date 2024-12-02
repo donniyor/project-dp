@@ -9,6 +9,7 @@ use app\components\Statuses\Statuses;
 use app\models\Tasks;
 use Yii;
 use yii\db\Exception;
+use yii\helpers\Url;
 use yii\web\Request;
 use yii\web\Response;
 
@@ -33,6 +34,8 @@ class ApiTasksController extends BaseController
             $boards[(string)$task->getStatus()]['item'][] = [
                 'id' => (string)$task->getId(),
                 'title' => $task->getTitle(),
+                'url' => Url::to([sprintf('/tasks/update/%s', $task->getId())]),
+                'assignedTo' => $task->getAssignedToModel()?->getUsername() ?? 'Unassigned',
             ];
         }
 

@@ -25,39 +25,11 @@ use yii\widgets\ActiveForm;
             <div class="mb-3">
                 <?= $form->field($model, 'title') ?>
             </div>
-
-            <div class="mb-3">
-                <?= $form->field($model, 'author_id')
-                    ->dropDownList(
-                        $model->getAllUsers(),
-                        [
-                            'multiple' => 'multiple',
-                            'id' => 'author-id',
-                            'class' => 'js-states form-control',
-                            'tabindex' => '-1',
-                            'style' => 'display: none; width: 100%'
-                        ]
-                    ) ?>
-            </div>
         </div>
 
         <div class="col-md-6">
             <div class="mb-3">
                 <?= $form->field($model, 'status')->dropDownList(Statuses::getStatusList(), ['prompt' => '']) ?>
-            </div>
-
-            <div class="mb-3">
-                <?= $form->field($model, 'assigned_to')
-                    ->dropDownList(
-                        $model->getAllUsers(),
-                        [
-                            'multiple' => 'multiple',
-                            'id' => 'assigned-to',
-                            'class' => 'js-states form-control',
-                            'tabindex' => '-1',
-                            'style' => 'display: none; width: 100%'
-                        ]
-                    ) ?>
             </div>
         </div>
     </div>

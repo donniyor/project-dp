@@ -37,17 +37,20 @@ class TasksSearch extends Tasks
         }
 
         if (!empty($this->assigned_to)) {
-            $query->andWhere(['in', 'assigned_to', $this->assigned_to]);
+            $query->andWhere(['in', 'tasks.assigned_to', $this->assigned_to]);
         }
 
         if (!empty($this->author_id)) {
-            $query->andWhere(['in', 'author_id', $this->author_id]);
+            $query->andWhere(['in', 'tasks.author_id', $this->author_id]);
         }
 
-        $query
-            ->andFilterWhere(['status' => $this->status,])
-            ->andFilterWhere(['ilike', 'title', $this->title])
-            ->andFilterWhere(['ilike', 'description', $this->description]);
+        if (!empty($this->status)) {
+            $query->andWhere(['in', 'tasks.status', $this->status]);
+        }
+
+        if (!empty($this->title)) {
+            $query->andFilterWhere(['ilike', 'tasks.title', $this->title]);
+        }
 
         return $dataProvider;
     }
