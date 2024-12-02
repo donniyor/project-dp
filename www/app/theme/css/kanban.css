@@ -1,41 +1,64 @@
-
 .kanban-container {
     display: flex;
     width: 100%;
     overflow-x: auto;
     padding: 10px;
+    gap: 15px;
 }
 
 .kanban-board {
-    height: 100vh;
+    height: calc(100vh - 20px);
     overflow-y: auto;
-    border-radius: 5px;
-    background: #eaf2f2;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 15px;
 }
 
 .kanban-board-header {
-    background: #cee8f8;
+    background: #007bff;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px 5px 0 0;
 }
 
 .kanban-title-board {
+    margin: 0;
+    font-size: 16px;
+    color: #ffffff;
 }
 
 .kanban-item {
-    border-radius: 5px;
+    border-radius: 8px;
+    background: #f9fafb;
+    padding: 10px;
+    margin: 5px 0;
+    box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.kanban-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .kanban-title {
     text-decoration: none;
-    color: inherit;
-    cursor: pointer;
+    color: #333;
+    font-weight: bold;
+    font-size: 14px;
 }
 
 .kanban-title:hover {
     text-decoration: underline;
-    color: inherit;
+    color: #007bff;
 }
 
 .kanban-drag {
+    opacity: 0.9;
 }
 
 .kanban-item.kanban-dragging,
@@ -43,5 +66,5 @@
 .kanban-item.gu-transit {
     transform: none !important;
     transition: none !important;
+    opacity: 0.7;
 }
-
