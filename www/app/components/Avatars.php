@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace app\components;
 
-use app\models\Tasks;
 use app\models\Users;
-use Yii;
 use yii\helpers\Html;
 use yii\helpers\Url;
 

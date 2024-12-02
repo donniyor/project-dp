@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace app\controllers;
 
+use app\components\Avatars;
 use app\components\BaseController;
 use app\components\Statuses\Statuses;
 use app\models\Tasks;
@@ -35,7 +36,9 @@ class ApiTasksController extends BaseController
                 'id' => (string)$task->getId(),
                 'title' => $task->getTitle(),
                 'url' => Url::to([sprintf('/tasks/update/%s', $task->getId())]),
-                'assignedTo' => $task->getAssignedToModel()?->getUsername() ?? 'Unassigned',
+                'assignedTo' => $task->getAssignedToUser() === null
+                    ? Avatars::getAssignedToButton($task->getId(), 30)
+                    : Avatars::getAvatarRound($task->getAssignedToModel(), 30, false)
             ];
         }
 

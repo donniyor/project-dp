@@ -9,15 +9,33 @@
 .kanban-board {
     height: 100vh;
     overflow-y: auto;
+    border-radius: 5px;
+    background: #eaf2f2;
 }
 
 .kanban-board-header {
+    background: #cee8f8;
 }
 
 .kanban-title-board {
 }
 
 .kanban-item {
+    border-radius: 5px;
+}
+
+.kanban-title {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.kanban-title:hover {
+    text-decoration: underline;
+    color: inherit;
+}
+
+.kanban-drag {
 }
 
 .kanban-item.kanban-dragging,

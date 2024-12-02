@@ -20,7 +20,7 @@ $(document).ready(function () {
 
                 const kanban = new jKanban({
                     element: kanbanTasks,
-                    gutter: '15px',
+                    gutter: '5px',
                     widthBoard: '300px',
                     boards: boardsArray.map(board => ({
                         ...board,
@@ -28,7 +28,7 @@ $(document).ready(function () {
                             id: task.id,
                             title: `
                                 <a href="${task.url}" class="kanban-title">${task.title}</a>
-                                <div class="kanban-assigned"><strong>исполнитель: </strong> ${task.assignedTo}</div>
+                                <div class="kanban-assigned">${task.assignedTo}</div>
                             `,
                         })),
                     })),
