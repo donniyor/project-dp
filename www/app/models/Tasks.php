@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace app\models;
 
+use app\components\Avatars;
 use app\components\BaseModel;
 use app\components\Statuses\StatusesInterface;
 use Yii;
@@ -155,20 +156,26 @@ class Tasks extends BaseModel
     }
 
     /**
-     * @return array<int, string>
-     * */
+     * @return array<int, array>
+     */
     public function getAllUsers(): array
     {
-        $users = Users::find()->select(['id', 'username', 'email', 'first_name', 'last_name'])->all();
+        $users = Users::find()
+            ->select(['id', 'username', 'email', 'first_name', 'last_name'])
+            ->all();
         $total = [];
+
         /** @var Users $user */
         foreach ($users as $user) {
+            $avatarHtml = Avatars::getAvatarRound($user, 40, false);
             $total[] = [
                 'id' => $user->getId(),
-                'user' => sprintf('%s %s', $user->getLastName(), $user->getFirstName())
+                'user' => sprintf('%s %s', $user->getLastName(), $user->getFirstName()),
+                'email' => $user->getEmail(),
+                'avatar' => $avatarHtml,
             ];
         }
 
-        return ArrayHelper::map($total, 'id', 'user');
+        return $total;
     }
 }

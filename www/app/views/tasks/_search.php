@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
+use app\assets\ListAsset;
 use app\components\Statuses\Statuses;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
@@ -10,6 +12,8 @@ use yii\widgets\ActiveForm;
 /** @var yii\web\View $this */
 /** @var app\models\TasksSearch $model */
 /** @var yii\widgets\ActiveForm $form */
+
+ListAsset::register($this);
 
 ?>
 
@@ -46,19 +50,28 @@ use yii\widgets\ActiveForm;
                 <?= $form->field($model, 'status')->dropDownList(Statuses::getStatusList(), ['prompt' => '']) ?>
             </div>
 
-            <div class="mb-3">
-                <?= $form->field($model, 'assigned_to')
-                    ->dropDownList(
-                        $model->getAllUsers(),
-                        [
-                            'multiple' => 'multiple',
-                            'id' => 'assigned-to',
-                            'class' => 'js-states form-control',
-                            'tabindex' => '-1',
-                            'style' => 'display: none; width: 100%'
-                        ]
-                    ) ?>
-            </div>
+            <?= $form->field($model, 'assigned_to')
+                ->dropDownList(
+                    ArrayHelper::map($model->getAllUsers(), 'id', 'user'), // ID => Имя пользователя
+                    [
+                        'multiple' => 'multiple',
+                        'id' => 'assigned-to',
+                        'class' => 'js-states form-control',
+                        'tabindex' => '-1',
+                        'style' => 'display: none; width: 100%',
+                        'options' => ArrayHelper::map(
+                            $model->getAllUsers(),
+                            'id',
+                            function ($user) {
+                                return [
+                                    'data-avatar-html' => $user['avatar'], // HTML аватара
+                                    'data-email' => $user['email'],        // Email пользователя
+                                ];
+                            }
+                        )
+                    ]
+                ) ?>
+
         </div>
     </div>
 

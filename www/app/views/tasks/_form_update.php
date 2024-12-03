@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use app\assets\ListAsset;
 use app\components\Avatars;
 use app\components\DatesInterface;
 use app\components\Statuses\Statuses;
@@ -12,6 +13,9 @@ use yii\widgets\ActiveForm;
 /** @var yii\web\View $this */
 /** @var app\models\Tasks $model */
 /** @var yii\widgets\ActiveForm $form */
+
+ListAsset::register($this);
+
 ?>
 
 <div class="container">
@@ -22,7 +26,32 @@ use yii\widgets\ActiveForm;
     <div class="row">
         <div class="col-md-9">
             <div class="task-form">
-...
+                <div class="mb-3">
+                    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+                </div>
+
+                <div class="mb-3">
+                    <?= Data::getTextArea($model, 'description') ?>
+                </div>
+
+                <div class="mb-3">
+                    <?= $form->field($model, 'assigned_to')->dropDownList($model->getAllUsers(), ['prompt' => 'Без исполнителя']) ?>
+                </div>
+
+                <div class="mb-3">
+                    <?= $form->field($model, 'project_id')->dropDownList(
+                        $model->getAllProjects(),
+                        ['prompt' => '', 'class' => 'form-select']
+                    ) ?>
+                </div>
+
+                <div class="mb-3">
+                    <?= $form->field($model, 'status')->dropDownList(Statuses::getStatusList()) ?>
+                </div>
+
+                <div class="form-group">
+                    <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
+                </div>
             </div>
         </div>
 
@@ -51,6 +80,11 @@ use yii\widgets\ActiveForm;
                         ? date(DatesInterface::DEFAULT_DATE, strtotime($model->getCreatedAt()))
                         : '' ?>
                 </div>
+
+                <select class="selectpicker" data-live-search="true">
+                    <option data-content="<img src='path/to/image1.jpg' style='width:20px; height:20px;'> Option 1">Option 1</option>
+                    <option data-content="<img src='path/to/image2.jpg' style='width:20px; height:20px;'> Option 2">Option 2</option>
+                </select>
             </div>
         </div>
     </div>
@@ -58,43 +92,4 @@ use yii\widgets\ActiveForm;
     <?php
     ActiveForm::end();
     ?>
-</div>
-
-
-
-<div class="tasks-form">
-
-    <?php
-    $form = ActiveForm::begin(); ?>
-
-    <div class="mb-3">
-        <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
-    </div>
-
-    <div class="mb-3">
-        <?= Data::getTextArea($model, 'description') ?>
-    </div>
-
-    <div class="mb-3">
-        <?= $form->field($model, 'assigned_to')->dropDownList($model->getAllUsers(), ['prompt' => 'Без исполнителя']) ?>
-    </div>
-
-    <div class="mb-3">
-        <?= $form->field($model, 'project_id')->dropDownList(
-            $model->getAllProjects(),
-            ['prompt' => '', 'class' => 'form-select']
-        ) ?>
-    </div>
-
-    <div class="mb-3">
-        <?= $form->field($model, 'status')->dropDownList(Statuses::getStatusList()) ?>
-    </div>
-
-    <div class="form-group">
-        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
-    </div>
-
-    <?php
-    ActiveForm::end(); ?>
-
 </div>

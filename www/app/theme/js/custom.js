@@ -32,9 +32,6 @@ $(document).ready(function () {
         return false;
     });
 
-    $('#assigned-to').select2();
-    $('#author-id').select2();
-
     body.on('click', '#assign-me', function (e) {
         e.preventDefault();
 
