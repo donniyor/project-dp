@@ -15,6 +15,8 @@ use yii\widgets\ActiveForm;
 
 ListAsset::register($this);
 
+$users = $model->getUsers(3);
+
 ?>
 
 <div class="tasks-search">
@@ -33,14 +35,14 @@ ListAsset::register($this);
             <div class="mb-3">
                 <?= $form->field($model, 'author_id')
                     ->dropDownList(
-                        $model->getAllUsers(),
+                        [],
                         [
                             'multiple' => 'multiple',
                             'id' => 'author-id',
                             'class' => 'js-states form-control',
                             'tabindex' => '-1',
-                            'style' => 'display: none; width: 100%'
-                        ]
+                            'style' => 'display: none; width: 100%',
+                        ],
                     ) ?>
             </div>
         </div>
@@ -52,7 +54,7 @@ ListAsset::register($this);
 
             <?= $form->field($model, 'assigned_to')
                 ->dropDownList(
-                    ArrayHelper::map($model->getAllUsers(), 'id', 'user'), // ID => Имя пользователя
+                    ArrayHelper::map($users, 'id', 'user'),
                     [
                         'multiple' => 'multiple',
                         'id' => 'assigned-to',
@@ -60,18 +62,17 @@ ListAsset::register($this);
                         'tabindex' => '-1',
                         'style' => 'display: none; width: 100%',
                         'options' => ArrayHelper::map(
-                            $model->getAllUsers(),
+                            $users,
                             'id',
                             function ($user) {
                                 return [
-                                    'data-avatar-html' => $user['avatar'], // HTML аватара
-                                    'data-email' => $user['email'],        // Email пользователя
+                                    'data-avatar-html' => $user['avatar'],
+                                    'data-email' => $user['email'],
                                 ];
                             }
                         )
                     ]
                 ) ?>
-
         </div>
     </div>
 

@@ -1,47 +1,73 @@
 /* jshint ignore: start */
 $(document).ready(function () {
-    $('#author-id').select2();
-
-
     $('#assigned-to').select2({
         placeholder: 'Выберите пользователей',
         allowClear: true,
-        templateResult: formatOption, // Кастомное отображение опций
-        templateSelection: formatSelectedOption // Кастомное отображение выбранной опции
+        templateResult: formatOption,
+        templateSelection: formatSelectedOption
     });
 
-    // Формат опции в списке
+    $('#author-id').select2({
+        placeholder: 'Выберите пользователей',
+        allowClear: true,
+        templateResult: formatOption,
+        templateSelection: formatSelectedOption,
+        ajax: {
+            url: '/users/get-users',
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return {
+                    query: params.term,
+                };
+            },
+            processResults: function (data) {
+                return {
+                    results: data.map(user => ({
+                        id: user.id,
+                        text: user.user,
+                        email: user.email,
+                        avatarHtml: user.avatar,
+                    }))
+                };
+            },
+            cache: true
+        },
+        escapeMarkup: function (markup) {
+            return markup;
+        }
+    });
+
     function formatOption(option) {
         if (!option.id) {
-            return option.text; // Для плейсхолдера
+            return option.text;
         }
 
-        const avatarHtml = $(option.element).data('avatar-html') || '';
-        const email = $(option.element).data('email') || '';
+        const avatarHtml = option.avatarHtml || '';
+        const email = option.email || '';
 
         return $(
             `<div style="display: flex; align-items: center;">
-                <div style="margin-right: 10px;">${avatarHtml}</div>
-                <div>
-                    <div>${option.text}</div>
-                    <small style="color: #888;">${email}</small>
-                </div>
-            </div>`
+            <div style="margin-right: 10px;">${avatarHtml}</div>
+            <div>
+                <div>${option.text}</div>
+                <small style="color: #888;">${email}</small>
+            </div>
+        </div>`
         );
     }
 
-    // Формат выбранной опции
     function formatSelectedOption(option) {
         if (!option.id) {
-            return option.text; // Для плейсхолдера
+            return option.text;
         }
 
-        const avatarHtml = $(option.element).data('avatar-html') || '';
+        const avatarHtml = option.avatarHtml || '';
         return $(
             `<div style="display: flex; align-items: center;">
-                <div style="margin-right: 10px;">${avatarHtml}</div>
-                <div>${option.text}</div>
-            </div>`
+            <div style="margin-right: 10px;">${avatarHtml}</div>
+            <div>${option.text}</div>
+        </div>`
         );
     }
 });

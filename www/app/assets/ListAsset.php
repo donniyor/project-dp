@@ -17,6 +17,7 @@ class ListAsset extends AssetBundle
     /** @var array $css */
     public $css = [
         'css/select2.min.css',
+        'css/list.css',
     ];
 
     /** @var array $js */

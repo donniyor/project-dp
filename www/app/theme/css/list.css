@@ -1,0 +1,8 @@
+.select2-results__option {
+    background:  rgba(255, 0, 0, 0) !important;
+    color: #0e2231 !important;
+}
+
+.select2-results__option--highlighted {
+
+}

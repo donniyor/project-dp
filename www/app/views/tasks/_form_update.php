@@ -61,7 +61,7 @@ ListAsset::register($this);
                     <?=
                     $form->field($model, 'status')->dropDownList(
                         Statuses::getStatusList(),
-                        ['class' => 'form-control']
+                        ['class' => 'form-control'],
                     )
                     ?>
                 </div>
@@ -80,11 +80,6 @@ ListAsset::register($this);
                         ? date(DatesInterface::DEFAULT_DATE, strtotime($model->getCreatedAt()))
                         : '' ?>
                 </div>
-
-                <select class="selectpicker" data-live-search="true">
-                    <option data-content="<img src='path/to/image1.jpg' style='width:20px; height:20px;'> Option 1">Option 1</option>
-                    <option data-content="<img src='path/to/image2.jpg' style='width:20px; height:20px;'> Option 2">Option 2</option>
-                </select>
             </div>
         </div>
     </div>

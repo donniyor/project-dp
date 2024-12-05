@@ -178,4 +178,31 @@ class Tasks extends BaseModel
 
         return $total;
     }
+
+    /**
+     * @param int $limit
+     * @return array<int, array>
+     */
+    public static function getUsers(int $limit = 10): array
+    {
+        $users = Users::find()
+            ->select(['id', 'username', 'email', 'first_name', 'last_name'])
+            ->limit($limit)
+            ->all();
+        $total = [];
+
+        /** @var Users $user */
+        foreach ($users as $user) {
+            $avatarHtml = Avatars::getAvatarRound($user, 40, false);
+            $total[] = [
+                'id' => $user->getId(),
+                'user' => sprintf('%s %s', $user->getLastName(), $user->getFirstName()),
+                'email' => $user->getEmail(),
+                'avatar' => $avatarHtml,
+            ];
+        }
+
+        return $total;
+    }
+
 }

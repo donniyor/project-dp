@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace app\controllers;
 
+use app\components\Avatars;
 use app\models\CreateAdminForm;
 use app\models\Users;
 use app\models\UsersSearch;
 use Exception;
 use Throwable;
 use app\components\BaseController;
+use Yii;
 use yii\web\NotFoundHttpException;
 use yii\web\Request;
 use yii\web\Response;
@@ -79,6 +81,38 @@ class UsersController extends BaseController
         }
 
         return $this->redirect(['index']);
+    }
+
+    public function actionGetUsers(Request $request): array
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $query = $request->get('query', '');
+        $limit = $request->get('limit', 3);
+        $usersQuery = Users::find()
+            ->select(['id', 'username', 'email', 'first_name', 'last_name']);
+
+        if ($query) {
+            $usersQuery->where(['like', 'username', $query])
+                ->orWhere(['like', 'email', $query])
+                ->orWhere(['like', 'first_name', $query])
+                ->orWhere(['like', 'last_name', $query]);
+        }
+
+        $users = $usersQuery->limit($limit)->all();
+        $result = [];
+
+        /** @var Users $user */
+        foreach ($users as $user) {
+            $avatarHtml = Avatars::getAvatarRound($user, 40, false);
+            $result[] = [
+                'id' => $user->getId(),
+                'user' => sprintf('%s %s', $user->getLastName(), $user->getFirstName()),
+                'email' => $user->getEmail(),
+                'avatar' => $avatarHtml,
+            ];
+        }
+
+        return $result;
     }
 
     /**
