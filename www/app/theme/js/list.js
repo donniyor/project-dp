@@ -6,7 +6,7 @@ $(document).ready(function () {
      */
     function initializeSelect2(selector) {
         $(selector).select2({
-            allowClear: true,
+            allowClear: false,
             templateResult: formatOption,
             templateSelection: formatSelectedOption,
             ajax: {
@@ -60,12 +60,6 @@ $(document).ready(function () {
             return option.text;
         }
 
-        const avatarHtml = option.avatarHtml || '';
-        return $(
-            `<div style="display: flex; align-items: center;">
-                <div style="margin-right: 10px;">${avatarHtml}</div>
-                <div>${option.text}</div>
-            </div>`
-        );
+        return option.text;
     }
 });
