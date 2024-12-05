@@ -1,14 +1,37 @@
 /* jshint ignore: start */
 $(document).ready(function () {
+
     $('#assigned-to').select2({
-        placeholder: 'Выберите пользователей',
         allowClear: true,
         templateResult: formatOption,
-        templateSelection: formatSelectedOption
+        templateSelection: formatSelectedOption,
+        ajax: {
+            url: '/users/get-users',
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return {
+                    query: params.term,
+                };
+            },
+            processResults: function (data) {
+                return {
+                    results: data.map(user => ({
+                        id: user.id,
+                        text: user.user,
+                        email: user.email,
+                        avatarHtml: user.avatar,
+                    }))
+                };
+            },
+            cache: true
+        },
+        escapeMarkup: function (markup) {
+            return markup;
+        }
     });
 
     $('#author-id').select2({
-        placeholder: 'Выберите пользователей',
         allowClear: true,
         templateResult: formatOption,
         templateSelection: formatSelectedOption,
