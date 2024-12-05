@@ -3,8 +3,11 @@ $(document).ready(function () {
     /**
      * Инициализация select2 с общими настройками
      * @param {string} selector - CSS-селектор для инициализации select2
+     * @param {string} cacheKey - Ключ для кэширования данных для этого поля
      */
-    function initializeSelect2(selector) {
+    function initializeSelect2(selector, cacheKey) {
+        let cachedData = []; // Локальный кэш данных для каждого поля
+
         $(selector).select2({
             allowClear: false,
             templateResult: formatOption,
@@ -14,18 +17,37 @@ $(document).ready(function () {
                 dataType: 'json',
                 delay: 250,
                 data: function (params) {
-                    return {
-                        query: params.term,
-                    };
+                    // Если пользователь вводит текст, отправляем запрос
+                    if (params.term) {
+                        return {
+                            query: params.term,
+                        };
+                    }
+                    // Если текст не введён, возвращаем пустой объект, чтобы не отправлять запрос
+                    return {};
                 },
                 processResults: function (data) {
+                    // Кэшируем данные
+                    cachedData = data.map(user => ({
+                        id: user.id,
+                        text: user.user,
+                        avatarHtml: user.avatar,
+                    }));
+
                     return {
-                        results: data.map(user => ({
-                            id: user.id,
-                            text: user.user,
-                            avatarHtml: user.avatar,
-                        }))
+                        results: cachedData
                     };
+                },
+                transport: function (params, success, failure) {
+                    // Если кэш не пустой и пользователь не вводил текст, возвращаем кэшированные данные
+                    if (!params.data.query && cachedData.length > 0) {
+                        success({ results: cachedData });
+                        return;
+                    }
+                    // Иначе выполняем стандартный запрос
+                    const request = $.ajax(params);
+                    request.then(success).fail(failure);
+                    return request;
                 },
                 cache: true
             },
@@ -35,8 +57,9 @@ $(document).ready(function () {
         });
     }
 
-    initializeSelect2('#assigned-to');
-    initializeSelect2('#author-id');
+    // Инициализация с уникальными ключами для кэширования данных
+    initializeSelect2('#assigned-to', 'assigned-to');
+    initializeSelect2('#author-id', 'author-id');
 
     function formatOption(option) {
         if (!option.id) {

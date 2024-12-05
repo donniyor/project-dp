@@ -6,3 +6,6 @@
 .select2-results__option--highlighted {
 
 }
+.select2-selection__choice {
+    margin: 3px;
+}

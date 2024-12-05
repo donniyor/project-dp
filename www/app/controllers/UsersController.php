@@ -92,9 +92,10 @@ class UsersController extends BaseController
             ->select(['id', 'username', 'first_name', 'last_name']);
 
         if ($query !== null) {
-            $usersQuery->where(['like', 'username', $query])
-                ->orWhere(['like', 'first_name', $query])
-                ->orWhere(['like', 'last_name', $query]);
+            $query = strtolower($query);
+            $usersQuery->where(['like', 'LOWER(username)', $query])
+                ->orWhere(['like', 'LOWER(first_name)', $query])
+                ->orWhere(['like', 'LOWER(last_name)', $query]);
         }
 
         $users = $usersQuery->limit($limit)->all();
