@@ -1,65 +1,42 @@
 /* jshint ignore: start */
 $(document).ready(function () {
+    /**
+     * Инициализация select2 с общими настройками
+     * @param {string} selector - CSS-селектор для инициализации select2
+     */
+    function initializeSelect2(selector) {
+        $(selector).select2({
+            allowClear: true,
+            templateResult: formatOption,
+            templateSelection: formatSelectedOption,
+            ajax: {
+                url: '/users/get-users',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        query: params.term,
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data.map(user => ({
+                            id: user.id,
+                            text: user.user,
+                            avatarHtml: user.avatar,
+                        }))
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function (markup) {
+                return markup;
+            }
+        });
+    }
 
-    $('#assigned-to').select2({
-        allowClear: true,
-        templateResult: formatOption,
-        templateSelection: formatSelectedOption,
-        ajax: {
-            url: '/users/get-users',
-            dataType: 'json',
-            delay: 250,
-            data: function (params) {
-                return {
-                    query: params.term,
-                };
-            },
-            processResults: function (data) {
-                return {
-                    results: data.map(user => ({
-                        id: user.id,
-                        text: user.user,
-                        email: user.email,
-                        avatarHtml: user.avatar,
-                    }))
-                };
-            },
-            cache: true
-        },
-        escapeMarkup: function (markup) {
-            return markup;
-        }
-    });
-
-    $('#author-id').select2({
-        allowClear: true,
-        templateResult: formatOption,
-        templateSelection: formatSelectedOption,
-        ajax: {
-            url: '/users/get-users',
-            dataType: 'json',
-            delay: 250,
-            data: function (params) {
-                return {
-                    query: params.term,
-                };
-            },
-            processResults: function (data) {
-                return {
-                    results: data.map(user => ({
-                        id: user.id,
-                        text: user.user,
-                        email: user.email,
-                        avatarHtml: user.avatar,
-                    }))
-                };
-            },
-            cache: true
-        },
-        escapeMarkup: function (markup) {
-            return markup;
-        }
-    });
+    initializeSelect2('#assigned-to');
+    initializeSelect2('#author-id');
 
     function formatOption(option) {
         if (!option.id) {
@@ -67,16 +44,14 @@ $(document).ready(function () {
         }
 
         const avatarHtml = option.avatarHtml || '';
-        const email = option.email || '';
 
         return $(
             `<div style="display: flex; align-items: center;">
-            <div style="margin-right: 10px;">${avatarHtml}</div>
-            <div>
-                <div>${option.text}</div>
-                <small style="color: #888;">${email}</small>
-            </div>
-        </div>`
+                <div style="margin-right: 10px;">${avatarHtml}</div>
+                <div>
+                    <div>${option.text}</div>
+                </div>
+            </div>`
         );
     }
 
@@ -88,9 +63,9 @@ $(document).ready(function () {
         const avatarHtml = option.avatarHtml || '';
         return $(
             `<div style="display: flex; align-items: center;">
-            <div style="margin-right: 10px;">${avatarHtml}</div>
-            <div>${option.text}</div>
-        </div>`
+                <div style="margin-right: 10px;">${avatarHtml}</div>
+                <div>${option.text}</div>
+            </div>`
         );
     }
 });

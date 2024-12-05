@@ -86,14 +86,13 @@ class UsersController extends BaseController
     public function actionGetUsers(Request $request): array
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
-        $query = $request->get('query', '');
+        $query = $request->get('query', null);
         $limit = $request->get('limit', 3);
         $usersQuery = Users::find()
-            ->select(['id', 'username', 'email', 'first_name', 'last_name']);
+            ->select(['id', 'username', 'first_name', 'last_name']);
 
-        if ($query) {
+        if ($query !== null) {
             $usersQuery->where(['like', 'username', $query])
-                ->orWhere(['like', 'email', $query])
                 ->orWhere(['like', 'first_name', $query])
                 ->orWhere(['like', 'last_name', $query]);
         }
@@ -103,11 +102,10 @@ class UsersController extends BaseController
 
         /** @var Users $user */
         foreach ($users as $user) {
-            $avatarHtml = Avatars::getAvatarRound($user, 40, false);
+            $avatarHtml = Avatars::getAvatarRound($user, 30, false);
             $result[] = [
                 'id' => $user->getId(),
                 'user' => sprintf('%s %s', $user->getLastName(), $user->getFirstName()),
-                'email' => $user->getEmail(),
                 'avatar' => $avatarHtml,
             ];
         }

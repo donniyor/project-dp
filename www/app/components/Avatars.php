@@ -52,9 +52,9 @@ class Avatars
         );
     }
 
-    public static function getAvatarRound(Users $model, int $size = 100, bool $hasUrl = true): string
+    public static function getAvatarRound(Users $model, int $size = 100, bool $hasUrl = true, $hover = false): string
     {
-        $hoverClass = 'avatar-hover';
+        $hoverClass = $hover ? 'avatar-hover' : '';
         $fontSize = $size / 3;
 
         $url = Url::to(['users/detail', 'id' => $model->getId()]);
