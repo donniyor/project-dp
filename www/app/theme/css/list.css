@@ -1,11 +1,24 @@
 .select2-results__option {
     background:  rgba(255, 0, 0, 0) !important;
     color: #0e2231 !important;
+    margin: 3px !important;
+    padding: 2px;
 }
 
-.select2-results__option--highlighted {
-
+.select2-dropdown {
+    padding: 4px !important;
 }
+
+.select2-selection.select2-selection--multiple {
+    padding: 10px 18px !important;
+}
+
 .select2-selection__choice {
-    margin: 3px;
+    margin: 4px;
+}
+
+.select2-container--default .select2-results__option[aria-selected=true] {
+    border: 0 !important;
+    border-radius: 4px;
+    background: #e9f2f8 !important;
 }
