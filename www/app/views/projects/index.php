@@ -6,12 +6,15 @@ use app\components\Avatars;
 use app\components\Statuses\Statuses;
 use app\helpers\Buttons;
 use app\models\Projects;
+use yii\data\ActiveDataProvider;
 use yii\grid\GridView;
 use yii\helpers\Html;
+use yii\web\View;
 
-/** @var yii\web\View $this */
-/** @var yii\data\ActiveDataProvider $dataProvider */
+/** @var View $this */
+/** @var ActiveDataProvider $projects */
 /** @var array $filters */
+/** @var null|array $users */
 
 $this->title = 'Проекты';
 $this->params['breadcrumbs'][] = $this->title;
@@ -22,6 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     <hr>
 
+    <?= $this->render('_search', ['filters' => $filters, 'users' => $users]); ?>
     <p>
         <?= Html::a('Создать проект', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
@@ -29,8 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="table-responsive">
         <div class="table-responsive">
             <?= GridView::widget([
-                'dataProvider' => $dataProvider,
-                'filterModel' => $filters,
+                'dataProvider' => $projects,
                 'options' => ['class' => 'table table-striped table-bordered table-hover'],
                 'tableOptions' => ['class' => 'table table-hover'],
                 'headerRowOptions' => ['class' => 'thead-light'],
@@ -41,8 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'headerOptions' => ['class' => 'text-nowrap', 'style' => 'width: 60%;'],
                     ],
                     [
-                        'attribute' => 'author_search',
-                        'label' => 'Автор',
+                        'attribute' => 'author_id',
                         'format' => 'raw',
                         'value' => static fn(Projects $model): string => Avatars::getAvatarRound(
                             $model->getAuthorModel(),
@@ -55,18 +57,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         'headerOptions' => ['class' => 'text-nowrap', 'style' => 'width: 20%;'],
                         'value' => fn(Projects $model): string => Statuses::getStatusTag($model->getStatus()),
                         'format' => 'raw',
-                        'filter' => Html::dropDownList(
-                            'status',
-                            $filters['status'] ?? '',
-                            array_merge(['' => 'Все'], Statuses::getStatusList()),
-                            ['class' => 'form-control']
-                        ),
                     ],
                     [
                         'header' => 'Действия',
                         'format' => 'html',
                         'headerOptions' => ['width' => '150'],
-                        'content' => static fn(Projects $model): string => Buttons::getButtons($model->getPrimaryKey())
+                        'content' => static fn(Projects $model): string => Buttons::getButtons($model->getPrimaryKey()),
                     ],
                 ],
             ]); ?>

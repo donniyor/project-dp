@@ -7,16 +7,16 @@ namespace app\DTO;
 class ProjectSearchDTO implements Arrayable
 {
     private ?string $title = null;
-    private ?string $authorSearch = null;
+    private ?array $authorIds = null;
     private ?int $status = null;
 
     public function __construct(
         ?string $title,
-        ?string $authorSearch,
+        ?array $authorIds,
         ?int $status,
     ) {
         $this->title = $title;
-        $this->authorSearch = $authorSearch;
+        $this->authorIds = $authorIds;
         $this->status = $status;
     }
 
@@ -26,8 +26,8 @@ class ProjectSearchDTO implements Arrayable
             !empty($params['title'])
                 ? (string)$params['title']
                 : null,
-            !empty($params['author_search'])
-                ? (string)$params['author_search']
+            !empty($params['author_id'])
+                ? array_map('intval', $params['author_id'])
                 : null,
             !empty($params['status'])
                 ? (int)$params['status']
@@ -39,7 +39,7 @@ class ProjectSearchDTO implements Arrayable
     {
         return [
             'title' => $this->getTitle(),
-            'author_search' => $this->getAuthorSearch(),
+            'author_id' => $this->getAuthorIds(),
             'status' => $this->getStatus(),
         ];
     }
@@ -49,9 +49,9 @@ class ProjectSearchDTO implements Arrayable
         return $this->title;
     }
 
-    public function getAuthorSearch(): ?string
+    public function getAuthorIds(): ?array
     {
-        return $this->authorSearch;
+        return $this->authorIds;
     }
 
     public function getStatus(): ?int

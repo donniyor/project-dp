@@ -67,7 +67,7 @@ class Avatars
             ]);
 
             return $hasUrl
-                ? Html::a($img, $url, ['class' => 'd-flex justify-content-center'])
+                ? Html::a($img, $url)
                 : $img;
         }
 
@@ -77,7 +77,7 @@ class Avatars
         ]);
 
         return $hasUrl
-            ? Html::a($tag, $url, ['style' => 'text-decoration: none;', 'class' => 'd-flex justify-content-center'])
+            ? Html::a($tag, $url, ['style' => 'text-decoration: none;'])
             : $tag;
     }
 

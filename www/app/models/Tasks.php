@@ -204,5 +204,4 @@ class Tasks extends BaseModel
 
         return $total;
     }
-
 }

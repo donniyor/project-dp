@@ -8,6 +8,7 @@ use app\components\BaseController;
 use app\DTO\ProjectSearchDTO;
 use app\models\Projects;
 use app\Service\ProjectService;
+use app\Service\UserService;
 use Yii;
 use yii\base\Exception;
 use yii\base\Module;
@@ -22,16 +23,19 @@ use yii\web\Response;
  */
 class ProjectsController extends BaseController
 {
-    private ProjectService $service;
+    private ProjectService $projectService;
+    private UserService $userService;
 
     public function __construct(
         string $id,
         Module $module,
-        ProjectService $service,
+        ProjectService $projectService,
+        UserService $userService,
     ) {
         parent::__construct($id, $module);
 
-        $this->service = $service;
+        $this->projectService = $projectService;
+        $this->userService = $userService;
     }
 
     /**
@@ -56,11 +60,16 @@ class ProjectsController extends BaseController
     {
         $filters = $this->request->get();
         $params = ProjectSearchDTO::fromArray($filters);
-        $dataProvider = $this->service->search($params);
+        $projects = $this->projectService->search($params);
+        $users = null;
+        if ($params->getAuthorIds() !== null) {
+            $users = $this->userService->getUsersForView($params->getAuthorIds());
+        }
 
         return $this->render('index', [
             'filters' => $filters,
-            'dataProvider' => $dataProvider,
+            'projects' => $projects,
+            'users' => $users,
         ]);
     }
 
