@@ -10,8 +10,8 @@ use yii\grid\GridView;
 use yii\helpers\Html;
 
 /** @var yii\web\View $this */
-/** @var app\models\ProjectsSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
+/** @var array $filters */
 
 $this->title = 'Проекты';
 $this->params['breadcrumbs'][] = $this->title;
@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="table-responsive">
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
-                'filterModel' => $searchModel,
+                'filterModel' => $filters,
                 'options' => ['class' => 'table table-striped table-bordered table-hover'],
                 'tableOptions' => ['class' => 'table table-hover'],
                 'headerRowOptions' => ['class' => 'thead-light'],
@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'format' => 'raw',
                         'value' => static fn(Projects $model): string => Avatars::getAvatarRound(
                             $model->getAuthorModel(),
-                            50
+                            50,
                         ),
                         'headerOptions' => ['class' => 'text-nowrap', 'style' => 'width: 20%;'],
                     ],
@@ -55,9 +55,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         'headerOptions' => ['class' => 'text-nowrap', 'style' => 'width: 20%;'],
                         'value' => fn(Projects $model): string => Statuses::getStatusTag($model->getStatus()),
                         'format' => 'raw',
-                        'filter' => Html::activeDropDownList(
-                            $searchModel,
+                        'filter' => Html::dropDownList(
                             'status',
+                            $filters['status'] ?? '',
                             array_merge(['' => 'Все'], Statuses::getStatusList()),
                             ['class' => 'form-control']
                         ),

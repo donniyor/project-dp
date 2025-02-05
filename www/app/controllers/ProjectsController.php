@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace app\controllers;
 
 use app\components\BaseController;
+use app\DTO\ProjectSearchDTO;
 use app\models\Projects;
-use app\models\ProjectsSearch;
+use app\Service\ProjectService;
 use Yii;
 use yii\base\Exception;
+use yii\base\Module;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Request;
 use yii\web\Response;
 
 /**
@@ -19,6 +22,18 @@ use yii\web\Response;
  */
 class ProjectsController extends BaseController
 {
+    private ProjectService $service;
+
+    public function __construct(
+        string $id,
+        Module $module,
+        ProjectService $service,
+    ) {
+        parent::__construct($id, $module);
+
+        $this->service = $service;
+    }
+
     /**
      * @inheritDoc
      */
@@ -37,13 +52,14 @@ class ProjectsController extends BaseController
         );
     }
 
-    public function actionIndex(): string
+    public function actionIndex(Request $request): string
     {
-        $searchModel = new ProjectsSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $filters = $this->request->get();
+        $params = ProjectSearchDTO::fromArray($filters);
+        $dataProvider = $this->service->search($params);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
+            'filters' => $filters,
             'dataProvider' => $dataProvider,
         ]);
     }
