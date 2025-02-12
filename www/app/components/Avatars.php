@@ -41,12 +41,12 @@ class Avatars
         );
 
         return Html::a(
-            sprintf('%s Назначить себе', $img),
+            $img,
             Url::to([sprintf('/tasks/assign/%s', $id)]),
             [
-                'class' => 'text-muted text-center text-decoration-none d-flex flex-column align-items-center justify-content-center',
+                'class' => 'text-decoration-none',
                 'id' => 'assign-me',
-                'style' => 'font-size: 0.875rem; height: 100%;',
+                'style' => 'font-size: 0.8rem; height: 100%; width: 40px; display: block;',
                 'data-task_id' => $id,
             ]
         );

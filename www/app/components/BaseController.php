@@ -13,6 +13,7 @@ use yii\web\Controller;
 use yii\web\HttpException;
 use yii\web\Response;
 use yii\web\UploadedFile;
+use yii\web\User;
 
 class BaseController extends Controller
 {
@@ -43,7 +44,7 @@ class BaseController extends Controller
      * @throws Exception
      * @throws HttpException
      */
-    public function saveData($model, $type = 'create', $imageUpload = false, $images = []): bool
+    protected function saveData($model, $type = 'create', $imageUpload = false, $images = []): bool
     {
         $env = env('API_HOST');
         if ($model->load($this->request->post())) {
@@ -80,14 +81,18 @@ class BaseController extends Controller
         return $result;
     }
 
-    public function flash(string $type, string $message): void
+    protected function flash(string $type, string $message): void
     {
         Yii::$app->getSession()->setFlash($type == 'error' ? 'danger' : $type, $message);
     }
 
-    public function back(): Response
+    protected function back(): Response
     {
         return $this->redirect(Yii::$app->request->referrer);
     }
 
+    protected function getUser(): User
+    {
+        return Yii::$app->getUser();
+    }
 }

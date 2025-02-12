@@ -27,7 +27,7 @@ use yii\widgets\ActiveForm;
                 </div>
 
                 <div class="mb-3">
-                    <?= Data::getTextArea($model, 'description') ?>
+                    <?= Data::getTextAreaWithModel($model, 'description') ?>
                 </div>
 
                 <div class="form-group mb-3">

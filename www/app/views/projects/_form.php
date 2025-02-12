@@ -3,12 +3,12 @@
 declare(strict_types=1);
 
 use app\components\Statuses\Statuses;
+use app\components\Statuses\StatusesInterface;
 use app\helpers\Data;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var app\models\Projects $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
@@ -19,18 +19,23 @@ use yii\widgets\ActiveForm;
 
     <hr>
     <div class="mt-3">
-        <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+        <?= Html::label('Название проекта') ?>
+        <?= Html::textInput('title', '', ['maxlength' => true, 'class' => 'form-control']) ?>
     </div>
 
     <div class="mt-3">
-        <?= Data::getTextArea($model, 'description') ?>
+        <?= Html::label('Описание') ?>
+        <?= Data::getTextArea('description', '') ?>
     </div>
 
     <div class="mt-3">
+        <?= Html::label('Статус') ?>
         <?=
-        $form->field($model, 'status')->dropDownList(
+        Html::dropDownList(
+            'status',
+            StatusesInterface::STATUS_TO_DO,
             Statuses::getStatusList(),
-            ['class' => 'mb-3 form-control']
+            ['class' => 'form-control', 'prompt' => ''],
         )
         ?>
     </div>

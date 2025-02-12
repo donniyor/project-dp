@@ -17,9 +17,8 @@ class UserService
         $this->repository = $repository;
     }
 
-    public function getUsersForView(array $userIds, int $limit = 10): array
+    public function getUsersForView(array $users): array
     {
-        $users = $this->repository->findByIds($userIds, $limit);
         $total = [];
 
         /** @var Users $user */
@@ -34,5 +33,10 @@ class UserService
         }
 
         return $total;
+    }
+
+    public function findByIds(array $userIds, int $limit = 10): array
+    {
+        return $this->repository->findByIds($userIds, $limit);
     }
 }

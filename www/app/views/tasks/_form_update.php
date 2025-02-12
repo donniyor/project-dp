@@ -31,7 +31,7 @@ ListAsset::register($this);
                 </div>
 
                 <div class="mb-3">
-                    <?= Data::getTextArea($model, 'description') ?>
+                    <?= Data::getTextAreaWithModel($model, 'description') ?>
                 </div>
 
                 <div class="mb-3">

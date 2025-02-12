@@ -67,5 +67,4 @@ class ApiTasksController extends BaseController
 
         return $this->asJson(['status' => 'error', 'message' => 'Задача не найдена']);
     }
-
 }

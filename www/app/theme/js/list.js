@@ -10,8 +10,8 @@ $(document).ready(function () {
 
         $(selector).select2({
             allowClear: false,
-            templateResult: formatOption,
-            templateSelection: formatSelectedOption,
+            templateResult: formatOptionAvatar,
+            templateSelection: formatSelectedOptionAvatar,
             ajax: {
                 url: '/users/get-users',
                 dataType: 'json',
@@ -41,7 +41,7 @@ $(document).ready(function () {
                 transport: function (params, success, failure) {
                     // Если кэш не пустой и пользователь не вводил текст, возвращаем кэшированные данные
                     if (!params.data.query && cachedData.length > 0) {
-                        success({ results: cachedData });
+                        success({results: cachedData});
                         return;
                     }
                     // Иначе выполняем стандартный запрос
@@ -57,11 +57,7 @@ $(document).ready(function () {
         });
     }
 
-    // Инициализация с уникальными ключами для кэширования данных
-    initializeSelect2('#assigned-to', 'assigned-to');
-    initializeSelect2('#author-id', 'author-id');
-
-    function formatOption(option) {
+    function formatOptionAvatar(option) {
         if (!option.id) {
             return option.text;
         }
@@ -78,11 +74,69 @@ $(document).ready(function () {
         );
     }
 
-    function formatSelectedOption(option) {
+    function formatSelectedOptionAvatar(option) {
         if (!option.id) {
             return option.text;
         }
 
         return option.text;
     }
+
+    function initializeSelect3(selector, link, cacheKey) {
+        let cachedData = []; // Локальный кэш данных для каждого поля
+
+        $(selector).select2({
+            allowClear: false,
+            templateResult: formatOptionProject,
+            templateSelection: formatSelectedOptionProject,
+            ajax: {
+                url: link, // URL для загрузки проектов
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    if (params.term) {
+                        return {query: params.term};
+                    }
+                    return {};
+                },
+                processResults: function (data) {
+                    cachedData = data.map(project => ({
+                        id: project.id,
+                        text: project.title
+                    }));
+
+                    return {results: cachedData};
+                },
+                transport: function (params, success, failure) {
+                    if (!params.data.query && cachedData.length > 0) {
+                        success({results: cachedData});
+                        return;
+                    }
+                    const request = $.ajax(params);
+                    request.then(success).fail(failure);
+                    return request;
+                },
+                cache: true
+            },
+            escapeMarkup: function (markup) {
+                return markup;
+            }
+        });
+    }
+
+    function formatOptionProject(option) {
+        if (!option.id) {
+            return option.text;
+        }
+        return `<div>${option.text}</div>`;
+    }
+
+    function formatSelectedOptionProject(option) {
+        return option.text;
+    }
+
+    initializeSelect3('#project-id', '/projects/get-projects', 'project-id');
+    initializeSelect3('#status-id', '/statuses/get-status', 'status-id');
+    initializeSelect2('#assigned-to', 'assigned-to');
+    initializeSelect2('#author-id', 'author-id');
 });

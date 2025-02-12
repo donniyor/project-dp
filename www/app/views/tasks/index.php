@@ -5,7 +5,7 @@ declare(strict_types=1);
 /** @var string $viewType */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-/** @var app\models\TasksSearch $searchModel */
+/** @var array $filters */
 
 use yii\helpers\Html;
 
@@ -25,5 +25,5 @@ $this->params['breadcrumbs'][] = $this->title;
     <hr>
     <?= $viewType === 'kanban'
         ? $this->render('_kanban')
-        : $this->render('_table', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]) ?>
+        : $this->render('_table', ['dataProvider' => $dataProvider, 'filters' => $filters]) ?>
 </div>

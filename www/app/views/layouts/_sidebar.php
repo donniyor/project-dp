@@ -23,6 +23,7 @@ use yii\helpers\Url;
                 ->add('Пользователи', 'people_alt', 'users')
                 ->add('Проекты', 'assignment', 'projects')
                 ->add('Беклог', 'task', 'tasks')
+                ->add('Канбан', 'view_kanban', 'kanban')
                 ->add('Моя работа', 'assignment_ind', 'self-tasks')
                 ->all()
             ?>

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace app\controllers;
 
 use app\components\BaseController;
+use app\DTO\ProjectCreateDTO;
 use app\DTO\ProjectSearchDTO;
-use app\models\Projects;
 use app\Service\ProjectService;
 use app\Service\UserService;
 use Yii;
@@ -58,16 +58,23 @@ class ProjectsController extends BaseController
 
     public function actionIndex(Request $request): string
     {
-        $filters = $this->request->get();
-        $params = ProjectSearchDTO::fromArray($filters);
-        $projects = $this->projectService->search($params);
+        $params = $request->get();
+        $params = ProjectSearchDTO::fromArray($params);
+
+        $projects = $this->projectService->search(
+            $params->getStatus(),
+            $params->getAuthorIds(),
+        );
+
         $users = null;
         if ($params->getAuthorIds() !== null) {
-            $users = $this->userService->getUsersForView($params->getAuthorIds());
+            $users = $this->userService->getUsersForView(
+                $this->userService->findByIds($params->getAuthorIds()),
+            );
         }
 
         return $this->render('index', [
-            'filters' => $filters,
+            'filters' => $params->toArray(),
             'projects' => $projects,
             'users' => $users,
         ]);
@@ -75,36 +82,39 @@ class ProjectsController extends BaseController
 
     /**
      * @throws Exception
-     * @throws HttpException
      */
-    public function actionCreate(): Response | string
+    public function actionCreate(Request $request): string
     {
-        $model = new Projects();
+        $post = $request->post();
+        $data = ProjectCreateDTO::fromArray($post);
 
-        if ($this->request->isPost) {
-            $this->saveData($model, 'update');
+        if ($request->getIsPost()) {
+            $model = $this->projectService->create(
+                $data->getTitle(),
+                $data->getDescription(),
+                $data->getStatus(),
+                $this->getUser()->getId(),
+            );
 
             $this->redirect(['update', 'id' => $model->getId()]);
         }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        return $this->render('create');
     }
 
     /**
      * @throws Exception
      * @throws HttpException
      */
-    public function actionUpdate(int $id): string
+    public function actionUpdate(int $id, Request $request): string
     {
-        $model = $this->findModel($id);
+        $model = $this->projectService->findById($id);
 
-        if ($model->getAuthorModel()->getId() !== Yii::$app->getUser()->getId()) {
-            return $this->render('view', ['model' => $model]);
+        if ($model === null) {
+            throw new NotFoundHttpException('The requested page does not exist.');
         }
 
-        if ($this->request->isPost) {
+        if ($request->getIsPost()) {
             $this->saveData($model, 'update');
         }
 
@@ -113,15 +123,17 @@ class ProjectsController extends BaseController
         ]);
     }
 
-    /**
-     * @throws NotFoundHttpException
-     */
-    protected function findModel(int $id): Projects
+    public function actionGetProjects(Request $request): array
     {
-        if (($model = Projects::findOne(['id' => $id])) !== null) {
-            return $model;
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $title = (string)$request->get('query');
+        $limit = (int)$request->get('limit', 10);
+
+        $projects = [];
+        if (!empty($title) && $limit > 0) {
+            $projects = $this->projectService->searchByTitle($title, $limit);
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        return $this->projectService->processProjects($projects);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace app\helpers;
 
+use Throwable;
 use vova07\imperavi\Widget;
 use vova07\imperavi\actions\GetImagesAction;
 use vova07\imperavi\actions\UploadFileAction;
@@ -145,7 +146,7 @@ class Data
         ];
     }
 
-    public static function getTextArea(ActiveRecord $model, string $textareaInput): string
+    public static function getTextAreaWithModel(ActiveRecord $model, string $textareaInput): string
     {
         $controller = Yii::$app->controller->getUniqueId();
         $className = StringHelper::basename(get_class($model));
@@ -167,5 +168,24 @@ class Data
         $content .= "</div>";
 
         return $content;
+    }
+
+    public static function getTextArea(
+        string $name,
+        string $value,
+    ): string {
+        return Widget::widget([
+            'name' => $name,
+            'value' => $value,
+            'settings' => [
+                'lang' => 'ru',
+                'minHeight' => 300,
+                'maxHeight' => 500,
+                'plugins' => [
+                    'fullscreen',
+                    'table',
+                ],
+            ],
+        ]);
     }
 }

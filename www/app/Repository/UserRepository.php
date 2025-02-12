@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace app\Repository;
 
 use app\models\Users;
-use yii\data\ActiveDataProvider;
-use yii\db\ActiveQuery;
 
 class UserRepository
 {

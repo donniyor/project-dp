@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace app\models;
 
 use app\components\Statuses\StatusesInterface;
-use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -33,7 +32,6 @@ class Projects extends ActiveRecord
     {
         return [
             [['description'], 'string'],
-            ['author_id', 'default', 'value' => Yii::$app->getUser()->getId()],
             [['status'], 'default', 'value' => StatusesInterface::STATUS_TO_DO],
             [['author_id', 'status'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
@@ -68,17 +66,17 @@ class Projects extends ActiveRecord
 
     public function getStatus(): int
     {
-        return $this->getAttribute('status');
+        return (int)$this->getAttribute('status');
     }
 
     public function getId(): int
     {
-        return $this->getAttribute('id');
+        return (int)$this->getAttribute('id');
     }
 
     public function getTitle(): string
     {
-        return $this->getAttribute('title');
+        return (string)$this->getAttribute('title');
     }
 
     public function getAuthorModel(): Users
@@ -88,16 +86,39 @@ class Projects extends ActiveRecord
 
     public function getCreatedAt(): ?string
     {
-        return $this->getAttribute('created_at');
-    }
-
-    public function getUpdatedAt(): ?string
-    {
-        return $this->getAttribute('updated_at');
+        return (string)$this->getAttribute('created_at');
     }
 
     public function getDescription(): string
     {
-        return $this->getAttribute('description') ?? '';
+        return (string)$this->getAttribute('description') ?? '';
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->setAttribute('title', $title);
+
+        return $this;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->setAttribute('description', $description);
+
+        return $this;
+    }
+
+    public function setStatus(int $status): self
+    {
+        $this->setAttribute('status', $status);
+
+        return $this;
+    }
+
+    public function setAuthorId(int $id): self
+    {
+        $this->setAttribute('author_id', $id);
+
+        return $this;
     }
 }

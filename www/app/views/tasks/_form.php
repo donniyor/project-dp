@@ -2,13 +2,19 @@
 
 declare(strict_types=1);
 
+use app\assets\ListAsset;
+use app\components\Statuses\Statuses;
+use app\components\Statuses\StatusesInterface;
 use app\helpers\Data;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\web\View;
 
-/** @var yii\web\View $this */
-/** @var app\models\Tasks $model */
-/** @var yii\widgets\ActiveForm $form */
+/** @var View $this */
+/** @var ActiveForm $form */
+
+ListAsset::register($this);
+
 ?>
 
 <div class="tasks-form">
@@ -17,22 +23,60 @@ use yii\widgets\ActiveForm;
     $form = ActiveForm::begin(); ?>
 
     <div class="mb-3">
-        <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+        <?= Html::label('Название') ?>
+        <?= Html::textInput('title', '', ['maxlength' => true, 'class' => 'form-control']) ?>    </div>
+
+    <div class="mb-3">
+        <?= Html::label('Описание') ?>
+        <?= Data::getTextArea('description', '') ?>
     </div>
 
     <div class="mb-3">
-        <?= Data::getTextArea($model, 'description') ?>
-    </div>
-
-    <div class="mb-3">
-        <?= $form->field($model, 'assigned_to')->dropDownList($model->getAllUsers(), ['prompt' => 'Без исполнителя']) ?>
-    </div>
-
-    <div class="mb-3">
-        <?= $form->field($model, 'project_id')->dropDownList(
-            $model->getAllProjects(),
-            ['prompt' => '', 'class' => 'form-select']
+        <?= Html::label('Исполнитель') ?>
+        <?= Html::dropDownList(
+            'assigned_to',
+            null,
+            [],
+            [
+                'id' => 'assigned-to',
+                'class' => 'js-states form-control',
+                'tabindex' => '-1',
+                'style' => 'display: none; width: 100%',
+                'prompt' => 'Выберите исполнителя',
+            ],
         ) ?>
+    </div>
+
+    <div class="mb-3">
+        <?= Html::label('Проект') ?>
+        <?= Html::dropDownList(
+            'project_id',
+            null,
+            [],
+            [
+                'id' => 'project-id',
+                'class' => 'js-states form-control',
+                'style' => 'width: 100%',
+                'prompt' => 'Выберите проект',
+            ],
+        ) ?>
+    </div>
+
+    <div class="mb-3">
+        <?= Html::label('Статус') ?>
+        <?=
+        Html::dropDownList(
+            'status_id',
+            null,
+            [],
+            [
+                'id' => 'status-id',
+                'class' => 'js-states form-control',
+                'style' => 'width: 100%',
+                'prompt' => 'Выберите статус',
+            ],
+        )
+        ?>
     </div>
 
     <div class="form-group">

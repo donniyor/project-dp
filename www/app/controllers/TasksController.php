@@ -5,28 +5,89 @@ declare(strict_types=1);
 namespace app\controllers;
 
 use app\components\BaseController;
+use app\DTO\TaskCreateDTO;
+use app\DTO\TaskSearchDTO;
 use app\models\Tasks;
-use app\models\TasksSearch;
+use app\models\Users;
+use app\Service\ProjectService;
+use app\Service\TaskService;
+use app\Service\UserService;
 use Yii;
 use yii\base\Exception;
 use yii\web\BadRequestHttpException;
 use yii\web\Cookie;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
+use yii\web\Request;
 use yii\web\Response;
 
 class TasksController extends BaseController
 {
-    public function actionIndex(): string
-    {
-        $viewType = Yii::$app->request->cookies->getValue('viewType', 'kanban');
-        $searchModel = new TasksSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+    private TaskService $tasksService;
+    private UserService $userService;
+    private ProjectService $projectService;
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'viewType' => $viewType,
+    public function __construct(
+        $id,
+        $module,
+        TaskService $tasksService,
+        UserService $userService,
+        ProjectService $projectService,
+        $config = [],
+    ) {
+        parent::__construct($id, $module, $config);
+
+        $this->tasksService = $tasksService;
+        $this->userService = $userService;
+        $this->projectService = $projectService;
+    }
+
+    public function actionIndex(Request $request): string
+    {
+        // TODO validate request
+        $params = TaskSearchDTO::fromArray($request->get());
+        $tasks = $this->tasksService->search(
+            $params->getProjectIds(),
+            $params->getStatus(),
+            $params->getAuthorIds(),
+            $params->getAssignedToIds(),
+        );
+
+        $userIds = array_unique(
+            array_merge(
+                $params->getAuthorIds() ?? [],
+                $params->getAssignedToIds() ?? [],
+            ),
+        );
+
+        $authors = $assignedTo = null;
+        if (!empty($userIds)) {
+            $users = $this->userService->findByIds($userIds);
+
+            $authors = !empty($params->getAuthorIds())
+                ? $this->userService->getUsersForView(
+                    array_filter(
+                        $users,
+                        static fn(Users $user): bool => in_array($user->getId(), $params->getAuthorIds()),
+                    ),
+                )
+                : null;
+
+            $assignedTo = !empty($params->getAssignedToIds())
+                ? $this->userService->getUsersForView(
+                    array_filter(
+                        $users,
+                        static fn(Users $user): bool => in_array($user->getId(), $params->getAssignedToIds()),
+                    ),
+                )
+                : null;
+        }
+
+        return $this->render('table', [
+            'tasks' => $tasks,
+            'filters' => $params->toArray(),
+            'authors' => $authors,
+            'assignedTo' => $assignedTo,
         ]);
     }
 
@@ -52,21 +113,19 @@ class TasksController extends BaseController
      * @throws Exception
      * @throws HttpException
      */
-    public function actionCreate(): Response | string
+    public function actionCreate(Request $request): Response | string
     {
-        $model = new Tasks();
+        $post = $request->post();
+        $data = TaskCreateDTO::fromArray($post);
 
-        if ($this->request->isPost) {
-            if (!$this->saveData($model)) {
-                return $this->back();
-            }
+        if ($request->getIsPost()) {
+            $model = $this->tasksService->create();
+            dd('a');
 
-            return $this->redirect(['update', 'id' => $model->getId()]);
+            $this->redirect(['update', 'id' => $model->getId()]);
         }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        return $this->render('create');
     }
 
     /**
