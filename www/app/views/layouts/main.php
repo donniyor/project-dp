@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /** @var yii\web\View $this */
 /** @var string $content */
 
@@ -18,8 +20,11 @@ $this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, 
 $this->registerMetaTag(['name' => 'description', 'content' => $this->params['meta_description'] ?? '']);
 $this->registerMetaTag(['name' => 'keywords', 'content' => $this->params['meta_keywords'] ?? '']);
 $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii::getAlias('@web/favicon.ico')]);
+
+$this->beginPage();
+
 ?>
-<?php $this->beginPage() ?>
+
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>" class="h-100">
 <head>
@@ -31,32 +36,39 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
           rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
           rel="stylesheet">
-    <?php $this->head() ?>
+    <?php
+    $this->head() ?>
 </head>
-<body class="d-flex flex-column h-100">
-<?php $this->beginBody() ?>
+<body class="d-flex flex-column h-100m">
+<?php
+$this->beginBody() ?>
 <div class="app full-width-header align-content-stretch d-flex flex-wrap">
     <?= $this->render('_sidebar') ?>
-    <div class="app-container">
+    <div class="container">
         <?= $this->render('_header') ?>
         <div class="app-content">
             <div class="content-wrapper">
                 <div class="container-fluid">
-                    <?php if (!empty($this->params['breadcrumbs'])): ?>
+                    <?php
+                    if (!empty($this->params['breadcrumbs'])): ?>
                         <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs']]) ?>
-                    <?php endif ?>
+                    <?php
+                    endif ?>
                     <?= Alert::widget() ?>
                     <div class="row">
                         <div class="col">
-                            <?php if(Yii::$app->controller->id == 'chats') {?>
+                            <?php
+                            if (Yii::$app->controller->id == 'chats') { ?>
                                 <?= $content ?>
-                            <?php } else {?>
+                                <?php
+                            } else { ?>
                                 <div class="card">
                                     <div class="card-body">
                                         <?= $content ?>
                                     </div>
                                 </div>
-                            <?php }?>
+                                <?php
+                            } ?>
                         </div>
                     </div>
                 </div>
@@ -64,8 +76,10 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         </div>
     </div>
 </div>
-<?php $this->endBody() ?>
+<?php
+$this->endBody() ?>
 </body>
 
 </html>
-<?php $this->endPage() ?>
+<?php
+$this->endPage() ?>
