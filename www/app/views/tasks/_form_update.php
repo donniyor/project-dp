@@ -11,7 +11,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var app\models\Tasks $model */
+/** @var array $model */
 /** @var yii\widgets\ActiveForm $form */
 
 ListAsset::register($this);
@@ -35,7 +35,7 @@ ListAsset::register($this);
                 </div>
 
                 <div class="mb-3">
-                    <?= $form->field($model, 'assigned_to')->dropDownList($model->getAllUsers(), ['prompt' => 'Без исполнителя']) ?>
+                    <?= $form->field($model, 'assigned_to')->dropDownList([], ['prompt' => 'Без исполнителя']) ?>
                 </div>
 
                 <div class="mb-3">

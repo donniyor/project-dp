@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace app\Service;
 
+use app\components\Statuses\Statuses;
 use app\Repository\StatusRepository;
 
 class StatusService

@@ -32,8 +32,31 @@ class TaskService
         );
     }
 
-    public function create(): Tasks
+    public function create(
+        string $title,
+        string $description,
+        int $statusId,
+        int $projectId,
+        int $authorId,
+        ?int $assignedTo = null,
+    ): Tasks {
+        return $this->repository->create(
+            $title,
+            $description,
+            $statusId,
+            $projectId,
+            $authorId,
+            $assignedTo,
+        );
+    }
+
+    public function findById(int $id): ?Tasks
     {
-        return new Tasks();
+        return $this->repository->findById($id);
+    }
+
+    public function findBy(): array
+    {
+        return $this->repository->findBy();
     }
 }

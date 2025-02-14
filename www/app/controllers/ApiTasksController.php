@@ -4,47 +4,46 @@ declare(strict_types=1);
 
 namespace app\controllers;
 
-use app\components\Avatars;
 use app\components\BaseController;
-use app\components\Statuses\Statuses;
 use app\models\Tasks;
-use Yii;
+use app\Service\BoardsService;
+use app\Service\StatusService;
+use app\Service\TaskService;
 use yii\db\Exception;
-use yii\helpers\Url;
 use yii\web\Request;
 use yii\web\Response;
 
 class ApiTasksController extends BaseController
 {
-    public function actionData(): Response
+    private TaskService $taskService;
+    private StatusService $statusService;
+    private BoardsService $boardsService;
+
+    public function __construct(
+        $id,
+        $module,
+        TaskService $taskService,
+        StatusService $statusService,
+        BoardsService $boardsService,
+        $config = [],
+    ) {
+        parent::__construct($id, $module, $config);
+
+        $this->taskService = $taskService;
+        $this->statusService = $statusService;
+        $this->boardsService = $boardsService;
+    }
+
+    public function actionData(Response $response): Response
     {
-        $tasks = Tasks::find()->all();
-        $boards = [];
+        $response->format = Response::FORMAT_JSON;
 
-        foreach (Statuses::getStatuses() as $status) {
-            $boards[(string)$status] = [
-                'id' => (string)$status,
-                'title' => Statuses::getStatusName($status),
-                'class' => 'success',
-                'item' => []
-            ];
-        }
-
-        /** @var Tasks $task */
-        foreach ($tasks as $task) {
-            $boards[(string)$task->getStatus()]['item'][] = [
-                'id' => (string)$task->getId(),
-                'title' => $task->getTitle(),
-                'url' => Url::to([sprintf('/tasks/update/%s', $task->getId())]),
-                'assignedTo' => $task->getAssignedToUser() === null
-                    ? Avatars::getAssignedToButton($task->getId(), 30)
-                    : Avatars::getAvatarRound($task->getAssignedToModel(), 30, false)
-            ];
-        }
-
-        Yii::$app->response->format = Response::FORMAT_JSON;
-
-        return $this->asJson($boards);
+        return $this->asJson(
+            $this->boardsService->getBoards(
+                $this->statusService->getStatuses(),
+                $this->taskService->findBy(),
+            ),
+        );
     }
 
     /**

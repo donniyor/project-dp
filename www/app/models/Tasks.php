@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace app\models;
 
-use app\components\Avatars;
 use app\components\BaseModel;
-use app\components\Statuses\StatusesInterface;
-use Yii;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 
@@ -40,33 +37,10 @@ class Tasks extends BaseModel
             [['title'], 'required'],
             [['description'], 'safe'],
             [['project_id'], 'required'],
-            ['author_id', 'default', 'value' => Yii::$app->getUser()->getId()],
-            ['status', 'default', 'value' => StatusesInterface::STATUS_TO_DO],
             [['assigned_to', 'project_id', 'status'], 'default', 'value' => null],
             [['author_id', 'assigned_to', 'project_id', 'status'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['title'], 'string', 'max' => 255],
-            [
-                ['author_id'],
-                'exist',
-                'skipOnError' => true,
-                'targetClass' => Users::class,
-                'targetAttribute' => ['author_id' => 'id']
-            ],
-            [
-                ['project_id'],
-                'exist',
-                'skipOnError' => true,
-                'targetClass' => Projects::class,
-                'targetAttribute' => ['project_id' => 'id']
-            ],
-            [
-                ['assigned_to'],
-                'exist',
-                'skipOnError' => true,
-                'targetClass' => Users::class,
-                'targetAttribute' => ['assigned_to' => 'id']
-            ],
         ];
     }
 
@@ -87,7 +61,7 @@ class Tasks extends BaseModel
 
     public function getAssignedToUser(): ?int
     {
-        return $this->assigned_to;
+        return (int)$this->getAttribute('assigned_to') ?? null;
     }
 
     public function getAssignedTo(): ActiveQuery
@@ -107,7 +81,7 @@ class Tasks extends BaseModel
 
     public function getId(): int
     {
-        return $this->id;
+        return (int)$this->getAttribute('id');
     }
 
     public function getTitle(): string
@@ -155,53 +129,38 @@ class Tasks extends BaseModel
         $this->assigned_to = $assignedTo;
     }
 
-    /**
-     * @return array<int, array>
-     */
-    public function getAllUsers(): array
+    public function setTitle(string $title): self
     {
-        $users = Users::find()
-            ->select(['id', 'username', 'email', 'first_name', 'last_name'])
-            ->all();
-        $total = [];
+        $this->setAttribute('title', $title);
 
-        /** @var Users $user */
-        foreach ($users as $user) {
-            $avatarHtml = Avatars::getAvatarRound($user, 40, false);
-            $total[] = [
-                'id' => $user->getId(),
-                'user' => sprintf('%s %s', $user->getLastName(), $user->getFirstName()),
-                'email' => $user->getEmail(),
-                'avatar' => $avatarHtml,
-            ];
-        }
-
-        return $total;
+        return $this;
     }
 
-    /**
-     * @param int $limit
-     * @return array<int, array>
-     */
-    public static function getUsers(int $limit = 10): array
+    public function setDescription(string $description): self
     {
-        $users = Users::find()
-            ->select(['id', 'username', 'email', 'first_name', 'last_name'])
-            ->limit($limit)
-            ->all();
-        $total = [];
+        $this->setAttribute('description', $description);
 
-        /** @var Users $user */
-        foreach ($users as $user) {
-            $avatarHtml = Avatars::getAvatarRound($user, 40, false);
-            $total[] = [
-                'id' => $user->getId(),
-                'user' => sprintf('%s %s', $user->getLastName(), $user->getFirstName()),
-                'email' => $user->getEmail(),
-                'avatar' => $avatarHtml,
-            ];
-        }
+        return $this;
+    }
 
-        return $total;
+    public function setStatus(int $status): self
+    {
+        $this->setAttribute('status', $status);
+
+        return $this;
+    }
+
+    public function setAuthorId(int $authorId): self
+    {
+        $this->setAttribute('author_id', $authorId);
+
+        return $this;
+    }
+
+    public function setProjectId(int $projectId): self
+    {
+        $this->setAttribute('project_id', $projectId);
+
+        return $this;
     }
 }

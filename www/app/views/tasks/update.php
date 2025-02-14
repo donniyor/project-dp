@@ -5,7 +5,7 @@ declare(strict_types=1);
 use yii\helpers\Html;
 
 /** @var yii\web\View $this */
-/** @var app\models\Tasks $model */
+/** @var array $model */
 
 $this->title = 'Редактировать задачу';
 $this->params['breadcrumbs'][] = ['label' => 'Задачи', 'url' => ['index']];

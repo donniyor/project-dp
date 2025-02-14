@@ -65,7 +65,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 'value' => static fn(Tasks $model): string => $model->getAssignedToUser() === null
                     ? Avatars::getAssignedToButton($model->getId(), 40)
-                    : Avatars::getAvatarRound($model->getAssignedToModel(), 40),
+                    : ($model->getAssignedToModel() === null
+                        ? Avatars::getAssignedToButton($model->getId(), 40)
+                        : Avatars::getAvatarRound($model->getAssignedToModel(), 40)
+                    ),
             ],
             [
                 'attribute' => 'status',

@@ -7,6 +7,7 @@ namespace app\Service;
 use app\components\Avatars;
 use app\models\Users;
 use app\Repository\UserRepository;
+use yii\web\User;
 
 class UserService
 {
@@ -38,5 +39,10 @@ class UserService
     public function findByIds(array $userIds, int $limit = 10): array
     {
         return $this->repository->findByIds($userIds, $limit);
+    }
+
+    public function getCurrentUser(): User
+    {
+        return $this->repository->getCurrentUser();
     }
 }

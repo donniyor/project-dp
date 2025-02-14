@@ -13,6 +13,10 @@ class Statuses implements StatusesInterface
         return [
             self::STATUS_TO_DO => 'К выполнению',
             self::STATUS_DELETED => 'Удален',
+            self::STATUS_IN_PROCESS => 'В процессе',
+            self::STATUS_NOT_OK => 'Не ок',
+            self::STATUS_OK => 'Ок',
+            self::STATUS_DONE => 'Выполнен',
         ];
     }
 

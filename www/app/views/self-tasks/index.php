@@ -5,9 +5,6 @@ declare(strict_types=1);
 /** @var string $viewType */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-/** @var app\models\TasksSearch $searchModel */
-
-use app\components\Tasks\TasksView;
 use yii\helpers\Html;
 
 $this->title = 'Задачи';

@@ -17,6 +17,9 @@ use yii\web\User;
 
 class BaseController extends Controller
 {
+    protected const SUCCESS = 'success';
+    protected const DANGER = 'danger';
+
     /**
      * @throws InvalidRouteException
      * @throws BadRequestHttpException
@@ -40,37 +43,37 @@ class BaseController extends Controller
     public $enableCsrfValidation = true;
     public $error = null;
 
-    /**
-     * @throws Exception
-     * @throws HttpException
-     */
-    protected function saveData($model, $type = 'create', $imageUpload = false, $images = []): bool
-    {
-        $env = env('API_HOST');
-        if ($model->load($this->request->post())) {
-            if (isset($_FILES) && $imageUpload && !empty($images)) {
-                foreach ($images as $image) {
-                    $imageInstance = UploadedFile::getInstance($model, $image);
-                    $model->$image = $imageInstance;
-
-                    if ($imageInstance && $model->validate($image)) {
-                        $model->$image = $env . Upload::file($imageInstance);
-                    } else {
-                        $model->$image = $type === 'update' ? $model->oldAttributes[$image] : '';
-                    }
-                }
-            }
-
-            if ($model->save()) {
-                $this->flash('success', 'Данные успешно сохранены');
-
-                return true;
-            }
-        }
-        $this->flash('error', 'Ошибка: ' . $this->formatErrors($model));
-
-        return false;
-    }
+//    /**
+//     * @throws Exception
+//     * @throws HttpException
+//     */
+//    protected function saveData($model, $type = 'create', $imageUpload = false, $images = []): bool
+//    {
+//        $env = env('API_HOST');
+//        if ($model->load($this->request->post())) {
+//            if (isset($_FILES) && $imageUpload && !empty($images)) {
+//                foreach ($images as $image) {
+//                    $imageInstance = UploadedFile::getInstance($model, $image);
+//                    $model->$image = $imageInstance;
+//
+//                    if ($imageInstance && $model->validate($image)) {
+//                        $model->$image = $env . Upload::file($imageInstance);
+//                    } else {
+//                        $model->$image = $type === 'update' ? $model->oldAttributes[$image] : '';
+//                    }
+//                }
+//            }
+//
+//            if ($model->save()) {
+//                $this->flash('success', 'Данные успешно сохранены');
+//
+//                return true;
+//            }
+//        }
+//        $this->flash('error', 'Ошибка: ' . $this->formatErrors($model));
+//
+//        return false;
+//    }
 
     protected function formatErrors($model): string
     {
@@ -79,6 +82,11 @@ class BaseController extends Controller
             $result .= implode(" ", $errors) . " ";
         }
         return $result;
+    }
+
+    protected function makeError(array $errors): void
+    {
+        $this->flash(self::DANGER, implode(', ', array_map('implode', $errors)));
     }
 
     protected function flash(string $type, string $message): void

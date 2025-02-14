@@ -52,4 +52,39 @@ class TaskRepository extends BaseEntityRepository
             'query' => $query,
         ]);
     }
+
+    public function create(
+        string $title,
+        string $description,
+        int $statusId,
+        int $projectId,
+        int $authorId,
+        ?int $assignedTo = null,
+    ): Tasks {
+        $model = $this->getEntity();
+
+        $model->setTitle($title)
+            ->setDescription($description)
+            ->setStatus($statusId)
+            ->setProjectId($projectId)
+            ->setAuthorId($authorId);
+
+        if ($assignedTo !== null) {
+            $model->setAssignedTo($assignedTo);
+        }
+
+        $model->save();
+
+        return $model;
+    }
+
+    public function findById(int $id): Tasks
+    {
+        return $this->getEntity()->findOne(['id' => $id]);
+    }
+
+    public function findBy(): array
+    {
+        return $this->getEntity()->find()->all();
+    }
 }

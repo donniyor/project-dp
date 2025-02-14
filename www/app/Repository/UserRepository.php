@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace app\Repository;
 
 use app\models\Users;
+use Yii;
+use yii\web\User;
 
 class UserRepository
 {
@@ -21,5 +23,10 @@ class UserRepository
             ->where(['in', 'id', $userIds])
             ->limit($limit)
             ->all();
+    }
+
+    public function getCurrentUser(): User
+    {
+        return Yii::$app->getUser();
     }
 }

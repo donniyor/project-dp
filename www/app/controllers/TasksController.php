@@ -7,15 +7,12 @@ namespace app\controllers;
 use app\components\BaseController;
 use app\DTO\TaskCreateDTO;
 use app\DTO\TaskSearchDTO;
-use app\models\Tasks;
 use app\models\Users;
-use app\Service\ProjectService;
 use app\Service\TaskService;
 use app\Service\UserService;
+use app\Validator\TaskValidator;
 use Yii;
 use yii\base\Exception;
-use yii\web\BadRequestHttpException;
-use yii\web\Cookie;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Request;
@@ -25,21 +22,21 @@ class TasksController extends BaseController
 {
     private TaskService $tasksService;
     private UserService $userService;
-    private ProjectService $projectService;
+    private TaskValidator $validator;
 
     public function __construct(
         $id,
         $module,
         TaskService $tasksService,
         UserService $userService,
-        ProjectService $projectService,
+        TaskValidator $validator,
         $config = [],
     ) {
         parent::__construct($id, $module, $config);
 
         $this->tasksService = $tasksService;
         $this->userService = $userService;
-        $this->projectService = $projectService;
+        $this->validator = $validator;
     }
 
     public function actionIndex(Request $request): string
@@ -91,41 +88,39 @@ class TasksController extends BaseController
         ]);
     }
 
-    /**
-     * @throws BadRequestHttpException
-     */
-    public function actionSetViewType(string $type): Response
-    {
-        if (!in_array($type, ['kanban', 'table'], true)) {
-            throw new BadRequestHttpException('Invalid view type.');
-        }
-
-        Yii::$app->response->cookies->add(new Cookie([
-            'name' => 'viewType',
-            'value' => $type,
-            'expire' => time() + 3600 * 24 * 30,
-        ]));
-
-        return $this->redirect(['index']);
-    }
-
-    /**
-     * @throws Exception
-     * @throws HttpException
-     */
     public function actionCreate(Request $request): Response | string
     {
-        $post = $request->post();
-        $data = TaskCreateDTO::fromArray($post);
-
-        if ($request->getIsPost()) {
-            $model = $this->tasksService->create();
-            dd('a');
-
-            $this->redirect(['update', 'id' => $model->getId()]);
+        if ($request->getIsGet()) {
+            return $this->render('create');
         }
 
-        return $this->render('create');
+        $data = $request->post();
+        $errors = $this->validator->validate($data);
+        if ($errors !== null) {
+            $this->makeError($errors);
+
+            return $this->render('create');
+        }
+
+        $data = TaskCreateDTO::fromArray($data);
+
+        $model = $this->tasksService->create(
+            $data->getTitle(),
+            $data->getDescription(),
+            $data->getStatus(),
+            $data->getProjectId(),
+            $this->userService->getCurrentUser()->getId(),
+            $data->getAssignedTo(),
+        );
+
+        $errors = $model->getErrors();
+        if (!empty($errors)) {
+            $this->makeError($errors);
+
+            return $this->render('create');
+        }
+
+        return $this->redirect(['update', 'id' => $model->getId()]);
     }
 
     /**
@@ -133,11 +128,21 @@ class TasksController extends BaseController
      * @throws NotFoundHttpException
      * @throws HttpException
      */
-    public function actionUpdate(int $id): string
+    public function actionUpdate(Request $request): string
     {
-        $model = $this->findModel($id);
+        $id = (int)($request->get()['id'] ?? null);
 
-        if ($this->request->isPost) {
+        if ($id <= 0) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
+        $model = $this->tasksService->findById($id);
+
+        if ($model === null) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
+        if ($request->getIsPost()) {
             $this->saveData($model);
         }
 
@@ -160,18 +165,5 @@ class TasksController extends BaseController
         }
 
         return $this->back();
-    }
-
-
-    /**
-     * @throws NotFoundHttpException
-     */
-    protected function findModel(int $id): Tasks
-    {
-        if (($model = Tasks::findOne(['id' => $id])) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

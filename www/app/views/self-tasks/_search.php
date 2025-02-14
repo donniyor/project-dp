@@ -8,7 +8,6 @@ use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var app\models\TasksSearch $model */
 /** @var yii\widgets\ActiveForm $form */
 
 ?>
