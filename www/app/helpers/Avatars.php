@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace app\components;
+namespace app\helpers;
 
 use app\models\Users;
 use yii\helpers\Html;

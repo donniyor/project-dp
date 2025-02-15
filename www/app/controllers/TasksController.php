@@ -7,10 +7,12 @@ namespace app\controllers;
 use app\components\BaseController;
 use app\DTO\TaskCreateDTO;
 use app\DTO\TaskSearchDTO;
+use app\DTO\TaskUpdateDTO;
 use app\models\Users;
 use app\Service\TaskService;
 use app\Service\UserService;
-use app\Validator\TaskValidator;
+use app\Validator\TaskUpdateValidator;
+use app\Validator\TaskCreateValidator;
 use Yii;
 use yii\base\Exception;
 use yii\web\HttpException;
@@ -22,21 +24,24 @@ class TasksController extends BaseController
 {
     private TaskService $tasksService;
     private UserService $userService;
-    private TaskValidator $validator;
+    private TaskCreateValidator $taskCreateValidator;
+    private TaskUpdateValidator $taskUpdateValidator;
 
     public function __construct(
         $id,
         $module,
         TaskService $tasksService,
         UserService $userService,
-        TaskValidator $validator,
+        TaskCreateValidator $taskCreateValidator,
+        TaskUpdateValidator $taskUpdateValidator,
         $config = [],
     ) {
         parent::__construct($id, $module, $config);
 
         $this->tasksService = $tasksService;
         $this->userService = $userService;
-        $this->validator = $validator;
+        $this->taskCreateValidator = $taskCreateValidator;
+        $this->taskUpdateValidator = $taskUpdateValidator;
     }
 
     public function actionIndex(Request $request): string
@@ -95,7 +100,7 @@ class TasksController extends BaseController
         }
 
         $data = $request->post();
-        $errors = $this->validator->validate($data);
+        $errors = $this->taskUpdateValidator->validate($data);
         if ($errors !== null) {
             $this->makeError($errors);
 
@@ -143,7 +148,17 @@ class TasksController extends BaseController
         }
 
         if ($request->getIsPost()) {
-            $this->saveData($model);
+            $data = $request->post();
+            $data = TaskUpdateDTO::fromArray($data);
+            $errors = $this->taskUpdateValidator->validate($data->toArray());
+            if ($errors !== null) {
+                $this->makeError($errors);
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
+
+            $this->tasksService->update();
         }
 
         return $this->render('update', [

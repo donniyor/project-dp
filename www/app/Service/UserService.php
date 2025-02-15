@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace app\Service;
 
-use app\components\Avatars;
+use app\helpers\Avatars;
 use app\models\Users;
 use app\Repository\UserRepository;
 use yii\web\User;

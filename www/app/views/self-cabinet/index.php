@@ -6,8 +6,8 @@ declare(strict_types=1);
 
 /** @var app\models\Users $model */
 
-use app\components\Avatars;
 use app\components\DatesInterface;
+use app\helpers\Avatars;
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
 

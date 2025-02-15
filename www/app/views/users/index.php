@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-use app\components\Avatars;
+use app\helpers\Avatars;
 use app\helpers\Buttons;
 use app\models\AuthAssignment;
-use app\models\Projects;
 use app\models\Users;
-use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Html;
 
 /** @var yii\web\View $this */
 /** @var app\models\UsersSearch $searchModel */

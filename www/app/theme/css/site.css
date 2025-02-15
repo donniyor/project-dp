@@ -64,15 +64,6 @@ a.desc:after {
     color: rgba(255, 255, 255, 0.5);
 }
 
-@media(max-width:767px) {
-    .nav li > form > button.logout {
-        display:block;
-        text-align: left;
-        width: 100%;
-        padding: 10px 0;
-    }
-}
-
 .nav > li > form > button.logout:focus,
 .nav > li > form > button.logout:hover {
     text-decoration: none;
@@ -92,12 +83,7 @@ a.desc:after {
     width: 250px;
     background-color: #2c3e50;
     color: white;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
     padding-top: 20px;
-    overflow-y: auto;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -140,9 +126,19 @@ a.desc:after {
     font-size: 1.2em;
 }
 
-/* Responsive sidebar */
-@media (max-width: 768px) {
-    .app-menu {
-        width: 200px;
-    }
+.user-inline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.user-inline a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.avatar-placeholder {
+    flex-shrink: 0;
 }

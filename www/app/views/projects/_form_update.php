@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use app\components\Avatars;
 use app\components\DatesInterface;
 use app\components\Statuses\Statuses;
+use app\helpers\Avatars;
 use app\helpers\Data;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;

@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use app\components\Avatars;
 use app\components\Statuses\Statuses;
+use app\helpers\Avatars;
 use app\helpers\Buttons;
 use app\models\Projects;
 use yii\data\ActiveDataProvider;

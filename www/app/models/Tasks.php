@@ -6,6 +6,7 @@ namespace app\models;
 
 use app\components\BaseModel;
 use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -89,9 +90,23 @@ class Tasks extends BaseModel
         return $this->getAttribute('title') ?? '';
     }
 
-    public function getProjectsModel(): int
+    public function getDescription(): string
     {
-        return $this->project_id;
+        return (string)$this->getAttribute('description');
+    }
+
+    public function getProjectsModel(): ?Projects
+    {
+        /** @var Projects $model */
+        $model = $this->getProject()->one();
+        return $model;
+    }
+
+    public function getProjectId(): ?int
+    {
+        return $this->getAttribute('project_id') === null
+            ? null
+            : (int)$this->getAttribute('project_id');
     }
 
     public function getAllProjects(): array

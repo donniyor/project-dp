@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 /** @var yii\web\View $this */
+
 /** @var string $content */
 
 use app\assets\AppAsset;
@@ -39,43 +40,29 @@ $this->beginPage();
     <?php
     $this->head() ?>
 </head>
-<body class="d-flex flex-column h-100m">
+<body>
 <?php
 $this->beginBody() ?>
-<div class="app full-width-header align-content-stretch d-flex flex-wrap">
-    <?= $this->render('_sidebar') ?>
-    <div class="container">
-        <?= $this->render('_header') ?>
-        <div class="app-content">
-            <div class="content-wrapper">
-                <div class="container-fluid">
-                    <?php
-                    if (!empty($this->params['breadcrumbs'])): ?>
-                        <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs']]) ?>
-                    <?php
-                    endif ?>
+<div class="d-flex flex-column min-vh-100">
+    <div class="container-fluid flex-grow-1">
+        <div class="row h-100">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 p-0 app-menu d-flex flex-column">
+                <?= $this->render('_sidebar') ?>
+            </div>
+            <!-- Main Content -->
+            <div class="col-md-9 col-lg-10 d-flex flex-column vh-100">
+                <div class="flex-grow-1 overflow-auto">
+                    <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs']] ?? []) ?>
                     <?= Alert::widget() ?>
-                    <div class="row">
-                        <div class="col">
-                            <?php
-                            if (Yii::$app->controller->id == 'chats') { ?>
-                                <?= $content ?>
-                                <?php
-                            } else { ?>
-                                <div class="card">
-                                    <div class="card-body">
-                                        <?= $content ?>
-                                    </div>
-                                </div>
-                                <?php
-                            } ?>
-                        </div>
-                    </div>
+                    <div><?= $content ?></div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
 <?php
 $this->endBody() ?>
 </body>

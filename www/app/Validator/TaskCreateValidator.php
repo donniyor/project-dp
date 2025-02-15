@@ -7,7 +7,7 @@ namespace app\Validator;
 use yii\base\DynamicModel;
 use yii\base\InvalidConfigException;
 
-class TaskValidator
+final class TaskCreateValidator implements BaseValidatorInterface
 {
     /**
      * @throws InvalidConfigException

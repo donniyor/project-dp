@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace app\controllers;
 
-use app\components\Avatars;
+use app\components\BaseController;
+use app\helpers\Avatars;
 use app\models\CreateAdminForm;
 use app\models\Users;
 use app\models\UsersSearch;
 use Exception;
 use Throwable;
-use app\components\BaseController;
 use Yii;
 use yii\web\NotFoundHttpException;
 use yii\web\Request;
