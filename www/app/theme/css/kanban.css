@@ -1,3 +1,7 @@
+:root {
+    --tb-color: #c2cedb;
+}
+
 .kanban-container {
     display: flex;
     overflow-x: auto;
@@ -44,9 +48,9 @@
 .kanban-item {
     border-radius: 8px !important;
     background: #f9fcfe !important;
-    padding: 10px !important;
+    padding: 5px !important;
     margin: 5px 0 !important;
-    border: 1px solid #e0e7ef !important;
+    border: 1px solid var(--tb-color) !important;
     transition: background 0.2s, border-color 0.2s !important;
     cursor: grab !important;
 }
@@ -54,7 +58,7 @@
 
 .is-moving {
     background: #f9fcfe !important;
-    border: 1px solid #e0e7ef !important;
+    border: 1px solid var(--tb-color) !important;
 }
 
 .kanban-item:hover {
@@ -62,20 +66,39 @@
     border-color: #90caf9;
 }
 
-.kanban-title {
+.task_title {
     text-decoration: none;
     color: #333;
-    font-weight: bold;
+    padding-bottom: 2px;
+    display: inline-block;
     font-size: 14px;
-    display: block;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.kanban-assigned {
+    padding-bottom: 3px;
+}
+
+.task-project {
+    color: #333;
+    font-size: 11px;
+    display: inline-block;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    border-radius: 6px;
+    border: 1px solid #B0C4DE;
+    background: #EEF3F6;
+    padding: 3px;
+    font-weight: 600;
+    max-width: 150px;
+    text-align: center;
 }
 
 .kanban-add-item {
     margin: 10px 0;
-    border: 1px dashed #B0C4DE; /* Изменен цвет обводки для элемента добавления */
+    border: 1px dashed #B0C4DE;
     border-radius: 6px;
     padding: 10px;
     text-align: center;
@@ -105,22 +128,4 @@
     opacity: 0.8;
     border-color: #90caf9;
     background: #e3f2fd;
-}
-
-@media (max-width: 768px) {
-    .kanban-board {
-        min-width: 200px;
-    }
-
-    .kanban-board-header {
-        font-size: 16px;
-    }
-
-    .kanban-title {
-        font-size: 12px;
-    }
-
-    .kanban-item {
-        padding: 8px;
-    }
 }

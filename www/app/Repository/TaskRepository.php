@@ -85,7 +85,7 @@ class TaskRepository extends BaseEntityRepository
 
     public function findBy(): array
     {
-        return $this->getEntity()->find()->all();
+        return $this->getEntity()->find()->with('project')->all();
     }
 
     public function update(

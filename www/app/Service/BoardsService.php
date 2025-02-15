@@ -35,7 +35,8 @@ class BoardsService
                         $task->getAssignedToModel() === null
                             ? Avatars::getAssignedToButton($task->getId(), 30)
                             : Avatars::getAvatarRound($task->getAssignedToModel(), 30, false)
-                        )
+                        ),
+                    'project' => $task->project->getTitle(),
                 ];
             }
         }

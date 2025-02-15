@@ -27,8 +27,11 @@ $(document).ready(function () {
                         item: board.item.map(task => ({
                             id: task.id,
                             title: `
-                                <a href="${task.url}" class="kanban-title">${task.title}</a>
-                                <div class="kanban-assigned">${task.assignedTo}</div>
+                                <a href="${task.url}" class="task_title">${task.title}</a>
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div class="kanban-assigned">${task.assignedTo}</div>
+                                    <div class="task-project">${task.project}</div>
+                                </div>
                             `,
                         })),
                     })),

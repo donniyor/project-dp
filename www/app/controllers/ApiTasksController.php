@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace app\controllers;
 
 use app\components\BaseController;
-use app\models\Tasks;
 use app\Service\BoardsService;
 use app\Service\StatusService;
 use app\Service\TaskService;
@@ -53,15 +52,18 @@ class ApiTasksController extends BaseController
     {
         $taskId = (int)$request->post('taskId');
         $status = (int)$request->post('status');
-        $task = Tasks::findOne($taskId);
+        $task = $this->taskService->findById($taskId);
 
         if ($task !== null) {
-            $task->status = $status;
-            if ($task->save()) {
-                return $this->asJson(['status' => 'success']);
-            }
+            $this->taskService->update(
+                $task,
+                null,
+                null,
+                null,
+                $status,
+            );
 
-            return $this->asJson(['status' => 'error', 'message' => 'Не удалось обновить статус задачи']);
+            return $this->asJson(['status' => 'success']);
         }
 
         return $this->asJson(['status' => 'error', 'message' => 'Задача не найдена']);
