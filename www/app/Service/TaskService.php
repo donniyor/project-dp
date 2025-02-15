@@ -59,4 +59,22 @@ class TaskService
     {
         return $this->repository->findBy();
     }
+
+    public function update(
+        Tasks $model,
+        ?string $title = null,
+        ?string $description = null,
+        ?int $projectId = null,
+        ?int $status = null,
+        ?int $assignedTo = null,
+    ): Tasks {
+        return $this->repository->update(
+            $model,
+            $title,
+            $description,
+            $projectId,
+            $status,
+            $assignedTo,
+        );
+    }
 }

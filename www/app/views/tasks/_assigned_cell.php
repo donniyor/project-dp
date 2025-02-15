@@ -9,6 +9,6 @@ use app\models\Tasks;
  * @var Tasks $model
  */
 
-echo $model->getAssignedToUser() === null
+echo $model->getAssignedToUserId() === null
     ? Avatars::getAssignedToButton($model->getId(), 40)
     : Avatars::getAvatarRound($model->getAssignedToModel(), 40);

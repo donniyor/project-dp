@@ -66,7 +66,7 @@ ListAsset::register($this);
         <?= Html::label('Статус') ?>
         <?=
         Html::dropDownList(
-            'status_id',
+            'status',
             null,
             [],
             [

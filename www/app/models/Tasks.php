@@ -60,7 +60,7 @@ class Tasks extends BaseModel
         ];
     }
 
-    public function getAssignedToUser(): ?int
+    public function getAssignedToUserId(): ?int
     {
         return (int)$this->getAttribute('assigned_to') ?? null;
     }
@@ -95,13 +95,6 @@ class Tasks extends BaseModel
         return (string)$this->getAttribute('description');
     }
 
-    public function getProjectsModel(): ?Projects
-    {
-        /** @var Projects $model */
-        $model = $this->getProject()->one();
-        return $model;
-    }
-
     public function getProjectId(): ?int
     {
         return $this->getAttribute('project_id') === null
@@ -109,22 +102,12 @@ class Tasks extends BaseModel
             : (int)$this->getAttribute('project_id');
     }
 
-    public function getAllProjects(): array
-    {
-        $projects = Projects::find()->select(['id', 'title'])->all();
-        if (empty($projects)) {
-            return ['Нет проектов'];
-        }
-
-        return ArrayHelper::map($projects, 'id', 'title');
-    }
-
     public function getStatus(): int
     {
         return $this->status;
     }
 
-    public function getAuthorModel(): Users
+    public function getAuthorModel(): ?Users
     {
         return $this->author;
     }
@@ -141,7 +124,7 @@ class Tasks extends BaseModel
 
     public function setAssignedTo(int $assignedTo): void
     {
-        $this->assigned_to = $assignedTo;
+        $this->setAttribute('assigned_to', $assignedTo);
     }
 
     public function setTitle(string $title): self

@@ -87,4 +87,37 @@ class TaskRepository extends BaseEntityRepository
     {
         return $this->getEntity()->find()->all();
     }
+
+    public function update(
+        Tasks $model,
+        ?string $title = null,
+        ?string $description = null,
+        ?int $projectId = null,
+        ?int $status = null,
+        ?int $assignedTo = null
+    ): Tasks {
+        if ($title !== null) {
+            $model->setTitle($title);
+        }
+
+        if ($description !== null) {
+            $model->setDescription($description);
+        }
+
+        if ($projectId !== null) {
+            $model->setProjectId($projectId);
+        }
+
+        if ($status !== null) {
+            $model->setStatus($status);
+        }
+
+        if ($assignedTo !== null) {
+            $model->setAssignedTo($assignedTo);
+        }
+
+        $model->save();
+
+        return $model;
+    }
 }

@@ -63,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'contentOptions' => static fn(Tasks $model): array => [
                     'id' => sprintf('response-container-%s', $model->getId()),
                 ],
-                'value' => static fn(Tasks $model): string => $model->getAssignedToUser() === null
+                'value' => static fn(Tasks $model): string => $model->getAssignedToUserId() === null
                     ? Avatars::getAssignedToButton($model->getId(), 40)
                     : ($model->getAssignedToModel() === null
                         ? Avatars::getAssignedToButton($model->getId(), 40)

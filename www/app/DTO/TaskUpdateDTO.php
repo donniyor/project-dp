@@ -31,9 +31,9 @@ final class TaskUpdateDTO implements Arrayable
         return new self(
             empty($params['title']) ? null : $params['title'],
             empty($params['description']) ? null : $params['description'],
-            empty($params['assigned_to']) ? null : (int)$params['assigned_to'],
             empty($params['project_id']) ? null : (int)$params['project_id'],
             empty($params['status']) ? null : (int)$params['status'],
+            empty($params['assigned_to']) ? null : (int)$params['assigned_to'],
         );
     }
 

@@ -1,9 +1,10 @@
 .kanban-container {
     display: flex;
-    width: 100%;
     overflow-x: auto;
     padding: 0 !important;
-    gap: 15px;
+    width: 100% !important;
+    gap: 5px;
+    padding-left: 5px !important;
     scrollbar-width: thin;
     scrollbar-color: #cce4f6 transparent;
 }
@@ -25,16 +26,15 @@
     min-height: calc(100vh - 20px);
     overflow-y: auto;
     border-radius: 8px;
-    border: 1px solid #B0C4DE;
+    background: #f5f8f8;
     min-width: 280px;
-    background: #ffffff;
     transition: border-color 0.3s, background-color 0.3s;
     margin: 0 !important;
 }
 
 .kanban-board-header {
-    background: #607D8B;
-    color: #ffffff;
+    background: #dfe2e5;
+    color: #616161;
     font-size: 18px;
     font-weight: bold;
     padding: 5px;
@@ -42,13 +42,19 @@
 }
 
 .kanban-item {
-    border-radius: 8px;
-    background: #f9fcfe;
-    padding: 10px;
-    margin: 5px 0;
-    border: 1px solid #B0C4DE;  /* Изменен цвет обводки для элемента */
-    transition: background 0.2s, border-color 0.2s;
-    cursor: grab;
+    border-radius: 8px !important;
+    background: #f9fcfe !important;
+    padding: 10px !important;
+    margin: 5px 0 !important;
+    border: 1px solid #e0e7ef !important;
+    transition: background 0.2s, border-color 0.2s !important;
+    cursor: grab !important;
+}
+
+
+.is-moving {
+    background: #f9fcfe !important;
+    border: 1px solid #e0e7ef !important;
 }
 
 .kanban-item:hover {
@@ -69,7 +75,7 @@
 
 .kanban-add-item {
     margin: 10px 0;
-    border: 1px dashed #B0C4DE;  /* Изменен цвет обводки для элемента добавления */
+    border: 1px dashed #B0C4DE; /* Изменен цвет обводки для элемента добавления */
     border-radius: 6px;
     padding: 10px;
     text-align: center;
@@ -88,6 +94,7 @@
 
 .kanban-drag {
     padding: 5px !important;
+    min-height: 100vh !important;
 }
 
 .kanban-item.kanban-dragging,

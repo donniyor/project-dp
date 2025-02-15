@@ -142,3 +142,11 @@ a.desc:after {
 .avatar-placeholder {
     flex-shrink: 0;
 }
+
+.breadcrumb {
+    padding: 5px !important;
+}
+
+.mv-100vh {
+    min-height: 100vh;
+}

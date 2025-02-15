@@ -29,7 +29,7 @@ class BoardsService
                     'id' => (string)$task->getId(),
                     'title' => $task->getTitle(),
                     'url' => Url::to([sprintf('/tasks/update/%s', $task->getId())]),
-                    'assignedTo' => $task->getAssignedToUser() === null
+                    'assignedTo' => $task->getAssignedToUserId() === null
                         ? Avatars::getAssignedToButton($task->getId(), 30)
                         : (
                         $task->getAssignedToModel() === null

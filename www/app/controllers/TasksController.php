@@ -9,6 +9,8 @@ use app\DTO\TaskCreateDTO;
 use app\DTO\TaskSearchDTO;
 use app\DTO\TaskUpdateDTO;
 use app\models\Users;
+use app\Service\ProjectService;
+use app\Service\StatusService;
 use app\Service\TaskService;
 use app\Service\UserService;
 use app\Validator\TaskUpdateValidator;
@@ -26,6 +28,8 @@ class TasksController extends BaseController
     private UserService $userService;
     private TaskCreateValidator $taskCreateValidator;
     private TaskUpdateValidator $taskUpdateValidator;
+    private StatusService $statusService;
+    private ProjectService $projectService;
 
     public function __construct(
         $id,
@@ -34,6 +38,8 @@ class TasksController extends BaseController
         UserService $userService,
         TaskCreateValidator $taskCreateValidator,
         TaskUpdateValidator $taskUpdateValidator,
+        StatusService $statusService,
+        ProjectService $projectService,
         $config = [],
     ) {
         parent::__construct($id, $module, $config);
@@ -42,6 +48,8 @@ class TasksController extends BaseController
         $this->userService = $userService;
         $this->taskCreateValidator = $taskCreateValidator;
         $this->taskUpdateValidator = $taskUpdateValidator;
+        $this->statusService = $statusService;
+        $this->projectService = $projectService;
     }
 
     public function actionIndex(Request $request): string
@@ -100,7 +108,7 @@ class TasksController extends BaseController
         }
 
         $data = $request->post();
-        $errors = $this->taskUpdateValidator->validate($data);
+        $errors = $this->taskCreateValidator->validate($data);
         if ($errors !== null) {
             $this->makeError($errors);
 
@@ -153,32 +161,64 @@ class TasksController extends BaseController
             $errors = $this->taskUpdateValidator->validate($data->toArray());
             if ($errors !== null) {
                 $this->makeError($errors);
-                return $this->render('update', [
-                    'model' => $model,
-                ]);
+            } else {
+                $model = $this->tasksService->update(
+                    $model,
+                    $data->getTitle(),
+                    $data->getDescription(),
+                    $data->getProjectId(),
+                    $data->getStatus(),
+                    $data->getAssignedTo(),
+                );
             }
+        }
 
-            $this->tasksService->update();
+        $assignedTo = null;
+        if ($model->getAssignedToUserId() !== null) {
+            $assignedTo = $this->userService->getUsersForView(
+                $this->userService->findByIds([$model->getAssignedToUserId()]),
+            );
+        }
+
+        $project = null;
+        if ($model->getProjectId() !== null) {
+            $project = $this->projectService->findById($model->getProjectId());
         }
 
         return $this->render('update', [
             'model' => $model,
+            'assignedTo' => $assignedTo,
+            'statuses' => $this->statusService->getStatuesForView($this->statusService->getStatuses()),
+            'project' => $project,
         ]);
     }
 
     /**
      * @throws NotFoundHttpException
-     * @throws \yii\db\Exception
      */
-    public function actionAssign(int $id): Response | string
+    public function actionAssign(Request $request): Response | string
     {
-        $model = $this->findModel($id);
-        $model->setAssignedTo((int)Yii::$app->getUser()->getId());
+        $id = (int)($request->get()['id'] ?? null);
 
-        if ($model->validate() && $model->save() && Yii::$app->request->isAjax) {
-            return $this->renderPartial('_assigned_cell', ['model' => $model]);
+        if ($id <= 0) {
+            throw new NotFoundHttpException('The requested page does not exist.');
         }
 
-        return $this->back();
+        $model = $this->tasksService->findById($id);
+
+        if ($model === null) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
+        $model = $this->tasksService->update(
+            $model,
+            null,
+            null,
+            null,
+            null,
+            (int)$this->userService->getCurrentUser()->getId(),
+        );
+
+        return $this->renderPartial('_assigned_cell', ['model' => $model]);
     }
 }

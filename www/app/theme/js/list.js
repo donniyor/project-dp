@@ -83,14 +83,14 @@ $(document).ready(function () {
     }
 
     function initializeSelect3(selector, link, cacheKey) {
-        let cachedData = []; // Локальный кэш данных для каждого поля
+        let cachedData = [];
 
         $(selector).select2({
             allowClear: false,
-            templateResult: formatOptionProject,
-            templateSelection: formatSelectedOptionProject,
+            templateResult: formatOptionEntity,
+            templateSelection: formatSelectedOptionEntity,
             ajax: {
-                url: link, // URL для загрузки проектов
+                url: link,
                 dataType: 'json',
                 delay: 250,
                 data: function (params) {
@@ -100,9 +100,9 @@ $(document).ready(function () {
                     return {};
                 },
                 processResults: function (data) {
-                    cachedData = data.map(project => ({
-                        id: project.id,
-                        text: project.title
+                    cachedData = data.map(entity => ({
+                        id: entity.id,
+                        text: entity.title
                     }));
 
                     return {results: cachedData};
@@ -124,14 +124,14 @@ $(document).ready(function () {
         });
     }
 
-    function formatOptionProject(option) {
+    function formatOptionEntity(option) {
         if (!option.id) {
             return option.text;
         }
         return `<div>${option.text}</div>`;
     }
 
-    function formatSelectedOptionProject(option) {
+    function formatSelectedOptionEntity(option) {
         return option.text;
     }
 

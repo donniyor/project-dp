@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use app\assets\ListAsset;
 use app\helpers\Avatars;
@@ -13,6 +14,8 @@ use yii\widgets\ActiveForm;
 /** @var View $this */
 /** @var Tasks $model */
 /** @var array $statuses */
+/** @var array $project */
+/** @var array $assignedTo */
 /** @var ActiveForm $form */
 
 $this->title = 'Редактировать задачу';
@@ -54,7 +57,6 @@ ListAsset::register($this);
             <div class="card bg-light">
                 <div class="card-header">О задаче</div>
                 <div class="card-body">
-
                     <?= Html::label('Автор', 'author_id', ['class' => 'control-label']) ?>
                     <div class="mb-3 user-inline">
                         <?= Avatars::getAvatarRound($model->getAuthorModel(), 40) ?>
@@ -66,8 +68,8 @@ ListAsset::register($this);
                         <?= Html::label('Исполнитель') ?>
                         <?= Html::dropDownList(
                             'assigned_to',
-                            '',
-                            [],
+                            $model->getAssignedToUserId(),
+                            isset($assignedTo) ? ArrayHelper::map($assignedTo, 'id', 'user') : [],
                             [
                                 'id' => 'assigned-to',
                                 'class' => 'js-states form-control',
@@ -83,7 +85,7 @@ ListAsset::register($this);
                         <?= Html::dropDownList(
                             'project_id',
                             $model->getProjectId(),
-                            [],
+                            isset($project) ? ArrayHelper::map([$project], 'id', 'title') : [],
                             [
                                 'id' => 'project-id',
                                 'class' => 'js-states form-control',
@@ -97,16 +99,16 @@ ListAsset::register($this);
                         <?= Html::label('Статус') ?>
                         <?=
                         Html::dropDownList(
-                            'status_id',
+                            'status',
                             $model->getStatus(),
-                            $statuses ?? [],
+                            isset($statuses) ? ArrayHelper::map($statuses, 'id', 'title') : [],
                             [
                                 'id' => 'status-id',
                                 'class' => 'js-states form-control',
                                 'style' => 'width: 100%',
                                 'prompt' => 'Выберите статус',
                             ],
-                        )
+                        );
                         ?>
                     </div>
                 </div>

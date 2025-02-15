@@ -7,7 +7,7 @@ use app\widgets\Sidebar;
 ?>
 
 <ul class="accordion-menu">
-    <li class="sidebar-title">Основное</li>
+    <li class="sidebar-title">Task manager</li>
     <?= Sidebar::make()
         ->add('Личный кабинет', 'account_circle', 'self-cabinet')
         ->add('Пользователи', 'people_alt', 'users')
@@ -17,7 +17,7 @@ use app\widgets\Sidebar;
         ->add('Моя работа', 'assignment_ind', 'self-tasks')
         ->all()
     ?>
-    <li class="sidebar-title">Системное</li>
+    <li class="sidebar-title"></li>
     <?= Sidebar::make()
         ->add('Выход', 'logout', 'auth/out')
         ->all()
