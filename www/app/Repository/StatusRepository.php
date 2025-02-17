@@ -8,8 +8,14 @@ use app\components\Statuses\Statuses;
 
 class StatusRepository
 {
-    public function getStatuses(): array
+    private const ASC = 'asc';
+    private const DESC = 'desc';
+
+    public function getStatuses($sort = self::ASC): array
     {
-        return Statuses::getStatusList();
+        $statuses = Statuses::getStatusList();
+        $sort === self::ASC ? asort($statuses) : arsort($statuses);
+
+        return $statuses;
     }
 }

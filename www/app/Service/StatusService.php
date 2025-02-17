@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace app\Service;
 
-use app\components\Statuses\Statuses;
 use app\Repository\StatusRepository;
-use yii\helpers\ArrayHelper;
 
 class StatusService
 {

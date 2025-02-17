@@ -10,7 +10,7 @@ use yii\helpers\Url;
 
 class BoardsService
 {
-    public function getBoards(array $statuses, array $tasks): array
+    public function getBoards(array $statuses, array $tasks, int $avatarSize = 30): array
     {
         $boards = [];
         foreach ($statuses as $key => $status) {
@@ -30,13 +30,14 @@ class BoardsService
                     'title' => $task->getTitle(),
                     'url' => Url::to([sprintf('/tasks/update/%s', $task->getId())]),
                     'assignedTo' => $task->getAssignedToUserId() === null
-                        ? Avatars::getAssignedToButton($task->getId(), 30)
+                        ? Avatars::getAssignedToButton($task->getId(), $avatarSize)
                         : (
                         $task->getAssignedToModel() === null
-                            ? Avatars::getAssignedToButton($task->getId(), 30)
-                            : Avatars::getAvatarRound($task->getAssignedToModel(), 30, false)
+                            ? Avatars::getAssignedToButton($task->getId(), $avatarSize)
+                            : Avatars::getAvatarRound($task->getAssignedToModel(), $avatarSize, false)
                         ),
-                    'project' => $task->project->getTitle(),
+                    'project_title' => $task->project->getTitle(),
+                    'project_id' => $task->project->getId(),
                 ];
             }
         }

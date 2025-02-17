@@ -1,17 +1,22 @@
+:root {
+    --tb-color: #c2cedb;
+}
+
 .kanban-container {
-    overflow-x: hidden;
+    overflow-x: auto;
     white-space: nowrap;
     padding: 20px;
     cursor: grab;
     user-select: none;
+    min-height: 100vh;
 }
 
 .kanban-item-placeholder {
-    height: 40px; /* Высота, соответствующая задаче */
-    background: rgba(0, 123, 255, 0.2); /* Полупрозрачный синий фон */
-    border: 2px dashed #007bff; /* Пунктирная граница */
+    background: rgba(0, 123, 255, 0.2);
+    border: 1px solid var(--tb-color);
     border-radius: 5px;
-    margin: 10px 0;
+    margin: 5px 0;
+    opacity: 0.4;
 }
 
 .kanban-container:active {
@@ -27,8 +32,9 @@
 
 .kanban-column {
     min-width: 300px;
+    min-height: 100%;
     background: white;
-    padding: 10px;
+    padding: 0;
     border-radius: 5px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     display: inline-block;
@@ -37,38 +43,78 @@
 }
 
 .kanban-header {
+    background: #dfe2e5;
+    color: #616161;
     font-size: 18px;
     font-weight: bold;
-    padding: 10px;
-    background: #007bff;
-    color: white;
-    text-align: center;
+    padding: 5px;
     border-radius: 5px 5px 0 0;
 }
 
 .kanban-items {
-    min-height: 200px;
+    min-height: 90%;
     padding: 10px;
 }
 
 .kanban-item {
-    background: #fff;
-    margin: 10px 0;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-    cursor: grab;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-radius: 4px;
+    background: #f9fcfe;
+    padding: 3px;
+    margin: 5px 0;
+    border: 1px solid var(--tb-color);
+    transition: background 0.2s, border-color 0.2s;
+    cursor: grab;
 }
 
-.kanban-item a {
+.task-title {
     text-decoration: none;
-    color: #007bff;
-    font-weight: bold;
+    color: #333;
+    padding-bottom: 2px;
+    display: inline-block;
+    font-size: 13px;
+    word-wrap: break-word;
+    white-space: normal;
 }
 
-.kanban-item a:hover {
+.task-title:hover {
     text-decoration: underline;
+    color: #333;
+    padding-bottom: 2px;
+    display: inline-block;
+    font-size: 13px;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.project-title {
+    font-size: 11px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-radius: 3px;
+    border: 1px solid #B0C4DE;
+    background: #EEF3F6;
+    padding: 0 2px 1px;
+    max-width: 150px;
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+}
+
+.project-title:hover {
+    font-size: 11px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: 1px solid #B0C4DE;
+    background: #EEF3F6;
+    max-width: 150px;
+    text-align: center;
+    text-decoration: underline;
+    color: #333;
 }

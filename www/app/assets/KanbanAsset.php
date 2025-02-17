@@ -16,15 +16,12 @@ class KanbanAsset extends AssetBundle
 
     /** @var array $css */
     public $css = [
-        'css/jkanban.min.css',
-        'css/kanban.css',
         'css/jquery-ui.min.css',
         'css/boards.css',
     ];
 
     /** @var array $js */
     public $js = [
-        'js/jkanban.min.js',
         'js/kanban.js',
         'js/jquery-ui.min.js',
         'js/boards.js',

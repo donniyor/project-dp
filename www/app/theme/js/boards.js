@@ -11,13 +11,27 @@ $(document).ready(function () {
         cursor: "move",
         start: function (event, ui) {
             isTaskDragging = true;
-            ui.placeholder.height(ui.item.height()); // Устанавливаем высоту "призрака"
+            ui.placeholder.height(ui.item.height() + 6); // Устанавливаем высоту "призрака"
         },
         stop: function (event, ui) {
             isTaskDragging = false;
             let taskId = ui.item.data("id");
-            let boardId = ui.item.closest(".kanban-column").data("board-id");
-            console.log("Task moved:", taskId, "to board:", boardId);
+            let statusId = ui.item.closest(".kanban-column").data("board-id");
+
+            $.ajax({
+                url: '/api-tasks/update-status',
+                method: 'POST',
+                data: {
+                    taskId: taskId,
+                    status: statusId
+                },
+                success: function (response) {
+                    // console.log('Статус задачи обновлен');
+                },
+                error: function (xhr, status, error) {
+                    // console.error('Ошибка обновления статуса:', error);
+                },
+            });
         }
     }).disableSelection();
 
