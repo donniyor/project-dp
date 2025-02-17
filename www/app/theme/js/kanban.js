@@ -9,7 +9,6 @@ $(document).ready(function () {
             method: 'GET',
             dataType: 'json',
             success: function (data) {
-
                 if (!data || data.length === 0) {
                     data = [
                         {id: '_todo', title: 'To Do', class: 'info', item: []},
@@ -22,6 +21,8 @@ $(document).ready(function () {
                     element: kanbanTasks,
                     gutter: '5px',
                     widthBoard: '300px',
+                    dragEl: function (el, source) {
+                    },
                     boards: boardsArray.map(board => ({
                         ...board,
                         item: board.item.map(task => ({
@@ -55,7 +56,7 @@ $(document).ready(function () {
                                 console.error('Ошибка обновления статуса:', error);
                             }
                         });
-                    }
+                    },
                 });
 
                 $('.kanban-board').each(function (index) {

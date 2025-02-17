@@ -12,4 +12,9 @@ class KanbanController extends BaseController
     {
         return $this->render('index');
     }
+
+    public function actionTest()
+    {
+        return $this->render('test');
+    }
 }

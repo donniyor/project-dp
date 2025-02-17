@@ -6,13 +6,11 @@ declare(strict_types=1);
 /** @var string $content */
 
 use app\assets\AppAsset;
-use app\assets\ChartAsset;
 use app\widgets\Alert;
 use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
 
 AppAsset::register($this);
-ChartAsset::register($this);
 
 $this->registerCsrfMetaTags();
 $this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');

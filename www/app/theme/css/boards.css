@@ -1,0 +1,74 @@
+.kanban-container {
+    overflow-x: hidden;
+    white-space: nowrap;
+    padding: 20px;
+    cursor: grab;
+    user-select: none;
+}
+
+.kanban-item-placeholder {
+    height: 40px; /* Высота, соответствующая задаче */
+    background: rgba(0, 123, 255, 0.2); /* Полупрозрачный синий фон */
+    border: 2px dashed #007bff; /* Пунктирная граница */
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.kanban-container:active {
+    cursor: grabbing;
+}
+
+.kanban-board {
+    display: flex;
+    gap: 15px;
+    min-width: 1200px;
+    padding-bottom: 10px;
+}
+
+.kanban-column {
+    min-width: 300px;
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    vertical-align: top;
+    white-space: normal;
+}
+
+.kanban-header {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px;
+    background: #007bff;
+    color: white;
+    text-align: center;
+    border-radius: 5px 5px 0 0;
+}
+
+.kanban-items {
+    min-height: 200px;
+    padding: 10px;
+}
+
+.kanban-item {
+    background: #fff;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    cursor: grab;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.kanban-item a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+}
+
+.kanban-item a:hover {
+    text-decoration: underline;
+}
