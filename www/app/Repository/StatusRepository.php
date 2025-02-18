@@ -14,7 +14,7 @@ class StatusRepository
     public function getStatuses($sort = self::ASC): array
     {
         $statuses = Statuses::getStatusList();
-        $sort === self::ASC ? asort($statuses) : arsort($statuses);
+        $sort === self::ASC ? ksort($statuses) : krsort($statuses);
 
         return $statuses;
     }

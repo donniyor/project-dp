@@ -14,35 +14,36 @@ $this->title = 'Пользователь';
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="user-index">
+                <div class="row align-items-center my-3">
+                    <div class="col-auto">
+                        <?= Avatars::getAvatarSquare($model) ?>
+                    </div>
 
-<div class="user-index">
-    <h1><?= Html::encode($this->title) ?></h1>
-    <hr>
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <?= $model->getLastName() ?? '' ?>
+                                    <?= $model->getFirstName() ?? '' ?>
+                                </h5>
+                                <p class="card-text">
+                                    <?= $model->getEmail() ?>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-    <div class="row align-items-center my-3">
-        <div class="col-auto">
-            <?= Avatars::getAvatarSquare($model) ?>
-        </div>
-
-        <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <?= $model->getLastName() ?? '' ?>
-                        <?= $model->getFirstName() ?? '' ?>
-                    </h5>
-                    <p class="card-text">
-                        <?= $model->getEmail() ?>
-                    </p>
+                <div class="card-footer text-start bg-light mt-3">
+                    <small class="text-muted">
+                        Последнее обновление: <?= date(DatesInterface::DEFAULT_DATE, $model->getCreatedAt()) ?>
+                    </small>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="card-footer text-start bg-light mt-3">
-        <small class="text-muted">
-            Последнее обновление: <?= date(DatesInterface::DEFAULT_DATE, $model->getCreatedAt()) ?>
-        </small>
-    </div>
 </div>
-

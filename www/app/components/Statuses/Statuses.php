@@ -8,15 +8,16 @@ use yii\helpers\Html;
 
 class Statuses implements StatusesInterface
 {
+    // todo use only from repository
     public static function getStatusList(): array
     {
         return [
-            self::STATUS_TO_DO => 'К выполнению',
-            self::STATUS_DELETED => 'Удален',
-            self::STATUS_IN_PROCESS => 'В процессе',
-            self::STATUS_NOT_OK => 'Не ок',
-            self::STATUS_OK => 'Ок',
-            self::STATUS_DONE => 'Выполнен',
+            self::STATUS_TO_DO => 'Запланировано',
+            self::STATUS_DELETED => 'Удалено',
+            self::STATUS_IN_PROCESS => 'В работе',
+            self::STATUS_NOT_OK => 'Требует доработки',
+            self::STATUS_OK => 'Готово',
+            self::STATUS_DONE => 'Завершено',
         ];
     }
 

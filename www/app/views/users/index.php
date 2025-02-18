@@ -18,50 +18,53 @@ $this->params['breadcrumbs'][] = $this->title;
 $user = Yii::$app->user;
 
 ?>
-<div class="user-index">
-    <h1><?= Html::encode($this->title) ?></h1>
-    <hr>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="user-index">
+                <p>
+                    <?= Html::a('Добавить Пользователя', ['create'], ['class' => 'btn btn-success']) ?>
+                </p>
 
-    <p>
-        <?= Html::a('Добавить Пользователя', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'tableOptions' => ['class' => 'table table-bordered'],
-        'rowOptions' => [],
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-            [
-                'label' => 'Пользователь',
-                'format' => 'raw',
-                'value' => static fn(Users $model): string => Avatars::getAvatarRound(
-                    $model,
-                    50
-                ),
-                'headerOptions' => ['class' => 'text-nowrap', 'style' => 'width: 20%;'],
-            ],
-            'first_name',
-            'last_name',
-            'email:email',
-            [
-                'label' => 'Роли',
-                'value' => fn(Users $model): string => implode(
-                    ', ',
-                    array_map(fn(AuthAssignment $role): string => $role->getItemName(), $model->getRoleModel())
-                ),
-            ],
-            [
-                'header' => 'Действия',
-                'format' => 'html',
-                'headerOptions' => ['width' => '150'],
-                'content' => static fn(Users $model): string => Buttons::getUser($model->getPrimaryKey())
-            ],
-        ],
-        'pager' => [
-            'class' => '\yii\bootstrap5\LinkPager',
-        ],
-    ]); ?>
-
+                <?= GridView::widget([
+                    'dataProvider' => $dataProvider,
+                    'filterModel' => $searchModel,
+                    'tableOptions' => ['class' => 'table table-bordered'],
+                    'rowOptions' => [],
+                    'columns' => [
+                        ['class' => 'yii\grid\SerialColumn'],
+                        [
+                            'label' => 'Пользователь',
+                            'format' => 'raw',
+                            'value' => static fn(Users $model): string => Avatars::getAvatarRound(
+                                $model,
+                                50
+                            ),
+                            'headerOptions' => ['class' => 'text-nowrap', 'style' => 'width: 20%;'],
+                        ],
+                        'first_name',
+                        'last_name',
+                        'email:email',
+                        [
+                            'label' => 'Роли',
+                            'value' => fn(Users $model): string => implode(
+                                ', ',
+                                array_map(fn(AuthAssignment $role): string => $role->getItemName(),
+                                    $model->getRoleModel())
+                            ),
+                        ],
+                        [
+                            'header' => 'Действия',
+                            'format' => 'html',
+                            'headerOptions' => ['width' => '150'],
+                            'content' => static fn(Users $model): string => Buttons::getUser($model->getPrimaryKey())
+                        ],
+                    ],
+                    'pager' => [
+                        'class' => '\yii\bootstrap5\LinkPager',
+                    ],
+                ]); ?>
+            </div>
+        </div>
+    </div>
 </div>

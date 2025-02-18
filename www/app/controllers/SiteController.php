@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace app\controllers;
 
+use app\Service\TaskService;
+use app\Service\UserService;
 use Yii;
 use yii\filters\AccessControl;
 use app\components\BaseController;
@@ -11,6 +13,26 @@ use yii\filters\VerbFilter;
 
 class SiteController extends BaseController
 {
+    private TaskService $taskService;
+    private UserService $userService;
+
+    public function __construct(
+        $id,
+        $module,
+        TaskService $taskService,
+        UserService $userService,
+        $config = [],
+    ) {
+        parent::__construct(
+            $id,
+            $module,
+            $config,
+        );
+
+        $this->taskService = $taskService;
+        $this->userService = $userService;
+    }
+
     public function behaviors(): array
     {
         return [
@@ -57,6 +79,10 @@ class SiteController extends BaseController
 
     public function actionIndex(): string
     {
-        return $this->render('index');
+        return $this->render('index', [
+            'tasks' => $this->taskService->findByUserId(
+                $this->userService->getCurrentUser()->getId(),
+            ),
+        ]);
     }
 }

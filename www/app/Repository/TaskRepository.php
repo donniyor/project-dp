@@ -120,4 +120,15 @@ class TaskRepository extends BaseEntityRepository
 
         return $model;
     }
+
+    public function findByUserId(int $userId): ActiveDataProvider
+    {
+        return new ActiveDataProvider([
+            'query' => $this->getEntity()
+                ->find()
+                ->orWhere(['tasks.assigned_to' => $userId,])
+                ->orWhere(['tasks.author_id' => $userId])
+                ->joinWith(['author', 'assignedTo']),
+        ]);
+    }
 }

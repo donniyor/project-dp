@@ -77,4 +77,9 @@ class TaskService
             $assignedTo,
         );
     }
+
+    public function findByUserId(int $userId): ActiveDataProvider
+    {
+        return $this->repository->findByUserId($userId);
+    }
 }

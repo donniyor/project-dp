@@ -17,7 +17,7 @@ class StatusService
 
     public function getStatuses(): array
     {
-        return $this->repository->getStatuses();
+        return $this->repository->getStatuses('asc');
     }
 
     public function getStatuesForView(array $statues): array

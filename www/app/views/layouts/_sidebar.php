@@ -14,7 +14,7 @@ use app\widgets\Sidebar;
         ->add('Проекты', 'assignment', 'projects')
         ->add('Беклог', 'task', 'tasks')
         ->add('Канбан', 'view_kanban', 'kanban')
-        ->add('Моя работа', 'assignment_ind', 'self-tasks')
+        ->add('Моя работа', 'assignment_ind', '')
         ->all()
     ?>
     <li class="sidebar-title"></li>
