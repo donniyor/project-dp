@@ -10,10 +10,14 @@ $this->title = 'Создать проект';
 $this->params['breadcrumbs'][] = ['label' => 'Проекты', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="projects-create">
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="projects-create">
+                <h1><?= Html::encode($this->title) ?></h1>
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= $this->render('_form') ?>
-
+                <?= $this->render('_form') ?>
+            </div>
+        </div>
+    </div>
 </div>
