@@ -10,7 +10,7 @@ use yii\db\Exception;
 
 class ProjectRepository extends BaseEntityRepository
 {
-    public function getEntity(): Projects
+    protected function getEntity(): Projects
     {
         return new Projects();
     }

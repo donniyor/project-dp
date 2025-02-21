@@ -10,7 +10,9 @@ use yii\helpers\Html;
 $this->title = 'Редактировать проект';
 $this->params['breadcrumbs'][] = ['label' => 'Проекты', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Редактировать';
+
 ?>
+
 <div class="projects-update">
     <?= $this->render('_form_update', [
         'model' => $model,

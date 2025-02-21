@@ -2,99 +2,89 @@
 
 namespace app\controllers;
 
-use app\models\CreateAdminForm;
-use app\models\Users;
-use app\models\PasswordResetRequestForm;
-use app\models\ResetPasswordForm;
+use app\DTO\AuthRequest;
+use app\DTO\RegistrationRequest;
+use app\Service\AuthService;
+use app\Service\UserService;
 use Yii;
 use app\components\BaseController;
-use app\models\LoginForm;
-use yii\base\Exception;
-use yii\base\InvalidArgumentException;
-use yii\web\BadRequestHttpException;
+use yii\web\Request;
 use yii\web\Response;
 
 
 class AuthController extends BaseController
 {
+    private AuthService $authService;
+    private UserService $userService;
+
+    public function __construct(
+        $id,
+        $module,
+        AuthService $authService,
+        UserService $userService,
+        $config = [],
+    ) {
+        parent::__construct(
+            $id,
+            $module,
+            $config,
+        );
+
+        $this->authService = $authService;
+        $this->userService = $userService;
+    }
+
     public $layout = 'sign';
 
-    public function actionIn(): string | Response
+    public function actionIn(Request $request): string | Response
+    {
+        if (!$this->userService->getCurrentUser()->isGuest) {
+            return $this->goHome();
+        }
+
+        $data = $request->post();
+
+        if ($request->getIsPost() && $request->validateCsrfToken()) {
+            $data = AuthRequest::fromArray($data);
+
+            $isValid = $this->authService->login($data->username, $data->password);
+            if ($isValid) {
+                $this->redirect('/');
+            }
+
+            $this->flash(self::DANGER, 'Неправильный логин или пароль');
+            $data = $data->toArray();
+        }
+
+        $data['password'] = '';
+
+        return $this->render('login', ['data' => $data]);
+    }
+
+    public function actionRegistration(Request $request): string | Response
     {
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goHome();
+
+        $data = $request->post();
+        if ($request->getIsPost()) {
+            $data = RegistrationRequest::fromArray($data);
+
+            $this->authService->registration(
+                $data->username,
+                $data->password,
+            );
         }
-        $model->password = '';
-        return $this->render('login', [
-            'model' => $model,
-        ]);
+
+        $data['password'] = '';
+
+        return $this->render('registration', ['data' => $data]);
     }
 
     public function actionOut(): Response
     {
         Yii::$app->user->logout();
         return $this->redirect(Yii::$app->user->getReturnUrl(['/auth/in']));
-    }
-
-    public function actionRequestPasswordReset(): Response | string
-    {
-        $model = new PasswordResetRequestForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail()) {
-                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
-
-                return $this->goHome();
-            }
-
-            Yii::$app->session->setFlash(
-                'error',
-                'Sorry, we are unable to reset password for the provided email address.'
-            );
-        }
-
-        return $this->render('requestPasswordResetToken', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * @throws BadRequestHttpException|Exception
-     */
-    public function actionResetPassword(string $token): string | Response
-    {
-        try {
-            $model = new ResetPasswordForm($token);
-        } catch (InvalidArgumentException $e) {
-            throw new BadRequestHttpException($e->getMessage());
-        }
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-            Yii::$app->session->setFlash('success', 'New password saved.');
-
-            return $this->goHome();
-        }
-
-        return $this->render('resetPassword', [
-            'model' => $model,
-        ]);
-    }
-
-    public function actionVerifyEmail(string $token): string
-    {
-        $user = Users::findByVerificationToken($token);
-        $user->status = Users::STATUS_ACTIVE;
-        try {
-            $user->save();
-        } catch (\Exception $exception) {
-            $this->flash('danger', 'Упс, что-то пошло не так');
-        }
-
-        $this->flash('success', 'Вы успешно подтвердили свою почту.');
-
-        return $this->render('VerifyEmail');
     }
 }

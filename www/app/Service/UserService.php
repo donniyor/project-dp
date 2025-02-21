@@ -7,6 +7,7 @@ namespace app\Service;
 use app\helpers\Avatars;
 use app\models\Users;
 use app\Repository\UserRepository;
+use yii\db\ActiveRecord;
 use yii\web\User;
 
 class UserService
@@ -44,5 +45,10 @@ class UserService
     public function getCurrentUser(): User
     {
         return $this->repository->getCurrentUser();
+    }
+
+    public function finByUsername(string $username): ?Users
+    {
+        return $this->repository->finByUsername($username);
     }
 }

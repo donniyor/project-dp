@@ -13,11 +13,8 @@ class AppAsset extends AssetBundle
     public $sourcePath = '@app/theme';
     public $css = [
         'css/site.css',
-        'css/custom.css',
     ];
-    public $js = [
-        'js/custom.js',
-    ];
+    public $js = [];
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap5\BootstrapAsset',

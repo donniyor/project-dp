@@ -127,11 +127,6 @@ class Users extends ActiveRecord implements IdentityInterface
         throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
     }
 
-    public static function findByUsername(string $username): ?static
-    {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
-    }
-
     public static function findByPasswordResetToken(string $token): ?static
     {
         if (!static::isPasswordResetTokenValid($token)) {
@@ -141,13 +136,6 @@ class Users extends ActiveRecord implements IdentityInterface
         return static::findOne([
             'password_reset_token' => $token,
             'status' => self::STATUS_ACTIVE,
-        ]);
-    }
-
-    public static function findByVerificationToken(string $token): ?static
-    {
-        return static::findOne([
-            'verification_token' => $token,
         ]);
     }
 
@@ -302,5 +290,15 @@ class Users extends ActiveRecord implements IdentityInterface
     public function getRoleModel(): array
     {
         return $this->roles;
+    }
+
+    public function getStatus(): int
+    {
+        return (int)$this->getAttribute('status');
+    }
+
+    public function setStatus(int $status): void
+    {
+        $this->setAttribute('status', $status);
     }
 }

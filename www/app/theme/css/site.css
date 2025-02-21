@@ -203,3 +203,7 @@ a.desc:after {
 .pagination .next a {
     font-weight: bold;
 }
+
+.app-auth-container {
+    min-width: 300px;
+}

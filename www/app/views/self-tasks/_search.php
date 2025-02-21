@@ -22,13 +22,13 @@ use yii\widgets\ActiveForm;
     <div class="row">
         <div class="col-md-6">
             <div class="mb-3">
-                <?= $form->field($model, 'title') ?>
+                <?= $form->field($data, 'title') ?>
             </div>
         </div>
 
         <div class="col-md-6">
             <div class="mb-3">
-                <?= $form->field($model, 'status')->dropDownList(Statuses::getStatusList(), ['prompt' => '']) ?>
+                <?= $form->field($data, 'status')->dropDownList(Statuses::getStatusList(), ['prompt' => '']) ?>
             </div>
         </div>
     </div>

@@ -2,25 +2,22 @@
 
 declare(strict_types=1);
 
-use app\widgets\Alert;
+/* @var $this yii\web\View */
+/* @var $form yii\bootstrap5\ActiveForm */
+
+/* @var array $data */
+
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
 use yii\helpers\Url;
-use yii\web\View;
 
-/* @var View $this */
-/* @var ActiveForm $form */
-/* @var array $data */
-
-$this->title = 'Войти в аккаунт';
+$this->title = 'Регистрация';
 
 ?>
 
 <div class="d-flex flex-wrap justify-content-center align-content-center min-vh-100">
-    <div class="app-auth-container min-vh-50">
-        <?= Alert::widget() ?>
-
-        <h5 class="sign-in mb-3">Войти в аккаунт</h5>
+    <div class="app-auth-container">
+        <h5 class="sign-in mb-3">Регистрация</h5>
         <div class="divider"></div>
 
         <?php
@@ -55,7 +52,7 @@ $this->title = 'Войти в аккаунт';
         ) ?>
 
         <div class="my-1 mx-0" style="color:#999;">
-            Если еще не зарегистрированы <?= Html::a('Регистрация', Url::to(['auth/registration'])) ?>.
+            Уже есть аккаунт ? <?= Html::a('Войти', Url::to(['auth/in'])) ?>.
         </div>
 
         <div class="form-group">

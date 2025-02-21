@@ -93,7 +93,7 @@ class ProjectsController extends BaseController
                 $data->getTitle(),
                 $data->getDescription(),
                 $data->getStatus(),
-                $this->getUser()->getId(),
+                $this->userService->getCurrentUser()->getId(),
             );
 
             $this->redirect(['update', 'id' => $model->getId()]);

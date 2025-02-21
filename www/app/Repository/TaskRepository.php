@@ -9,7 +9,7 @@ use yii\data\ActiveDataProvider;
 
 class TaskRepository extends BaseEntityRepository
 {
-    public function getEntity(): Tasks
+    protected function getEntity(): Tasks
     {
         return new Tasks();
     }
