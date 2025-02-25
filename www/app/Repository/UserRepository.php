@@ -38,4 +38,19 @@ class UserRepository extends BaseEntityRepository
     {
         return $this->getEntity()->findOne(['username' => $username, 'status' => Users::STATUS_ACTIVE]);
     }
+
+    /**
+     * @return Users|null
+     */
+    public function findByUsernameOrEmail(string $username, string $email): ?Users
+    {
+        /** @var null|Users $users */
+        $users = $this->getEntity()
+            ->find()
+            ->where(['username' => $username])
+            ->orWhere(['email' => $email])
+            ->one();
+
+        return $users;
+    }
 }

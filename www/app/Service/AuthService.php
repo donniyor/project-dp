@@ -20,13 +20,16 @@ class AuthService
      */
     public function registration(
         string $username,
+        string $email,
         string $password,
-    ) {
-        $user = $this->userService->finByUsername($username);
+    ): bool {
+        $user = $this->userService->findByUsernameOrEmail($username, $email);
 
         if ($user !== null) {
             throw new RegistrationException('User with this username is already exists');
         }
+
+        return true;
     }
 
     public function login(string $username, string $password): bool

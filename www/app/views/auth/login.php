@@ -21,7 +21,6 @@ $this->title = 'Войти в аккаунт';
         <?= Alert::widget() ?>
 
         <h5 class="sign-in mb-3">Войти в аккаунт</h5>
-        <div class="divider"></div>
 
         <?php
         $form = ActiveForm::begin([
@@ -60,7 +59,7 @@ $this->title = 'Войти в аккаунт';
 
         <div class="form-group">
             <div>
-                <?= Html::submitButton('Вход', ['class' => 'btn btn-primary my-3', 'name' => 'login-button']) ?>
+                <?= Html::submitButton('Вход', ['class' => 'btn btn-success my-3', 'name' => 'login-button']) ?>
             </div>
         </div>
 

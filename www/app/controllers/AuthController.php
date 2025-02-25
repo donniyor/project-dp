@@ -4,8 +4,10 @@ namespace app\controllers;
 
 use app\DTO\AuthRequest;
 use app\DTO\RegistrationRequest;
+use app\Exception\RegistrationException;
 use app\Service\AuthService;
 use app\Service\UserService;
+use app\Validator\UserRegistrationValidator;
 use Yii;
 use app\components\BaseController;
 use yii\web\Request;
@@ -16,12 +18,14 @@ class AuthController extends BaseController
 {
     private AuthService $authService;
     private UserService $userService;
+    private UserRegistrationValidator $registrationValidator;
 
     public function __construct(
         $id,
         $module,
         AuthService $authService,
         UserService $userService,
+        UserRegistrationValidator $registrationValidator,
         $config = [],
     ) {
         parent::__construct(
@@ -32,6 +36,7 @@ class AuthController extends BaseController
 
         $this->authService = $authService;
         $this->userService = $userService;
+        $this->registrationValidator = $registrationValidator;
     }
 
     public $layout = 'sign';
@@ -69,12 +74,24 @@ class AuthController extends BaseController
 
         $data = $request->post();
         if ($request->getIsPost()) {
+            $err = $this->registrationValidator->validate($data);
+            if ($err !== null) {
+                $this->makeError($err);
+            }
+
             $data = RegistrationRequest::fromArray($data);
 
-            $this->authService->registration(
-                $data->username,
-                $data->password,
-            );
+            try {
+                $this->authService->registration(
+                    $data->username,
+                    $data->email,
+                    $data->password,
+                );
+            } catch (RegistrationException $e) {
+                $this->flash(self::DANGER, $e->getMessage());
+            }
+
+            $data = $data->toArray();
         }
 
         $data['password'] = '';

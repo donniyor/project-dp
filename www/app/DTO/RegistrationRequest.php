@@ -8,6 +8,7 @@ final class RegistrationRequest implements Arrayable
 {
     public function __construct(
         readonly public string $username,
+        readonly public string $email,
         readonly public string $password,
     ) {
     }
@@ -16,6 +17,7 @@ final class RegistrationRequest implements Arrayable
     {
         return new self(
             $params['username'] ?? '',
+            $params['email'] ?? '',
             $params['password'] ?? '',
         );
     }
@@ -24,6 +26,7 @@ final class RegistrationRequest implements Arrayable
     {
         return [
             'username' => $this->username,
+            'email' => $this->email,
             'password' => $this->password,
         ];
     }

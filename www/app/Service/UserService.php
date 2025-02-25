@@ -51,4 +51,9 @@ class UserService
     {
         return $this->repository->finByUsername($username);
     }
+
+    public function findByUsernameOrEmail(string $username, string $email): ?Users
+    {
+        return $this->repository->findByUsernameOrEmail($username, $email);
+    }
 }

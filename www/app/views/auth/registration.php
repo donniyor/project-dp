@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 /* @var array $data */
 
+use app\widgets\Alert;
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
 use yii\helpers\Url;
@@ -17,8 +18,9 @@ $this->title = 'Регистрация';
 
 <div class="d-flex flex-wrap justify-content-center align-content-center min-vh-100">
     <div class="app-auth-container">
+        <?= Alert::widget() ?>
+
         <h5 class="sign-in mb-3">Регистрация</h5>
-        <div class="divider"></div>
 
         <?php
         $form = ActiveForm::begin([
@@ -41,6 +43,16 @@ $this->title = 'Регистрация';
             ],
         ) ?>
 
+        <?= Html::label('Почта') ?>
+        <?= Html::textInput(
+            'email',
+            $data['email'] ?? '',
+            [
+                'class' => 'form-control mb-3',
+                'autofocus' => true,
+            ],
+        ) ?>
+
         <?= Html::label('Пароль') ?>
         <?= Html::passwordInput(
             'password',
@@ -57,7 +69,7 @@ $this->title = 'Регистрация';
 
         <div class="form-group">
             <div>
-                <?= Html::submitButton('Вход', ['class' => 'btn btn-primary my-3', 'name' => 'login-button']) ?>
+                <?= Html::submitButton('Создать', ['class' => 'btn btn-success my-3', 'name' => 'login-button']) ?>
             </div>
         </div>
 
