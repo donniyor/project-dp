@@ -91,4 +91,20 @@ class ProjectRepository extends BaseEntityRepository
             ->limit($limit)
             ->all();
     }
+
+    public function updateOne(
+        string $title,
+        string $description,
+        int $status,
+    ): Projects {
+        $model = $this->getEntity();
+
+        $model->setTitle($title);
+        $model->setDescription($description);
+        $model->setStatus($status);
+        $model->setAuthorId($model->getAuthorId());
+        $model->update();
+
+        return $model;
+    }
 }

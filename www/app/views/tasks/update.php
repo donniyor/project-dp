@@ -25,6 +25,7 @@ $this->params['breadcrumbs'][] = 'Редактировать';
 ListAsset::register($this);
 
 ?>
+
 <div class="container">
     <?php
     $form = ActiveForm::begin();
@@ -38,7 +39,7 @@ ListAsset::register($this);
                     <?= Html::textInput(
                         'title',
                         $model->getTitle(),
-                        ['maxlength' => true, 'class' => 'form-control']
+                        ['maxlength' => true, 'class' => 'form-control'],
                     ) ?>
                 </div>
 
@@ -92,13 +93,12 @@ ListAsset::register($this);
                                 'style' => 'width: 100%',
                                 'prompt' => 'Выберите проект',
                             ],
-                        ) ?>
+                        ); ?>
                     </div>
 
                     <div class="mb-3">
                         <?= Html::label('Статус') ?>
-                        <?=
-                        Html::dropDownList(
+                        <?= Html::dropDownList(
                             'status',
                             $model->getStatus(),
                             isset($statuses) ? ArrayHelper::map($statuses, 'id', 'title') : [],
@@ -108,8 +108,7 @@ ListAsset::register($this);
                                 'style' => 'width: 100%',
                                 'prompt' => 'Выберите статус',
                             ],
-                        );
-                        ?>
+                        ); ?>
                     </div>
                 </div>
             </div>

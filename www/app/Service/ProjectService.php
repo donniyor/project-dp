@@ -72,4 +72,16 @@ class ProjectService
 
         return $result;
     }
+
+    public function updateOne(
+        string $title,
+        string $description,
+        int $status,
+    ): Projects {
+        return $this->repository->updateOne(
+            $title,
+            $description,
+            $status,
+        );
+    }
 }

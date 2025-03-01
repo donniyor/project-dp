@@ -7,7 +7,9 @@ namespace app\controllers;
 use app\components\BaseController;
 use app\DTO\ProjectCreateDTO;
 use app\DTO\ProjectSearchDTO;
+use app\DTO\ProjectUpdateRequest;
 use app\Service\ProjectService;
+use app\Service\StatusService;
 use app\Service\UserService;
 use Yii;
 use yii\base\Exception;
@@ -25,17 +27,20 @@ class ProjectsController extends BaseController
 {
     private ProjectService $projectService;
     private UserService $userService;
+    private StatusService $statusService;
 
     public function __construct(
         string $id,
         Module $module,
         ProjectService $projectService,
         UserService $userService,
+        StatusService $statusService,
     ) {
         parent::__construct($id, $module);
 
         $this->projectService = $projectService;
         $this->userService = $userService;
+        $this->statusService = $statusService;
     }
 
     /**
@@ -109,17 +114,30 @@ class ProjectsController extends BaseController
     public function actionUpdate(int $id, Request $request): string
     {
         $model = $this->projectService->findById($id);
+        $statuses = $this->statusService->getStatuesForView(
+            $this->statusService->getStatuses(),
+        );
 
         if ($model === null) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
-        if ($request->getIsPost()) {
-            $this->saveData($model, 'update');
+        $data = $model->toArray();
+        if ($request->getIsPost() && $request->validateCsrfToken()) {
+            // todo add validation
+            $data = ProjectUpdateRequest::fromArray($request->post());
+            $this->projectService->updateOne(
+                $data->title,
+                $data->description,
+                $data->status,
+            );
+            $data = $data->toArray();
         }
 
         return $this->render('update', [
+            'data' => $data,
             'model' => $model,
+            'statuses' => $statuses,
         ]);
     }
 
