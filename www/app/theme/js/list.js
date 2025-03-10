@@ -135,8 +135,62 @@ $(document).ready(function () {
         return option.text;
     }
 
+    function initializeSelect4(selector, link, cacheKey) {
+        let cachedData = [];
+
+        $(selector).select2({
+            allowClear: false,
+            templateResult: formatOptionPriority,
+            templateSelection: formatSelectedOptionPriority,
+            ajax: {
+                url: link,
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return params.term ? {query: params.term} : {};
+                },
+                processResults: function (data) {
+                    cachedData = data.map(entity => ({
+                        id: entity.id,
+                        text: entity.title,
+                        icon: entity.icon,
+                        color: entity.color
+                    }));
+                    return { results: cachedData };
+                },
+                transport: function (params, success, failure) {
+                    if (!params.data.query && cachedData.length > 0) {
+                        success({ results: cachedData });
+                        return;
+                    }
+                    const request = $.ajax(params);
+                    request.then(success).fail(failure);
+                    return request;
+                },
+                cache: true
+            },
+            escapeMarkup: markup => markup
+        });
+    }
+
+    function formatOptionPriority(option) {
+        if (!option.id) return option.text;
+
+        return `<div style="display: flex; align-items: center;">
+                    <span class="material-icons" style="color: ${option.color}; margin-right: 8px;">
+                        ${option.icon}
+                    </span> 
+                    ${option.text}
+                </div>`;
+    }
+
+    function formatSelectedOptionPriority(option) {
+        return option.text;
+    }
+
     initializeSelect3('#project-id', '/projects/get-projects', 'project-id');
     initializeSelect3('#status-id', '/statuses/get-status', 'status-id');
     initializeSelect2('#assigned-to', 'assigned-to');
     initializeSelect2('#author-id', 'author-id');
+    initializeSelect4('#priority-id', '/priority/get-priorities', 'priority-id');
 });

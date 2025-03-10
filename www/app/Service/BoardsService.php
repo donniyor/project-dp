@@ -6,10 +6,18 @@ namespace app\Service;
 
 use app\helpers\Avatars;
 use app\models\Tasks;
+use app\Repository\PriorityRepository;
 use yii\helpers\Url;
 
 class BoardsService
 {
+    private PriorityRepository $priorityRepository;
+
+    public function __construct(PriorityRepository $priorityRepository)
+    {
+        $this->priorityRepository = $priorityRepository;
+    }
+
     public function getBoards(array $statuses, array $tasks, int $avatarSize = 30): array
     {
         $boards = [];
@@ -37,7 +45,10 @@ class BoardsService
                             : Avatars::getAvatarRound($task->getAssignedToModel(), $avatarSize, false)
                         ),
                     'project_title' => $task->project->getTitle(),
-                    'project_id' => $task->project->getId(),
+                    'project_id' => $task->getProjectId(),
+                    'priority' => $this->priorityRepository->findIcon($task->getPriority()),
+                    'color' => $this->priorityRepository->findColor($task->getPriority()),
+                    'deadline' => $task->getDeadLine(),
                 ];
             }
         }

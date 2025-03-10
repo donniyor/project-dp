@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use kartik\datetime\DateTimePicker;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use app\assets\ListAsset;
@@ -15,6 +16,7 @@ use yii\widgets\ActiveForm;
 /** @var Tasks $model */
 /** @var array $statuses */
 /** @var array $project */
+/** @var array $priority */
 /** @var array $assignedTo */
 /** @var ActiveForm $form */
 
@@ -110,6 +112,37 @@ ListAsset::register($this);
                             ],
                         ); ?>
                     </div>
+
+                    <div class="mb-3">
+                        <?= Html::label('Приоритет', 'priority-id', ['class' => 'form-label']) ?>
+                        <?= Html::dropDownList(
+                            'priority',
+                            $model->getPriority(),
+                            isset ($priority) ? ArrayHelper::map($priority, 'id', 'title') : [],
+                            [
+                                'id' => 'priority-id',
+                                'class' => 'js-states form-control',
+                                'style' => 'width: 100%',
+                                'prompt' => 'Выберите Приоритет',
+                            ],
+                        ); ?>
+                    </div>
+
+                    <div class="mb-3">
+                        <?= Html::label('Срок', 'deadline', ['class' => 'form-label']) ?>
+                        <?= DateTimePicker::widget([
+                            'name' => 'deadline',
+                            'value' => $model->getDeadLine(), // Или date('Y-m-d H:i:s') для текущей даты
+                            'options' => ['placeholder' => 'Выберите дату и время...', 'class' => 'form-control'],
+                            'pluginOptions' => [
+                                'autoclose' => true,
+                                'format' => 'yyyy-mm-dd hh:ii', // Формат даты и времени
+                                'todayHighlight' => true,
+                                'todayBtn' => true
+                            ]
+                        ]) ?>
+                    </div>
+
                 </div>
             </div>
         </div>

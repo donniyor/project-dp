@@ -107,6 +107,16 @@ class Tasks extends BaseModel
         return $this->status;
     }
 
+    public function getPriority(): int
+    {
+        return (int)$this->getAttribute('priority');
+    }
+
+    public function getDeadLine(): string
+    {
+        return (string)$this->getAttribute('deadline');
+    }
+
     public function getAuthorModel(): ?Users
     {
         return $this->author;

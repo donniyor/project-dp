@@ -9,13 +9,13 @@ use app\DTO\TaskCreateDTO;
 use app\DTO\TaskSearchDTO;
 use app\DTO\TaskUpdateDTO;
 use app\models\Users;
+use app\Repository\PriorityRepository;
 use app\Service\ProjectService;
 use app\Service\StatusService;
 use app\Service\TaskService;
 use app\Service\UserService;
 use app\Validator\TaskUpdateValidator;
 use app\Validator\TaskCreateValidator;
-use Yii;
 use yii\base\Exception;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
@@ -30,6 +30,7 @@ class TasksController extends BaseController
     private TaskUpdateValidator $taskUpdateValidator;
     private StatusService $statusService;
     private ProjectService $projectService;
+    private PriorityRepository $priorityRepository;
 
     public function __construct(
         $id,
@@ -40,6 +41,7 @@ class TasksController extends BaseController
         TaskUpdateValidator $taskUpdateValidator,
         StatusService $statusService,
         ProjectService $projectService,
+        PriorityRepository $priorityRepository,
         $config = [],
     ) {
         parent::__construct($id, $module, $config);
@@ -50,6 +52,7 @@ class TasksController extends BaseController
         $this->taskUpdateValidator = $taskUpdateValidator;
         $this->statusService = $statusService;
         $this->projectService = $projectService;
+        $this->priorityRepository = $priorityRepository;
     }
 
     public function actionIndex(Request $request): string
@@ -188,8 +191,9 @@ class TasksController extends BaseController
         return $this->render('update', [
             'model' => $model,
             'assignedTo' => $assignedTo,
-            'statuses' => $this->statusService->getStatuesForView($this->statusService->getStatuses()),
             'project' => $project,
+            'statuses' => $this->statusService->getStatuesForView($this->statusService->getStatuses()),
+            'priority' => $this->priorityRepository->findAll(),
         ]);
     }
 
