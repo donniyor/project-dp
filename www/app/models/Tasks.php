@@ -171,4 +171,18 @@ class Tasks extends BaseModel
 
         return $this;
     }
+
+    public function setDeadline(string $deadline): self
+    {
+        $this->setAttribute('deadline', $deadline);
+
+        return $this;
+    }
+
+    public function setPriority(int $priority): self
+    {
+        $this->setAttribute('priority', $priority);
+
+        return $this;
+    }
 }

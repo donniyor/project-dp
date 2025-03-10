@@ -67,6 +67,8 @@ class TaskService
         ?int $projectId = null,
         ?int $status = null,
         ?int $assignedTo = null,
+        ?string $deadline = null,
+        ?int $priority = null,
     ): Tasks {
         return $this->repository->update(
             $model,
@@ -75,6 +77,8 @@ class TaskService
             $projectId,
             $status,
             $assignedTo,
+            $deadline,
+            $priority,
         );
     }
 

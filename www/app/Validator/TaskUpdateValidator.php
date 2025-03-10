@@ -16,7 +16,7 @@ final class TaskUpdateValidator implements BaseValidatorInterface
     {
         $model = DynamicModel::validateData($data, [
             [['title'], 'required'],
-            [['description'], 'required'],
+            [['description', 'priority', 'deadline'], 'required'],
             [['project_id'], 'required'],
             [['assigned_to', 'project_id', 'status'], 'default', 'value' => null],
             [['assigned_to', 'project_id', 'status'], 'integer'],

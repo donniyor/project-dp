@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace app\DTO;
 
+use app\components\Priority\PriorityEnum;
+use app\components\Statuses\StatusesInterface;
+
 final class TaskUpdateDTO implements Arrayable
 {
     private ?string $title = null;
@@ -11,29 +14,51 @@ final class TaskUpdateDTO implements Arrayable
     private ?int $projectId = null;
     private ?int $status = null;
     private ?int $assignedTo = null;
+    private ?string $deadline = null;
+    private ?int $priority = PriorityEnum::LOWEST;
 
     public function __construct(
-        ?string $title = null,
-        ?string $description = null,
-        ?int $projectId = null,
-        ?int $status = null,
-        ?int $assignedTo = null,
+        ?string $title,
+        ?string $description,
+        ?int $projectId,
+        ?int $status,
+        ?int $assignedTo,
+        ?string $deadline,
+        ?int $priority,
     ) {
         $this->title = $title;
         $this->description = $description;
         $this->projectId = $projectId;
         $this->status = $status;
         $this->assignedTo = $assignedTo;
+        $this->deadline = $deadline;
+        $this->priority = $priority;
     }
 
     public static function fromArray(array $params): self
     {
         return new self(
-            empty($params['title']) ? null : $params['title'],
-            empty($params['description']) ? null : $params['description'],
-            empty($params['project_id']) ? null : (int)$params['project_id'],
-            empty($params['status']) ? null : (int)$params['status'],
-            empty($params['assigned_to']) ? null : (int)$params['assigned_to'],
+            empty($params['title'])
+                ? null
+                : (string)($params['title']),
+            empty($params['description'])
+                ? null
+                : (string)($params['description']),
+            empty($params['project_id'])
+                ? null
+                : (int)$params['project_id'],
+            empty($params['status'])
+                ? null
+                : (int)$params['status'],
+            empty($params['assigned_to'])
+                ? StatusesInterface::STATUS_TO_DO
+                : (int)$params['assigned_to'],
+            empty($params['deadline'])
+                ? null
+                : (string)$params['deadline'],
+            empty($params['priority'])
+                ? PriorityEnum::LOWEST
+                : (int)$params['priority'],
         );
     }
 
@@ -45,6 +70,8 @@ final class TaskUpdateDTO implements Arrayable
             'assigned_to' => $this->getAssignedTo(),
             'project_id' => $this->getProjectId(),
             'status' => $this->getStatus(),
+            'deadline' => $this->getDeadline(),
+            'priority' => $this->getPriority(),
         ];
     }
 
@@ -96,5 +123,15 @@ final class TaskUpdateDTO implements Arrayable
     public function getAssignedTo(): ?int
     {
         return $this->assignedTo;
+    }
+
+    public function getDeadline(): string
+    {
+        return $this->deadline ?? '';
+    }
+
+    public function getPriority(): int
+    {
+        return $this->priority ?? PriorityEnum::LOWEST;
     }
 }

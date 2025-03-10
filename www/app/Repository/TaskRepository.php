@@ -94,7 +94,9 @@ class TaskRepository extends BaseEntityRepository
         ?string $description = null,
         ?int $projectId = null,
         ?int $status = null,
-        ?int $assignedTo = null
+        ?int $assignedTo = null,
+        ?string $deadline = null,
+        ?int $priority = null,
     ): Tasks {
         if ($title !== null) {
             $model->setTitle($title);
@@ -114,6 +116,14 @@ class TaskRepository extends BaseEntityRepository
 
         if ($assignedTo !== null) {
             $model->setAssignedTo($assignedTo);
+        }
+
+        if (null !== $deadline) {
+            $model->setDeadline($deadline);
+        }
+
+        if (null !== $priority) {
+            $model->setPriority($priority);
         }
 
         $model->save();

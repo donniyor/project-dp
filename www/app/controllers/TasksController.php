@@ -172,6 +172,8 @@ class TasksController extends BaseController
                     $data->getProjectId(),
                     $data->getStatus(),
                     $data->getAssignedTo(),
+                    $data->getDeadline(),
+                    $data->getPriority(),
                 );
             }
         }
