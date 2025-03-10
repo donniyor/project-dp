@@ -39,6 +39,7 @@
     display: inline-block;
     vertical-align: top;
     white-space: normal;
+    overflow: auto;
 }
 
 .kanban-header {
@@ -48,6 +49,9 @@
     font-weight: bold;
     padding: 5px;
     border-radius: 5px 5px 0 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 .kanban-items {

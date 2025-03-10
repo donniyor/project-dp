@@ -3,187 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>jQuery UI Kanban Board</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <title>Kanban на Bootstrap</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            overflow-x: hidden;
-        }
-
-        .kanban-container {
-            overflow-x: hidden;
-            white-space: nowrap;
-            padding: 20px;
-            cursor: grab;
-            user-select: none;
-        }
-
-        .kanban-container:active {
-            cursor: grabbing;
-        }
-
-        .kanban-board {
-            display: flex;
-            gap: 15px;
-            min-width: 1200px;
-            padding-bottom: 10px;
-        }
-
         .kanban-column {
-            min-width: 300px;
-            background: white;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            display: inline-block;
-            vertical-align: top;
-            white-space: normal;
-        }
-
-        .kanban-header {
-            font-size: 18px;
-            font-weight: bold;
-            padding: 10px;
-            background: #007bff;
-            color: white;
-            text-align: center;
-            border-radius: 5px 5px 0 0;
-        }
-
-        .kanban-items {
-            min-height: 200px;
-            padding: 10px;
-        }
-
-        .kanban-item {
-            background: #fff;
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-            cursor: grab;
+            height: 200vh;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
         }
-
-        .kanban-item a {
-            text-decoration: none;
-            color: #007bff;
+        .kanban-header {
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+            text-align: center;
             font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
-
-        .kanban-item a:hover {
-            text-decoration: underline;
+        .kanban-body {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: #f8f9fa;
+        }
+        .task-card {
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
-
-<div class="kanban-container">
-    <div class="kanban-board">
-        <div class="kanban-column" data-board-id="backlog">
-            <div class="kanban-header">Backlog</div>
-            <div class="kanban-items">
-                <div class="kanban-item" data-id="task-a">
-                    <a href="#task-a">Task A</a>
-                </div>
-                <div class="kanban-item" data-id="task-b">
-                    <a href="#task-b">Task B</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="kanban-column" data-board-id="todo">
-            <div class="kanban-header">To Do</div>
-            <div class="kanban-items">
-                <div class="kanban-item" data-id="task-1">
-                    <a href="#task-1">Task 1</a>
-                </div>
-                <div class="kanban-item" data-id="task-2">
-                    <a href="#task-2">Task 2</a>
+<div class="container-fluid">
+    <h1 class="text-center my-4">Моя Kanban-доска</h1>
+    <p class="text-center">Тут можно управлять задачами, перемещая их между колонками.</p>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="kanban-column border">
+                <div class="kanban-header">To Do</div>
+                <div class="kanban-body">
+                    <div class="card task-card">
+                        <div class="card-body">Задача 1</div>
+                    </div>
+                    <div class="card task-card">
+                        <div class="card-body">Задача 2</div>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="kanban-column" data-board-id="in-progress">
-            <div class="kanban-header">In Progress</div>
-            <div class="kanban-items">
-                <div class="kanban-item" data-id="task-3">
-                    <a href="#task-3">Task 3</a>
+        <div class="col-md-4">
+            <div class="kanban-column border">
+                <div class="kanban-header bg-warning">In Progress</div>
+                <div class="kanban-body">
+                    <div class="card task-card">
+                        <div class="card-body">Задача 3</div>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="kanban-column" data-board-id="review">
-            <div class="kanban-header">Review</div>
-            <div class="kanban-items">
-                <div class="kanban-item" data-id="task-4">
-                    <a href="#task-4">Task 4</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="kanban-column" data-board-id="done">
-            <div class="kanban-header">Done</div>
-            <div class="kanban-items">
-                <div class="kanban-item" data-id="task-5">
-                    <a href="#task-5">Task 5</a>
+        <div class="col-md-4">
+            <div class="kanban-column border">
+                <div class="kanban-header bg-success">Done</div>
+                <div class="kanban-body">
+                    <div class="card task-card">
+                        <div class="card-body">Задача 4</div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<script>
-    $(document).ready(function () {
-        let isDragging = false;
-        let startX, scrollLeft;
-        let isTaskDragging = false;
-
-        // Перетаскивание задач
-        $(".kanban-items").sortable({
-            connectWith: ".kanban-items",
-            placeholder: "ui-state-highlight",
-            cursor: "move",
-            start: function () {
-                isTaskDragging = true;
-            },
-            stop: function (event, ui) {
-                isTaskDragging = false;
-                let taskId = ui.item.data("id");
-                let boardId = ui.item.closest(".kanban-column").data("board-id");
-                console.log("Task moved:", taskId, "to board:", boardId);
-            }
-        }).disableSelection();
-
-        // Перетаскивание всей доски
-        $(".kanban-container").on("mousedown", function (e) {
-            if (isTaskDragging) return;
-
-            isDragging = true;
-            startX = e.pageX - $(this).offset().left;
-            scrollLeft = $(this).scrollLeft();
-            $(this).css("cursor", "grabbing");
-        });
-
-        $(document).on("mousemove", function (e) {
-            if (!isDragging || isTaskDragging) return;
-            let x = e.pageX - $(".kanban-container").offset().left;
-            let walk = (x - startX) * -1;
-            $(".kanban-container").scrollLeft(scrollLeft + walk);
-        });
-
-        $(document).on("mouseup", function () {
-            isDragging = false;
-            $(".kanban-container").css("cursor", "grab");
-        });
-    });
-</script>
-
 </body>
 </html>

@@ -193,4 +193,11 @@ $(document).ready(function () {
     initializeSelect2('#assigned-to', 'assigned-to');
     initializeSelect2('#author-id', 'author-id');
     initializeSelect4('#priority-id', '/priority/get-priorities', 'priority-id');
+
+    $('input[name="deadline"]').datetimepicker().on('show', function (e) {
+        let selectedDate = $(this).val();
+        if (selectedDate) {
+            $(this).datetimepicker('update', selectedDate); // Устанавливаем текущую дату как стартовую
+        }
+    });
 });

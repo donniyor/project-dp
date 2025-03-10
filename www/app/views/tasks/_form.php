@@ -3,8 +3,6 @@
 declare(strict_types=1);
 
 use app\assets\ListAsset;
-use app\components\Statuses\Statuses;
-use app\components\Statuses\StatusesInterface;
 use app\helpers\Data;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -24,7 +22,8 @@ ListAsset::register($this);
 
     <div class="mb-3">
         <?= Html::label('Название') ?>
-        <?= Html::textInput('title', '', ['maxlength' => true, 'class' => 'form-control']) ?>    </div>
+        <?= Html::textInput('title', '', ['maxlength' => true, 'class' => 'form-control']) ?>
+    </div>
 
     <div class="mb-3">
         <?= Html::label('Описание') ?>

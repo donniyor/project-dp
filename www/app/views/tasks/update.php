@@ -34,7 +34,7 @@ ListAsset::register($this);
     ?>
 
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-8">
             <div class="task-form">
                 <div class="mb-3">
                     <?= Html::label('Название') ?>
@@ -56,7 +56,7 @@ ListAsset::register($this);
             </div>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="card bg-light">
                 <div class="card-header">О задаче</div>
                 <div class="card-body">
@@ -99,6 +99,30 @@ ListAsset::register($this);
                     </div>
 
                     <div class="mb-3">
+                        <?= Html::label('Срок', 'deadline', ['class' => 'form-label']) ?>
+                        <?= DateTimePicker::widget([
+                            'name' => 'deadline',
+                            'value' => $model->getDeadLine(),
+                            'options' => [
+                                'placeholder' => 'Выберите дату и время...',
+                                'class' => 'form-control'
+                            ],
+                            'type' => DateTimePicker::TYPE_INPUT,
+                            'pluginOptions' => [
+                                'autoclose' => true,
+                                'format' => 'dd-M-yyyy HH:ii P',
+                                'todayHighlight' => true,
+                            ],
+                            'pickerButton' => [
+                                'label' => '<i class="material-icons">event</i>',
+                            ],
+                            'removeButton' => [
+                                'label' => '<i class="material-icons">clear</i>',
+                            ],
+                        ]) ?>
+                    </div>
+
+                    <div class="mb-3">
                         <?= Html::label('Статус') ?>
                         <?= Html::dropDownList(
                             'status',
@@ -127,22 +151,6 @@ ListAsset::register($this);
                             ],
                         ); ?>
                     </div>
-
-                    <div class="mb-3">
-                        <?= Html::label('Срок', 'deadline', ['class' => 'form-label']) ?>
-                        <?= DateTimePicker::widget([
-                            'name' => 'deadline',
-                            'value' => $model->getDeadLine(), // Или date('Y-m-d H:i:s') для текущей даты
-                            'options' => ['placeholder' => 'Выберите дату и время...', 'class' => 'form-control'],
-                            'pluginOptions' => [
-                                'autoclose' => true,
-                                'format' => 'yyyy-mm-dd hh:ii', // Формат даты и времени
-                                'todayHighlight' => true,
-                                'todayBtn' => true
-                            ]
-                        ]) ?>
-                    </div>
-
                 </div>
             </div>
         </div>

@@ -74,13 +74,15 @@ KanbanAsset::register($this);
                                         <?= isset($task['assignedTo']) ? $task['assignedTo'] : '' ?>
                                     </div>
 
-                                    <?php if (isset($task['project_id']) && isset($task['project_title'])) { ?>
+                                    <?php
+                                    if (isset($task['project_id']) && isset($task['project_title'])) { ?>
                                         <?= Html::a(
                                             (string)$task['project_title'],
                                             Url::to(['/projects/update', 'id' => (int)$task['project_id']]),
                                             ['class' => 'project-title'],
                                         ) ?>
-                                    <?php } ?>
+                                    <?php
+                                    } ?>
                                 </div>
                             </div>
                             <?php
