@@ -34,7 +34,7 @@ class TaskRepository extends BaseEntityRepository
             $query->andWhere([
                 'in',
                 'tasks.assigned_to',
-                $authorIds,
+                $assignedToIds,
             ]);
         }
 

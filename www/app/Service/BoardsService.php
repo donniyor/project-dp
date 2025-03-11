@@ -49,10 +49,29 @@ class BoardsService
                     'priority' => $this->priorityRepository->findIcon($task->getPriority()),
                     'color' => $this->priorityRepository->findColor($task->getPriority()),
                     'deadline' => $task->getDeadLine(),
+                    'deadline-color' => $this->getDeadlineClass($task->getDeadLine()),
                 ];
             }
         }
 
         return $boards;
+    }
+
+    public function getDeadlineClass(string $deadline): string
+    {
+        if (!$deadline) {
+            return '';
+        }
+
+        $deadline = strtotime($deadline);
+        $today = strtotime(date('Y-m-d'));
+        $daysLeft = ceil(($deadline - $today) / (60 * 60 * 24));
+
+        return match (true) {
+            $daysLeft <= 0 => 'deadline-past',
+            $daysLeft <= 3 => 'deadline-warning',
+            $daysLeft <= 7 => 'deadline-soon',
+            default => 'deadline-normal',
+        };
     }
 }

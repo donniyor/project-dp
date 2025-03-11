@@ -14,7 +14,8 @@ use yii\helpers\Html;
 /** @var null|array $authors */
 /** @var null|array $assignedTo */
 
-$this->title = 'Задачи';
+$this->title = 'Беклог';
+$this->title = 'Беклог';
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>

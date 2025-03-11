@@ -216,3 +216,19 @@ a.desc:after {
     margin-left: 12px;
     margin-right: 12px;
 }
+
+.deadline-past {
+    color: #e63946 !important;
+}
+
+.deadline-warning {
+    color: #ff9f1c !important;
+}
+
+.deadline-soon {
+    color: #f4a261 !important;
+}
+
+.deadline-normal {
+    color: #2a9d8f !important;
+}

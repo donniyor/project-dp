@@ -16,7 +16,8 @@ use yii\helpers\Html;
 /** @var Projects $projecct */
 
 $this->title = 'Создать задачу';
-$this->params['breadcrumbs'][] = ['label' => 'Задачи', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Беклог', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Канбан', 'url' => ['/kanban']];
 $this->params['breadcrumbs'][] = $this->title;
 
 ListAsset::register($this);

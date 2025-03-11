@@ -11,7 +11,8 @@ use app\components\Statuses\StatusesInterface;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-$this->title = 'Задачи';
+$this->title = 'Канбан';
+$this->params['breadcrumbs'][] = ['label' => 'Беклог', 'url' => ['/tasks/index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 KanbanAsset::register($this);
@@ -61,7 +62,7 @@ KanbanAsset::register($this);
                                     </div>
 
                                     <!-- Правая часть (дедлайн) -->
-                                    <div class="task-deadline">
+                                    <div class="task-deadline <?= $task['deadline-color'] ?? '' ?>">
                                         <?= isset($task['deadline'])
                                             ? Yii::$app->formatter->asDate($task['deadline'], 'php:d-m-Y')
                                             : '' ?>
@@ -81,7 +82,7 @@ KanbanAsset::register($this);
                                             Url::to(['/projects/update', 'id' => (int)$task['project_id']]),
                                             ['class' => 'project-title'],
                                         ) ?>
-                                    <?php
+                                        <?php
                                     } ?>
                                 </div>
                             </div>

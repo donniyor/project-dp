@@ -17,6 +17,7 @@ use app\Service\UserService;
 use app\Validator\TaskUpdateValidator;
 use app\Validator\TaskCreateValidator;
 use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Request;
@@ -104,6 +105,9 @@ class TasksController extends BaseController
         ]);
     }
 
+    /**
+     * @throws InvalidConfigException
+     */
     #[\ReturnTypeWillChange]
     public function actionCreate(Request $request): Response | string
     {
@@ -113,43 +117,38 @@ class TasksController extends BaseController
 
         $data = $request->post();
         $errors = $this->taskCreateValidator->validate($data);
-        if (null !== $errors) {
-            $this->makeError($errors);
-
-            $data = TaskCreateDTO::fromArray($data);
-            $project = null;
-            if (null !== $data->getProjectId()) {
-                $project = $this->projectService->findById($data->getProjectId());
-            }
-
-            return $this->render(
-                'create',
-                [
-                    'task' => $data->toArray(),
-                    'project' => $project,
-                ],
-            );
-        }
 
         $data = TaskCreateDTO::fromArray($data);
 
-        $model = $this->tasksService->create(
-            $data->getTitle(),
-            $data->getDescription(),
-            $data->getStatus(),
-            $data->getProjectId(),
-            $this->userService->getCurrentUser()->getId(),
-            $data->getAssignedTo(),
-        );
-
-        $errors = $model->getErrors();
-        if (!empty($errors)) {
-            $this->makeError($errors);
-
-            return $this->render('create', ['task' => $data->toArray()]);
+        $project = null;
+        if (null !== $data->getProjectId()) {
+            $project = $this->projectService->findById($data->getProjectId());
         }
 
-        return $this->redirect(['update', 'id' => $model->getId()]);
+        if (null !== $errors) {
+            $this->makeError($errors);
+        } else {
+            $model = $this->tasksService->create(
+                $data->getTitle(),
+                $data->getDescription(),
+                $data->getStatus(),
+                $data->getProjectId(),
+                $this->userService->getCurrentUser()->getId(),
+                $data->getAssignedTo(),
+            );
+
+            $errors = $model->getErrors();
+            if (empty($errors)) {
+                return $this->redirect(['update', 'id' => $model->getId()]);
+            }
+
+            $this->makeError($errors);
+        }
+
+        return $this->render('create', [
+            'task' => $data->toArray(),
+            'project' => $project,
+        ]);
     }
 
     /**

@@ -23,7 +23,7 @@ use yii\widgets\ActiveForm;
 $this->title = 'Редактировать задачу';
 $this->params['breadcrumbs'][] = ['label' => 'Беклог', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => 'Канбан', 'url' => ['/kanban']];
-$this->params['breadcrumbs'][] = 'Редактировать';
+$this->params['breadcrumbs'][] = $this->title;
 
 ListAsset::register($this);
 
