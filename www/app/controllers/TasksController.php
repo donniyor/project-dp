@@ -104,6 +104,7 @@ class TasksController extends BaseController
         ]);
     }
 
+    #[\ReturnTypeWillChange]
     public function actionCreate(Request $request): Response | string
     {
         if ($request->getIsGet()) {
@@ -112,10 +113,22 @@ class TasksController extends BaseController
 
         $data = $request->post();
         $errors = $this->taskCreateValidator->validate($data);
-        if ($errors !== null) {
+        if (null !== $errors) {
             $this->makeError($errors);
 
-            return $this->render('create');
+            $data = TaskCreateDTO::fromArray($data);
+            $project = null;
+            if (null !== $data->getProjectId()) {
+                $project = $this->projectService->findById($data->getProjectId());
+            }
+
+            return $this->render(
+                'create',
+                [
+                    'task' => $data->toArray(),
+                    'project' => $project,
+                ],
+            );
         }
 
         $data = TaskCreateDTO::fromArray($data);
@@ -133,7 +146,7 @@ class TasksController extends BaseController
         if (!empty($errors)) {
             $this->makeError($errors);
 
-            return $this->render('create');
+            return $this->render('create', ['task' => $data->toArray()]);
         }
 
         return $this->redirect(['update', 'id' => $model->getId()]);

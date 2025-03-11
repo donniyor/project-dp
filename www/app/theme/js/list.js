@@ -156,11 +156,11 @@ $(document).ready(function () {
                         icon: entity.icon,
                         color: entity.color
                     }));
-                    return { results: cachedData };
+                    return {results: cachedData};
                 },
                 transport: function (params, success, failure) {
                     if (!params.data.query && cachedData.length > 0) {
-                        success({ results: cachedData });
+                        success({results: cachedData});
                         return;
                     }
                     const request = $.ajax(params);
@@ -197,7 +197,7 @@ $(document).ready(function () {
     $('input[name="deadline"]').datetimepicker().on('show', function (e) {
         let selectedDate = $(this).val();
         if (selectedDate) {
-            $(this).datetimepicker('update', selectedDate); // Устанавливаем текущую дату как стартовую
+            $(this).datetimepicker('update', selectedDate);
         }
     });
 });

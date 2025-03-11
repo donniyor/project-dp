@@ -147,11 +147,16 @@ class ProjectsController extends BaseController
         $title = (string)$request->get('query');
         $limit = (int)$request->get('limit', 10);
 
-        $projects = [];
         if (!empty($title) && $limit > 0) {
-            $projects = $this->projectService->searchByTitle($title, $limit);
+            return $this->projectService->processProjects(
+                $this->projectService
+                    ->searchByTitle($title, $limit),
+            );
         }
 
-        return $this->projectService->processProjects($projects);
+        return $this->projectService->processProjects(
+            $this->projectService
+                ->findBy(5),
+        );
     }
 }

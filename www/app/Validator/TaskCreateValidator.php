@@ -15,13 +15,18 @@ final class TaskCreateValidator implements BaseValidatorInterface
     public function validate(array $data): ?array
     {
         $model = DynamicModel::validateData($data, [
-            [['title'], 'required'],
-            [['description'], 'safe'],
-            [['project_id'], 'required'],
-            [['assigned_to', 'project_id', 'status'], 'default', 'value' => null],
-            [['author_id', 'assigned_to', 'project_id', 'status'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
-            [['title'], 'string', 'max' => 255],
+            [['title'], 'required', 'message' => 'Поле "Название" обязательно для заполнения'],
+            [['project_id'], 'required', 'message' => 'Поле "Проект" обязательно для заполнения'],
+            [['description'], 'required', 'message' => 'Поле "Описание" обязательно для заполнения'],
+            [['assigned_to'], 'required', 'message' => 'Поле "Ответственный" обязательно для заполнения'],
+            [['status'], 'required', 'message' => 'Поле "Статус" обязательно для заполнения'],
+            [['author_id'], 'required', 'message' => 'Поле "Автор" обязательно для заполнения'],
+
+            [['title'], 'string', 'max' => 255, 'message' => 'Поле "Название" не должно превышать 255 символов'],
+            [['author_id'], 'integer', 'message' => 'Поле "Автор" должно быть числом'],
+            [['assigned_to'], 'integer', 'message' => 'Поле "Ответственный" должно быть числом'],
+            [['project_id'], 'integer', 'message' => 'Поле "Проект" должно быть числом'],
+            [['status'], 'integer', 'message' => 'Поле "Статус" должно быть числом'],
         ]);
 
         if ($model->hasErrors()) {

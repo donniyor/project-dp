@@ -21,7 +21,8 @@ use yii\widgets\ActiveForm;
 /** @var ActiveForm $form */
 
 $this->title = 'Редактировать задачу';
-$this->params['breadcrumbs'][] = ['label' => 'Задачи', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Беклог', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Канбан', 'url' => ['/kanban']];
 $this->params['breadcrumbs'][] = 'Редактировать';
 
 ListAsset::register($this);
