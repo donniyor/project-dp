@@ -125,16 +125,16 @@ class TasksController extends BaseController
             $project = $this->projectService->findById($data->getProjectId());
         }
 
-        $status = null;
-        if (null !== $data->getStatus()) {
-            $status = $this->statusService->getStatuesForView([$data->getStatus()]);
-        }
-
         $assignedTo = null;
         if (null !== $data->getAssignedTo()) {
             $assignedTo = $this->userService->getUsersForView(
                 $this->userService->findByIds([$data->getAssignedTo()]),
             );
+        }
+
+        $priority = null;
+        if (null !== $data->getPriority()) {
+            $priority = $this->priorityRepository::findAll();
         }
 
         if (null !== $errors) {
@@ -160,8 +160,9 @@ class TasksController extends BaseController
         return $this->render('create', [
             'task' => $data->toArray(),
             'project' => $project,
-            'status' => $status,
+            'statuses' => $this->statusService->getStatuesForView($this->statusService->getStatuses()),
             'assignedTo' => $assignedTo,
+            'priority' => $priority,
         ]);
     }
 

@@ -9,20 +9,20 @@ use app\components\Priority\PriorityEnum;
 class PriorityRepository
 {
     public const NONE_PRIORITY = 'Приоритет не определен';
-    
+
     public static function findAll(): array
     {
         return [
             [
                 'id' => PriorityEnum::LOWEST,
                 'title' => 'Lowest',
-                'icon' => 'expand_more',
+                'icon' => 'arrow_downward',
                 'color' => '#9E9E9E',
             ],
             [
                 'id' => PriorityEnum::LOW,
                 'title' => 'Low',
-                'icon' => 'arrow_downward',
+                'icon' => 'expand_more',
                 'color' => '#4CAF50',
             ],
             [
@@ -34,13 +34,13 @@ class PriorityRepository
             [
                 'id' => PriorityEnum::HIGH,
                 'title' => 'High',
-                'icon' => 'arrow_upward',
+                'icon' => 'expand_less',
                 'color' => '#FF5722',
             ],
             [
                 'id' => PriorityEnum::HIGHEST,
                 'title' => 'Highest',
-                'icon' => 'expand_less',
+                'icon' => 'arrow_upward',
                 'color' => '#F44336',
             ],
         ];
@@ -66,5 +66,16 @@ class PriorityRepository
         }
 
         return '';
+    }
+
+    public function findOne(int $id): ?array
+    {
+        foreach ($this->findAll() as $priority) {
+            if (isset($priority['id']) && $priority['id'] === $id) {
+                return $priority;
+            }
+        }
+
+        return null;
     }
 }

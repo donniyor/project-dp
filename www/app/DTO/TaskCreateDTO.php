@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace app\DTO;
 
+use app\components\Priority\PriorityEnum;
 use app\components\Statuses\StatusesInterface;
 
 class TaskCreateDTO implements Arrayable
@@ -13,6 +14,7 @@ class TaskCreateDTO implements Arrayable
     private int $projectId;
     private int $status;
     private ?int $assignedTo = null;
+    private ?int $priority = null;
 
     public static function fromArray(array $params): static
     {
@@ -20,7 +22,8 @@ class TaskCreateDTO implements Arrayable
             ->setTitle((string)($params['title'] ?? null))
             ->setDescription((string)($params['description'] ?? null))
             ->setStatus((int)($params['status'] ?? StatusesInterface::STATUS_TO_DO))
-            ->setProjectId((int)($params['project_id'] ?? null));
+            ->setProjectId((int)($params['project_id'] ?? null))
+            ->setPriority((int)($params['priority'] ?? PriorityEnum::LOWEST));
 
         if (!empty($params['assigned_to'])) {
             $static->setAssignedTo((int)$params['assigned_to']);
@@ -37,6 +40,7 @@ class TaskCreateDTO implements Arrayable
             'project_id' => $this->getProjectId(),
             'status' => $this->getStatus(),
             'assigned_to' => $this->getAssignedTo(),
+            'priority' => $this->getPriority(),
         ];
     }
 
@@ -93,5 +97,17 @@ class TaskCreateDTO implements Arrayable
     public function getAssignedTo(): ?int
     {
         return $this->assignedTo;
+    }
+
+    public function setPriority(int $priority): self
+    {
+        $this->priority = $priority;
+
+        return $this;
+    }
+
+    public function getPriority(): ?int
+    {
+        return $this->priority;
     }
 }

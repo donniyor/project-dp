@@ -14,6 +14,9 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var array $task */
 /** @var Projects $projecct */
+/** @var array|null $statuses */
+/** @var array|null $assignedTo */
+/** @var array|null $priority */
 
 $this->title = 'Создать задачу';
 $this->params['breadcrumbs'][] = ['label' => 'Беклог', 'url' => ['index']];
@@ -74,8 +77,8 @@ ListAsset::register($this);
                         <?= Html::label('Исполнитель') ?>
                         <?= Html::dropDownList(
                             'assigned_to',
-                            null,
-                            [],
+                            $task['assigned_to'] ?? null,
+                            isset($assignedTo) ? ArrayHelper::map($assignedTo, 'id', 'user') : [],
                             [
                                 'id' => 'assigned-to',
                                 'class' => 'js-states form-control',
@@ -106,8 +109,8 @@ ListAsset::register($this);
                         <?=
                         Html::dropDownList(
                             'status',
-                            null,
-                            [],
+                            $task['status'] ?? null,
+                            isset($statuses) ? ArrayHelper::map($statuses, 'id', 'title') : [],
                             [
                                 'id' => 'status-id',
                                 'class' => 'js-states form-control',
