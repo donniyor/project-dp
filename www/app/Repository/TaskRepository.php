@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace app\Repository;
 
+use app\components\Statuses\StatusesInterface;
 use app\DTO\TaskCreateDTO;
 use app\models\Tasks;
 use yii\data\ActiveDataProvider;
@@ -86,7 +87,12 @@ class TaskRepository extends BaseEntityRepository
 
     public function findBy(): array
     {
-        return $this->getEntity()->find()->with('project')->all();
+        return $this->getEntity()
+            ->find()
+            ->with('project')
+            ->with('assignedTo')
+            ->where(['!=', 'status', StatusesInterface::STATUS_DELETED])
+            ->all();
     }
 
     public function update(
