@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace app\controllers;
 
+use app\DTO\UserDTO;
 use app\models\Users;
 use app\components\BaseController;
+use app\Repository\UserRepository;
 use Yii;
 use yii\base\Exception;
 use yii\web\HttpException;
@@ -14,6 +16,19 @@ use yii\web\Request;
 
 class SelfCabinetController extends BaseController
 {
+    private UserRepository $repository;
+
+    public function __construct(
+        $id,
+        $module,
+        UserRepository $repository,
+        $config = [],
+    ) {
+        parent::__construct($id, $module, $config);
+
+        $this->repository = $repository;
+    }
+
     /**
      * @throws HttpException
      * @throws NotFoundHttpException
@@ -23,8 +38,8 @@ class SelfCabinetController extends BaseController
     {
         $model = $this->findModel(Yii::$app->getUser()->getId());
 
-        if ($model->load($request->post())) {
-            $this->saveData($model, 'index', true, ['image_url']);
+        if ($request->getIsPost()) {
+            $this->repository->updateOne($model, UserDTO::fromArray($request->post()));
         }
 
         return $this->render('index', [

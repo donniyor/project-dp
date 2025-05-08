@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace app\Repository;
 
+use app\DTO\UserDTO;
 use app\models\Users;
 use Yii;
+use yii\db\Exception;
 use yii\web\User;
 
 class UserRepository extends BaseEntityRepository
@@ -52,5 +54,18 @@ class UserRepository extends BaseEntityRepository
             ->one();
 
         return $users;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function updateOne(Users $model, UserDTO $userDTO): bool
+    {
+        return $model
+            ->setFirstName($userDTO->firstName)
+            ->setLastName($userDTO->lastName)
+            ->setPosition($userDTO->position)
+            ->setDepartment($userDTO->department)
+            ->save();
     }
 }

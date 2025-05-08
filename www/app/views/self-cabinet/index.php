@@ -25,43 +25,50 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="row align-items-start">
                     <div class="col-auto">
                         <?= Avatars::getAvatarSquare($model) ?>
-
-                        <div class="mt-3">
-                            <div class="mt-3">
-                                <?= $form->field($model, 'image_url')->fileInput([
-                                    'style' => 'width: 200px; padding: 0.375rem 0.75rem; background-color: #e9ecef; border: 1px solid #ced4da; border-radius: 0.25rem;',
-                                    'class' => 'form-control form-control-sm',
-                                ])->label(false) ?>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="col">
                         <div class="row">
                             <div class="col-lg">
                                 <div class="mb-3">
-                                    <?= $form->field($model, 'first_name')->textInput([
-                                        'value' => $model->getFirstName(),
-                                        'placeholder' => 'Поле не заполнено'
-                                    ]) ?>
+                                    <?= Html::textInput(
+                                        'first_name',
+                                        $model->getFirstName(),
+                                        [
+                                            'placeholder' => 'Поле не заполнено',
+                                            'class' => 'form-control',
+                                        ],
+                                    ) ?>
                                 </div>
                                 <div class="mb-3">
-                                    <?= $form->field($model, 'last_name')->textInput([
-                                        'value' => $model->getLastName(),
-                                        'placeholder' => 'Поле не заполнено'
-                                    ]) ?>
+                                    <?= Html::textInput(
+                                        'last_name',
+                                        $model->getLastName(),
+                                        [
+                                            'placeholder' => 'Поле не заполнено',
+                                            'class' => 'form-control',
+                                        ],
+                                    ) ?>
                                 </div>
                                 <div class="mb-3">
-                                    <?= $form->field($model, 'department')->textInput([
-                                        'value' => $model->getDepartment(),
-                                        'placeholder' => 'Поле не заполнено'
-                                    ]) ?>
+                                    <?= Html::textInput(
+                                        'department',
+                                        $model->getDepartment(),
+                                        [
+                                            'placeholder' => 'Поле не заполнено',
+                                            'class' => 'form-control',
+                                        ],
+                                    ) ?>
                                 </div>
                                 <div class="mb-3">
-                                    <?= $form->field($model, 'position')->textInput([
-                                        'value' => $model->getPosition(),
-                                        'placeholder' => 'Поле не заполнено'
-                                    ]) ?>
+                                    <?= Html::textInput(
+                                        'position',
+                                        $model->getPosition(),
+                                        [
+                                            'placeholder' => 'Поле не заполнено',
+                                            'class' => 'form-control',
+                                        ],
+                                    ) ?>
                                 </div>
                                 <div class="d-flex justify-content-end mt-3">
                                     <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success btn-sm']) ?>

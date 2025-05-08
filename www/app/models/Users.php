@@ -237,9 +237,11 @@ class Users extends ActiveRecord implements IdentityInterface
         return $this->image_url;
     }
 
-    public function setFirstName(string $firstName): void
+    public function setFirstName(string $firstName): self
     {
         $this->first_name = $firstName;
+
+        return $this;
     }
 
     public function getFirstName(): ?string
@@ -247,9 +249,11 @@ class Users extends ActiveRecord implements IdentityInterface
         return $this->first_name;
     }
 
-    public function setLastName(string $lastName): void
+    public function setLastName(string $lastName): self
     {
         $this->last_name = $lastName;
+
+        return $this;
     }
 
     public function getLastName(): ?string
@@ -257,9 +261,11 @@ class Users extends ActiveRecord implements IdentityInterface
         return $this->last_name;
     }
 
-    public function setPosition(string $position): void
+    public function setPosition(string $position): self
     {
         $this->position = $position;
+
+        return $this;
     }
 
     public function getPosition(): ?string
@@ -267,9 +273,11 @@ class Users extends ActiveRecord implements IdentityInterface
         return $this->position;
     }
 
-    public function setDepartment(string $department): void
+    public function setDepartment(string $department): self
     {
         $this->department = $department;
+
+        return $this;
     }
 
     public function getDepartment(): ?string
