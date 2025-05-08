@@ -5,6 +5,7 @@ declare(strict_types=1);
 use app\components\Statuses\Statuses;
 use app\helpers\Avatars;
 use app\helpers\Buttons;
+use app\helpers\PriorityHelper;
 use app\models\Tasks;
 use yii\grid\GridView;
 use yii\helpers\Html;
@@ -47,10 +48,42 @@ $this->params['breadcrumbs'][] = $this->title;
                         ['class' => 'yii\grid\SerialColumn'],
                         [
                             'attribute' => 'title',
+                            'contentOptions' => ['class' => 'task-title'],
                         ],
                         [
                             'attribute' => 'project_id',
-                            'value' => 'project.title',
+                            'value' => static fn(Tasks $model): string => Html::a(
+                                null === $model->getProjectModel()
+                                    ? 'Нет проекта'
+                                    : $model->getProjectModel()->getTitle(),
+                                [
+                                    null === $model->getProjectModel()
+                                        ? ''
+                                        : sprintf(
+                                        '/projects/update/%s',
+                                        $model->getProjectId(),
+                                    ),
+                                ],
+                            ),
+                            'format' => 'html',
+                            'contentOptions' => ['class' => 'project-title'],
+                        ],
+                        [
+                            'attribute' => 'status',
+                            'value' => fn(Tasks $model): string => Statuses::getStatusTag($model->getStatus()),
+                            'format' => 'raw',
+                        ],
+                        [
+                            'attribute' => 'priority',
+                            'value' => fn(Tasks $model): string => PriorityHelper::getPriorityById(
+                                $model->getPriority()
+                            ),
+                            'format' => 'raw',
+                        ],
+                        [
+                            'attribute' => 'deadline',
+                            'format' => 'raw',
+                            'value' => 'deadline',
                         ],
                         [
                             'attribute' => 'author_id',
@@ -74,16 +107,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ),
                         ],
                         [
-                            'attribute' => 'status',
-                            'value' => fn(Tasks $model): string => Statuses::getStatusTag($model->getStatus()),
-                            'format' => 'raw',
-                        ],
-                        [
                             'header' => 'Действия',
                             'format' => 'html',
                             'headerOptions' => ['width' => '150'],
                             'content' => static fn(Tasks $model): string => Buttons::getButtons(
-                                $model->getPrimaryKey()
+                                $model->getPrimaryKey(),
+                                'tasks',
                             ),
                         ],
                     ],

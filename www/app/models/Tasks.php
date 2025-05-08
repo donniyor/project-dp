@@ -6,8 +6,6 @@ namespace app\models;
 
 use app\components\BaseModel;
 use yii\db\ActiveQuery;
-use yii\db\ActiveRecord;
-use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "tasks".
@@ -24,6 +22,8 @@ use yii\helpers\ArrayHelper;
  *
  * @property ?Users $assignedTo
  * @property Users $author
+ * @property Projects $project
+ *
  */
 class Tasks extends BaseModel
 {
@@ -186,5 +186,10 @@ class Tasks extends BaseModel
         $this->setAttribute('priority', $priority);
 
         return $this;
+    }
+
+    public function getProjectModel(): ?Projects
+    {
+        return $this->getRelatedRecords()['project'] ?? null;
     }
 }

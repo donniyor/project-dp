@@ -20,7 +20,12 @@ class TaskRepository extends BaseEntityRepository
         ?array $authorIds = null,
         ?array $assignedToIds = null,
     ): ActiveDataProvider {
-        $query = $this->getEntity()->find()->joinWith(['author', 'assignedTo']);
+        $query = $this->getEntity()
+            ->find()
+            ->joinWith(['author', 'assignedTo'])
+            ->with('assignedTo')
+            ->with('author')
+            ->with('project');
 
         if ($authorIds !== null) {
             $query->andWhere([

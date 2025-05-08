@@ -5,6 +5,7 @@ use app\helpers\Avatars;
 use app\helpers\Buttons;
 use app\helpers\PriorityHelper;
 use app\models\Tasks;
+use yii\bootstrap5\Html;
 use yii\data\ActiveDataProvider;
 use yii\grid\GridView;
 
@@ -35,7 +36,20 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         [
                             'attribute' => 'project_id',
-                            'value' => 'project.title',
+                            'value' => static fn(Tasks $model): string => Html::a(
+                                null === $model->getProjectModel()
+                                    ? 'Нет проекта'
+                                    : $model->getProjectModel()->getTitle(),
+                                [
+                                    null === $model->getProjectModel()
+                                        ? ''
+                                        : sprintf(
+                                        '/projects/update/%s',
+                                        $model->getProjectId(),
+                                    ),
+                                ],
+                            ),
+                            'format' => 'html',
                             'contentOptions' => ['class' => 'project-title'],
                         ],
                         [
