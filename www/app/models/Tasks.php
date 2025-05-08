@@ -57,6 +57,8 @@ class Tasks extends BaseModel
             'status' => 'Статус',
             'created_at' => 'Дата создания',
             'updated_at' => 'Дата редактирования',
+            'priority' => 'Приоритет',
+            'deadline' => 'Дедлайн',
         ];
     }
 

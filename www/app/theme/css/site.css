@@ -232,3 +232,33 @@ a.desc:after {
 .deadline-normal {
     color: #2a9d8f !important;
 }
+
+.status-tag {
+    font-size: 14px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-radius: 3px;
+    border: 1px solid #B0C4DE;
+    background: #EEF3F6;
+    padding: 0 2px 1px;
+    max-width: 150px;
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+}
+
+.task-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 200px;
+}
+
+.project-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 200px;
+}

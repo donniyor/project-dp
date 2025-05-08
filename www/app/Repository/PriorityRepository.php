@@ -8,7 +8,9 @@ use app\components\Priority\PriorityEnum;
 
 class PriorityRepository
 {
-    public function findAll(): array
+    public const NONE_PRIORITY = 'Приоритет не определен';
+    
+    public static function findAll(): array
     {
         return [
             [

@@ -138,6 +138,9 @@ class TaskRepository extends BaseEntityRepository
                 ->find()
                 ->orWhere(['tasks.assigned_to' => $userId,])
                 ->orWhere(['tasks.author_id' => $userId])
+                ->with('assignedTo')
+                ->with('author')
+                ->with('project')
                 ->joinWith(['author', 'assignedTo']),
         ]);
     }

@@ -85,10 +85,12 @@ class Buttons
         return $input;
     }
 
-    public static function getButtons(int $id): string
+    public static function getButtons(int $id, ?string $url = null): string
     {
         $tagI = Html::tag('i', 'visibility', ['class' => 'material-icons', 'title' => 'Открыть']);
-        $controller = Yii::$app->controller->getUniqueId();
+        $controller = null === $url
+            ? Yii::$app->controller->getUniqueId()
+            : $url;
 
         return Html::a($tagI, [sprintf('%s/update/%s', $controller, $id)], ['class' => 'btn actions']);
     }

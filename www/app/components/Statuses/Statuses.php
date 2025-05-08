@@ -41,22 +41,7 @@ class Statuses implements StatusesInterface
 
     public static function getStatusTag(int $status): string
     {
-        if (!isset(self::getStatuses()[$status])) {
-            return Html::tag('span', Statuses::getStatusName($status), ['class' => 'badge bg-warning p-2',]);
-        }
-
-        switch ($status) {
-            case self::STATUS_TO_DO:
-                $tag = 'bg-primary';
-                break;
-            case self::STATUS_DELETED:
-                $tag = 'bg-danger';
-                break;
-            default:
-                $tag = 'bg-warning';
-        }
-
-        return Html::tag('span', Statuses::getStatusName($status), ['class' => sprintf('badge %s p-2', $tag)]);
+        return Html::tag('span', Statuses::getStatusName($status), ['class' => 'status-tag']);
     }
 
     public static function getStatusButton(int $status): string
