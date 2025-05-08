@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace app\Service;
 
 use app\Decorator\ProjectDecorator;
+use app\DTO\ProjectCreateDTO;
+use app\DTO\ProjectUpdateDTO;
 use app\models\Projects;
 use app\Repository\ProjectRepository;
 use yii\data\ActiveDataProvider;
 use yii\db\Exception;
+use yii\db\StaleObjectException;
 
 class ProjectService
 {
@@ -33,18 +36,9 @@ class ProjectService
     /**
      * @throws Exception
      */
-    public function create(
-        string $title,
-        string $description,
-        int $status,
-        int $authorId,
-    ): Projects {
-        return $this->repository->create(
-            $title,
-            $description,
-            $status,
-            $authorId,
-        );
+    public function create(ProjectCreateDTO $project, $authorId): Projects
+    {
+        return $this->repository->create($project, $authorId);
     }
 
     public function findById(int $id): ?Projects
@@ -73,15 +67,12 @@ class ProjectService
         return $result;
     }
 
-    public function updateOne(
-        string $title,
-        string $description,
-        int $status,
-    ): Projects {
-        return $this->repository->updateOne(
-            $title,
-            $description,
-            $status,
-        );
+    /**
+     * @throws \Throwable
+     * @throws StaleObjectException
+     */
+    public function updateOne(Projects $projects, ProjectUpdateDTO $projectDTO): Projects
+    {
+        return $this->repository->updateOne($projects, $projectDTO);
     }
 }

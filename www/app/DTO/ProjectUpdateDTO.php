@@ -6,7 +6,7 @@ namespace app\DTO;
 
 use app\components\Statuses\StatusesInterface;
 
-final class ProjectUpdateRequest implements Arrayable
+final class ProjectUpdateDTO implements Arrayable
 {
     public function __construct(
         readonly public string $title,

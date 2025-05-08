@@ -7,7 +7,7 @@ namespace app\controllers;
 use app\components\BaseController;
 use app\DTO\ProjectCreateDTO;
 use app\DTO\ProjectSearchDTO;
-use app\DTO\ProjectUpdateRequest;
+use app\DTO\ProjectUpdateDTO;
 use app\Service\ProjectService;
 use app\Service\StatusService;
 use app\Service\UserService;
@@ -94,12 +94,7 @@ class ProjectsController extends BaseController
         $data = ProjectCreateDTO::fromArray($post);
 
         if ($request->getIsPost()) {
-            $model = $this->projectService->create(
-                $data->getTitle(),
-                $data->getDescription(),
-                $data->getStatus(),
-                $this->userService->getCurrentUser()->getId(),
-            );
+            $model = $this->projectService->create($data, $this->userService->getCurrentUser()->getId());
 
             $this->redirect(['update', 'id' => $model->getId()]);
         }
@@ -125,12 +120,8 @@ class ProjectsController extends BaseController
         $data = $model->toArray();
         if ($request->getIsPost() && $request->validateCsrfToken()) {
             // todo add validation
-            $data = ProjectUpdateRequest::fromArray($request->post());
-            $this->projectService->updateOne(
-                $data->title,
-                $data->description,
-                $data->status,
-            );
+            $data = ProjectUpdateDTO::fromArray($request->post());
+            $this->projectService->updateOne($model, $data);
             $data = $data->toArray();
         }
 

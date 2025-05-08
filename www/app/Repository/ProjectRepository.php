@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace app\Repository;
 
+use app\DTO\ProjectCreateDTO;
+use app\DTO\ProjectUpdateDTO;
 use app\models\Projects;
 use yii\data\ActiveDataProvider;
 use yii\db\Exception;
+use yii\db\StaleObjectException;
 
 class ProjectRepository extends BaseEntityRepository
 {
@@ -47,17 +50,13 @@ class ProjectRepository extends BaseEntityRepository
     /**
      * @throws Exception
      */
-    public function create(
-        string $title,
-        string $description,
-        int $status,
-        int $authorId,
-    ): Projects {
+    public function create(ProjectCreateDTO $project, $authorId): Projects
+    {
         $model = $this
             ->getEntity()
-            ->setTitle($title)
-            ->setDescription($description)
-            ->setStatus($status)
+            ->setTitle($project->getTitle())
+            ->setDescription($project->getDescription())
+            ->setStatus($project->getStatus())
             ->setAuthorId($authorId);
 
         $model->save();
@@ -92,19 +91,19 @@ class ProjectRepository extends BaseEntityRepository
             ->all();
     }
 
-    public function updateOne(
-        string $title,
-        string $description,
-        int $status,
-    ): Projects {
-        $model = $this->getEntity();
+    /**
+     * @throws \Throwable
+     * @throws StaleObjectException
+     */
+    public function updateOne(Projects $project, ProjectUpdateDTO $projectDTO): Projects
+    {
+        $project
+            ->setTitle($projectDTO->title)
+            ->setDescription($projectDTO->description)
+            ->setStatus($projectDTO->status);
 
-        $model->setTitle($title);
-        $model->setDescription($description);
-        $model->setStatus($status);
-        $model->setAuthorId($model->getAuthorId());
-        $model->update();
+        $project->save();
 
-        return $model;
+        return $project;
     }
 }
