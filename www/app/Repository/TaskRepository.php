@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace app\Repository;
 
+use app\DTO\TaskCreateDTO;
 use app\models\Tasks;
 use yii\data\ActiveDataProvider;
 
@@ -58,24 +59,19 @@ class TaskRepository extends BaseEntityRepository
         ]);
     }
 
-    public function create(
-        string $title,
-        string $description,
-        int $statusId,
-        int $projectId,
-        int $authorId,
-        ?int $assignedTo = null,
-    ): Tasks {
+    public function create(TaskCreateDTO $createDTO, int $authorId): Tasks
+    {
         $model = $this->getEntity();
 
-        $model->setTitle($title)
-            ->setDescription($description)
-            ->setStatus($statusId)
-            ->setProjectId($projectId)
+        $model->setTitle($createDTO->getTitle())
+            ->setDescription($createDTO->getDescription())
+            ->setStatus($createDTO->getStatus())
+            ->setProjectId($createDTO->getProjectId())
+            ->setPriority($createDTO->getPriority())
             ->setAuthorId($authorId);
 
-        if ($assignedTo !== null) {
-            $model->setAssignedTo($assignedTo);
+        if (null !== $createDTO->getAssignedTo()) {
+            $model->setAssignedTo($createDTO->getAssignedTo());
         }
 
         $model->save();

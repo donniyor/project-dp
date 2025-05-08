@@ -140,14 +140,7 @@ class TasksController extends BaseController
         if (null !== $errors) {
             $this->makeError($errors);
         } else {
-            $model = $this->tasksService->create(
-                $data->getTitle(),
-                $data->getDescription(),
-                $data->getStatus(),
-                $data->getProjectId(),
-                $this->userService->getCurrentUser()->getId(),
-                $data->getAssignedTo(),
-            );
+            $model = $this->tasksService->create($data, $this->userService->getCurrentUser()->getId());
 
             $errors = $model->getErrors();
             if (empty($errors)) {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace app\Service;
 
+use app\DTO\TaskCreateDTO;
 use app\models\Tasks;
 use app\Repository\TaskRepository;
 use yii\data\ActiveDataProvider;
@@ -32,22 +33,9 @@ class TaskService
         );
     }
 
-    public function create(
-        string $title,
-        string $description,
-        int $statusId,
-        int $projectId,
-        int $authorId,
-        ?int $assignedTo = null,
-    ): Tasks {
-        return $this->repository->create(
-            $title,
-            $description,
-            $statusId,
-            $projectId,
-            $authorId,
-            $assignedTo,
-        );
+    public function create(TaskCreateDTO $createDTO, int $authorId): Tasks
+    {
+        return $this->repository->create($createDTO, $authorId);
     }
 
     public function findById(int $id): ?Tasks
