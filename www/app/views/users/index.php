@@ -3,11 +3,9 @@
 declare(strict_types=1);
 
 use app\helpers\Avatars;
-use app\helpers\Buttons;
 use app\models\AuthAssignment;
 use app\models\Users;
 use yii\grid\GridView;
-use yii\helpers\Html;
 
 /** @var yii\web\View $this */
 /** @var app\models\UsersSearch $searchModel */
@@ -18,19 +16,19 @@ $this->params['breadcrumbs'][] = $this->title;
 $user = Yii::$app->user;
 
 ?>
+
 <div class="container">
     <div class="row">
         <div class="col-md-12">
             <div class="user-index">
-                <p>
-                    <?= Html::a('Добавить Пользователя', ['create'], ['class' => 'btn btn-success']) ?>
-                </p>
-
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
-                    'filterModel' => $searchModel,
-                    'tableOptions' => ['class' => 'table table-bordered'],
-                    'rowOptions' => [],
+                    'options' => [
+                        'class' => 'table-responsive'
+                    ],
+                    'tableOptions' => [
+                        'class' => 'table border-bottom'
+                    ],
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
                         [
@@ -38,7 +36,7 @@ $user = Yii::$app->user;
                             'format' => 'raw',
                             'value' => static fn(Users $model): string => Avatars::getAvatarRound(
                                 $model,
-                                50
+                                40,
                             ),
                             'headerOptions' => ['class' => 'text-nowrap', 'style' => 'width: 20%;'],
                         ],
@@ -52,12 +50,6 @@ $user = Yii::$app->user;
                                 array_map(fn(AuthAssignment $role): string => $role->getItemName(),
                                     $model->getRoleModel())
                             ),
-                        ],
-                        [
-                            'header' => 'Действия',
-                            'format' => 'html',
-                            'headerOptions' => ['width' => '150'],
-                            'content' => static fn(Users $model): string => Buttons::getUser($model->getPrimaryKey())
                         ],
                     ],
                     'pager' => [
