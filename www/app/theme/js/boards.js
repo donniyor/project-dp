@@ -9,6 +9,7 @@ $(document).ready(function () {
         connectWith: ".kanban-items",
         placeholder: "kanban-item-placeholder", // Класс для "призрака"
         cursor: "move",
+        items: ".kanban-item:not(.non-draggable)", // Исключаем кнопку "Создать задачу"
         start: function (event, ui) {
             isTaskDragging = true;
             ui.placeholder.height(ui.item.height() + 6); // Устанавливаем высоту "призрака"

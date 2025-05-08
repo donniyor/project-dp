@@ -33,7 +33,7 @@ KanbanAsset::register($this);
                             echo Html::a(
                                 'Создать задачу',
                                 Url::to(['tasks/create']),
-                                ['class' => 'btn btn-success w-100 create-task-btn'],
+                                ['class' => 'btn btn-success w-100 create-task-btn non-draggable'],
                             );
                         }
                         foreach ($board['item'] as $task) {
