@@ -9,22 +9,40 @@ use yii\base\InvalidConfigException;
 
 final class TaskCreateValidator implements BaseValidatorInterface
 {
+    use BaseErrorMessagesTrait;
+
     /**
      * @throws InvalidConfigException
      */
     public function validate(array $data): ?array
     {
         $model = DynamicModel::validateData($data, [
-            [['title'], 'required', 'message' => 'Поле "Название" обязательно для заполнения'],
-            [['project_id'], 'required', 'message' => 'Поле "Проект" обязательно для заполнения'],
-            [['description'], 'required', 'message' => 'Поле "Описание" обязательно для заполнения'],
-            [['assigned_to'], 'required', 'message' => 'Поле "Ответственный" обязательно для заполнения'],
-            [['status'], 'required', 'message' => 'Поле "Статус" обязательно для заполнения'],
+            [['title'], 'required', 'message' => $this->getMessageForRequired('Название')],
+            [['project_id'], 'required', 'message' => $this->getMessageForRequired('Проект')],
+            [['description'], 'required', 'message' => $this->getMessageForRequired('Описание')],
+            [['status'], 'required', 'message' => $this->getMessageForRequired('Статус')],
+            [['priority'], 'required', 'message' => $this->getMessageForRequired('Приоритет')],
+            [['deadline'], 'required', 'message' => $this->getMessageForRequired('Срок')],
 
-            [['title'], 'string', 'max' => 255, 'message' => 'Поле "Название" не должно превышать 255 символов'],
-            [['assigned_to'], 'integer', 'message' => 'Поле "Ответственный" должно быть числом'],
-            [['project_id'], 'integer', 'message' => 'Поле "Проект" должно быть числом'],
-            [['status'], 'integer', 'message' => 'Поле "Статус" должно быть числом'],
+            [
+                ['title'],
+                'string',
+                'max' => self::STRING_LENGTH,
+                'message' => $this->getMessagesForString('Название', self::STRING_LENGTH),
+            ],
+            [
+                ['deadline'],
+                'string',
+                'max' => self::STRING_LENGTH,
+                'message' => $this->getMessagesForString('Срок', self::STRING_LENGTH),
+            ],
+
+            [['assigned_to'], 'integer', 'message' => $this->getMessageForInt('Ответственный')],
+            [['project_id'], 'integer', 'message' => $this->getMessageForInt('Проект')],
+            [['status'], 'integer', 'message' => $this->getMessageForInt('Статус')],
+            [['priority'], 'integer', 'message' => $this->getMessageForInt('Приоритет')],
+
+            [['assigned_to'], 'safe'],
         ]);
 
         if ($model->hasErrors()) {

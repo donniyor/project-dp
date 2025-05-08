@@ -32,11 +32,11 @@ class TaskCreateDTO implements Arrayable
     public function toArray(): array
     {
         return [
-            'title' => '',
-            'description' => '',
-            'project_id' => '',
-            'status' => '',
-            'assigned_to' => '',
+            'title' => $this->getTitle(),
+            'description' => $this->getDescription(),
+            'project_id' => $this->getProjectId(),
+            'status' => $this->getStatus(),
+            'assigned_to' => $this->getAssignedTo(),
         ];
     }
 
