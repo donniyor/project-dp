@@ -31,6 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <div class="row">
                             <div class="col-lg">
                                 <div class="mb-3">
+                                    <?= Html::label('Имя') ?>
                                     <?= Html::textInput(
                                         'first_name',
                                         $model->getFirstName(),
@@ -41,6 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     ) ?>
                                 </div>
                                 <div class="mb-3">
+                                    <?= Html::label('Фамилия') ?>
                                     <?= Html::textInput(
                                         'last_name',
                                         $model->getLastName(),
@@ -51,6 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     ) ?>
                                 </div>
                                 <div class="mb-3">
+                                    <?= Html::label('Отдел') ?>
                                     <?= Html::textInput(
                                         'department',
                                         $model->getDepartment(),
@@ -61,6 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     ) ?>
                                 </div>
                                 <div class="mb-3">
+                                    <?= Html::label('Должность') ?>
                                     <?= Html::textInput(
                                         'position',
                                         $model->getPosition(),
