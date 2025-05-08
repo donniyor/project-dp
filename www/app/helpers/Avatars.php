@@ -40,16 +40,7 @@ class Avatars
             ]
         );
 
-        return Html::a(
-            $img,
-            Url::to([sprintf('/tasks/assign/%s', $id)]),
-            [
-                'class' => 'text-decoration-none',
-                'id' => 'assign-me',
-                'style' => 'font-size: 0.8rem; height: 100%; width: 40px; display: block;',
-                'data-task_id' => $id,
-            ]
-        );
+        return $img;
     }
 
     public static function getAvatarRound(Users $model, int $size = 100, bool $hasUrl = true, $hover = false): string
