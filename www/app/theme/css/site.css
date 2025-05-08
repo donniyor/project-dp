@@ -262,3 +262,10 @@ a.desc:after {
     white-space: nowrap;
     max-width: 200px;
 }
+
+.project-description {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 200px;
+}

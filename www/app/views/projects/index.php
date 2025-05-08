@@ -34,9 +34,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="table-responsive">
                         <?= GridView::widget([
                             'dataProvider' => $projects,
-                            'options' => ['class' => 'table table-striped table-bordered table-hover'],
-                            'tableOptions' => ['class' => 'table table-hover'],
-                            'headerRowOptions' => ['class' => 'thead-light'],
+                            'options' => [
+                                'class' => 'table-responsive',
+                            ],
+                            'tableOptions' => [
+                                'class' => 'table border-bottom'
+                            ],
                             'columns' => [
                                 ['class' => 'yii\grid\SerialColumn'],
                                 [
@@ -48,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'format' => 'raw',
                                     'value' => static fn(Projects $model): string => Avatars::getAvatarRound(
                                         $model->getAuthorModel(),
-                                        50,
+                                        40,
                                     ),
                                     'headerOptions' => ['class' => 'text-nowrap', 'style' => 'width: 20%;'],
                                 ],
