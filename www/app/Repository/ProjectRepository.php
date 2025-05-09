@@ -80,6 +80,15 @@ class ProjectRepository extends BaseEntityRepository
             ->all();
     }
 
+    public function findByIds(int ...$ids): array
+    {
+        return $this
+            ->getEntity()
+            ->find()
+            ->where(['in', 'id', $ids])
+            ->all();
+    }
+
     public function searchByTitle(string $title, int $limit = 10): array
     {
         return $this

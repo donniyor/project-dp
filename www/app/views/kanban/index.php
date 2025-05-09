@@ -17,6 +17,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
 KanbanAsset::register($this);
 
+echo $this->render(
+    '_search',
+    [
+        'filters' => $filters ?? null,
+        'projects' => $projects ?? null,
+        'assignedToIds' => $assignedToIds ?? null,
+    ],
+);
+
 ?>
 
 <div class="kanban-container">

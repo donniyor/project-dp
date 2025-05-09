@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace app\Service;
 
+use app\DTO\KanbanTaskSearchDTO;
 use app\DTO\TaskCreateDTO;
 use app\models\Tasks;
 use app\Repository\TaskRepository;
@@ -43,9 +44,9 @@ class TaskService
         return $this->repository->findById($id);
     }
 
-    public function findBy(): array
+    public function findByDTO(?KanbanTaskSearchDTO $searchDTO = null): array
     {
-        return $this->repository->findBy();
+        return $this->repository->findByDTO($searchDTO);
     }
 
     public function update(

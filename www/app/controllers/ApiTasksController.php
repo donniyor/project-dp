@@ -40,7 +40,7 @@ class ApiTasksController extends BaseController
         return $this->asJson(
             $this->boardsService->getBoards(
                 $this->statusService->getStatuses(),
-                $this->taskService->findBy(),
+                $this->taskService->findByDTO(),
             ),
         );
     }

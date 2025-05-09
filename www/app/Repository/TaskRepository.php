@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace app\Repository;
 
 use app\components\Statuses\StatusesInterface;
+use app\DTO\KanbanTaskSearchDTO;
 use app\DTO\TaskCreateDTO;
 use app\models\Tasks;
 use yii\data\ActiveDataProvider;
@@ -85,14 +86,25 @@ class TaskRepository extends BaseEntityRepository
         return $this->getEntity()->findOne(['id' => $id]);
     }
 
-    public function findBy(): array
+    public function findByDTO(?KanbanTaskSearchDTO $searchDTO = null): array
     {
-        return $this->getEntity()
+        $query = $this->getEntity()
             ->find()
             ->with('project')
             ->with('assignedTo')
-            ->where(['!=', 'status', StatusesInterface::STATUS_DELETED])
-            ->all();
+            ->where(['!=', 'status', StatusesInterface::STATUS_DELETED]);
+
+        if (null !== $searchDTO) {
+            if (null !== $searchDTO->projectIds) {
+                $query->andWhere(['in', 'tasks.project_id', $searchDTO->projectIds]);
+            }
+
+            if (null !== $searchDTO->assignedToIds) {
+                $query->andWhere(['in', 'tasks.assigned_to', $searchDTO->assignedToIds]);
+            }
+        }
+
+        return $query->all();
     }
 
     public function update(

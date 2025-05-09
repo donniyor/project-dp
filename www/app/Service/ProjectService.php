@@ -51,6 +51,11 @@ class ProjectService
         return $this->repository->findBy($limit);
     }
 
+    public function findByIds(int ...$ids): array
+    {
+        return $this->repository->findByIds(...$ids);
+    }
+
     public function searchByTitle(string $title, int $limit = 10): array
     {
         return $this->repository->searchByTitle($title, $limit);
